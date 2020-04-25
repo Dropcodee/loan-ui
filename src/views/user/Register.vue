@@ -3,7 +3,7 @@
     <b-colxx xxs="12" md=10  class="mx-auto my-auto">
       <b-card class="auth-card" no-body>
           <div class="position-relative image-side ">
-            <p class=" text-white h2">{{ $t('dashboards.magic-is-in-the-details') }}</p>
+            <p class=" text-white h2">Make payments with ease and comfort</p>
               <p class="white mb-0">  Please use this form to register. <br />If you are a member, please
                 <router-link tag="a" to="/user/login" class="white">login</router-link>.
               </p>

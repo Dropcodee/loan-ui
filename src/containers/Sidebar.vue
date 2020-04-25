@@ -4,7 +4,7 @@
         <vue-perfect-scrollbar class="scroll" :settings="{ suppressScrollX: true, wheelPropagation: false }">
             <ul class="list-unstyled">
                 <li v-for="(item,index) in menuItems" :class="{ 'active' : (selectedParentMenu === item.id && viewingParentMenu === '') || viewingParentMenu === item.id }" :key="`parent_${item.id}`" :data-flag="item.id">
-                    <a v-if="item.newWindow"  :href="item.to" rel="noopener noreferrer" target="_blank">
+                    <a v-if="item.newWindow" :href="item.to" rel="noopener noreferrer" target="_blank">
                         <i :class="item.icon" />
                         {{ $t(item.label) }}
                     </a>
@@ -41,7 +41,6 @@
                                         <i :class="thirdLevelSub.icon" />
                                         <span>{{ $t(thirdLevelSub.label) }}</span>
                                     </a>
-
                                     <router-link v-else :to="thirdLevelSub.to">
                                         <i :class="thirdLevelSub.icon" />
                                         <span>{{ $t(thirdLevelSub.label) }}</span>
@@ -120,6 +119,12 @@ export default {
                         step: 0,
                         classNames: this.menuType,
                         selectedMenuHasSubItems: false
+                    });
+                }else{
+                    this.changeSideMenuStatus({
+                        step: 0,
+                        classNames: this.menuType,
+                        selectedMenuHasSubItems: true
                     });
                 }
             }
@@ -219,6 +224,7 @@ export default {
                 }
             }
         },
+        // Resize
         handleWindowResize(event) {
             if (event && !event.isTrusted) {
                 return;

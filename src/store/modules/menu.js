@@ -104,7 +104,7 @@ const mutations = {
     } else {
       nextClasses = currentClasses.join(' ') + ' main-show-temporary';
     }
-
+    
     state.menuType = nextClasses
     state.clickCount = 0
   }

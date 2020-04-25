@@ -1,134 +1,101 @@
-import firebase from 'firebase/app'
-import 'firebase/auth'
-import { currentUser } from '../../constants/config'
+import axios from 'axios'
+import router from '@/router'
+import AuthenticationService from '@/services/AuthenticationService'
 
-export default {
-  state: {
-    currentUser: localStorage.getItem('user') != null ? JSON.parse(localStorage.getItem('user')) : null,
-    loginError: null,
-    processing: false,
-    forgotMailSuccess:null,
-    resetPasswordSuccess:null
+export const namespaced = true
+
+export const state = {
+  user: null,
+  processing: false,
+}
+
+export const mutations = {
+  SET_USER_STATE(state, userData) {
+    state.user = userData
+    localStorage.setItem('user', JSON.stringify(userData))
   },
-  getters: {
-    currentUser: state => state.currentUser,
-    processing: state => state.processing,
-    loginError: state => state.loginError,
-    forgotMailSuccess: state => state.forgotMailSuccess,
-    resetPasswordSuccess:state => state.resetPasswordSuccess,
+  LOGOUT_USER() {
+    localStorage.removeItem('user')
+    location.reload()
   },
-  mutations: {
-    setUser(state, payload) {
-      state.currentUser = payload
-      state.processing = false
-      state.loginError = null
-    },
-    setLogout(state) {
-      state.currentUser = null
-      state.processing = false
-      state.loginError = null
-    },
-    setProcessing(state, payload) {
-      state.processing = payload
-      state.loginError = null
-    },
-    setError(state, payload) {
-      state.loginError = payload
-      state.currentUser = null
-      state.processing = false
-    },
-    setForgotMailSuccess(state) {
-      state.loginError = null
-      state.currentUser = null
-      state.processing = false
-      state.forgotMailSuccess=true
-    },
-    setResetPasswordSuccess(state) {
-      state.loginError = null
-      state.currentUser = null
-      state.processing = false
-      state.resetPasswordSuccess=true
-    },
-    clearError(state) {
-      state.loginError = null
+  SET_REQUEST_PROCESS(state, requestProcess) {
+    state.processing = requestProcess
+  }
+}
+
+
+export const actions = {
+  async registerUser({ commit, dispatch }, payload) {
+    try {
+      commit('SET_REQUEST_PROCESS', true)
+      const response = await AuthenticationService.register(payload)
+      commit('SET_USER_STATE', response.data.data)
+      // create success notification
+      const notification = {
+        type: 'success',
+        message: response.data.message
+      }
+      dispatch('notification/add', notification, { root: true })
+      commit('SET_REQUEST_PROCESS', false)
+      router.push('/')
+    } catch (err) {
+      commit('SET_REQUEST_PROCESS', false)
+      // array of errors
+      const errors = err.response.data
+      for (let i in errors) {
+        // foreach error create a new notification
+        const notification = {
+          type: 'error',
+          message: errors[i].message
+        }
+        // dispatch notification action for creating notifications
+        dispatch('notification/add', notification, { root: true })
+      }
+      throw err
     }
   },
-  actions: {
-    login({ commit }, payload) {
-      commit('clearError')
-      commit('setProcessing', true)
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
-        .then(
-          user => {
-            const item = { uid: user.user.uid, ...currentUser }
-            localStorage.setItem('user', JSON.stringify(item))
-            commit('setUser', { uid: user.user.uid, ...currentUser })
-          },
-          err => {
-            localStorage.removeItem('user')
-            commit('setError', err.message)
-            setTimeout(() => {
-              commit('clearError')
-            }, 3000)
-          }
-        )
-    },
-    forgotPassword({ commit }, payload) {
-      commit('clearError')
-      commit('setProcessing', true)
-      firebase
-        .auth()
-        .sendPasswordResetEmail(payload.email)
-        .then(
-          user => {
-            commit('clearError')
-            commit('setForgotMailSuccess')
-          },
-          err => {
-            commit('setError', err.message)
-            setTimeout(() => {
-              commit('clearError')
-            }, 3000)
-          }
-        )
-    },
-    resetPassword({ commit }, payload) {
-      commit('clearError')
-      commit('setProcessing', true)
-      firebase
-        .auth()
-        .confirmPasswordReset(payload.resetPasswordCode,payload.newPassword)
-        .then(
-          user => {
-            commit('clearError')
-            commit('setResetPasswordSuccess')
-          },
-          err => {
-            commit('setError', err.message)
-            setTimeout(() => {
-              commit('clearError')
-            }, 3000)
-          }
-        )
-    },
-
-
-
-    /*
-       return await auth.(resetPasswordCode, newPassword)
-        .then(user => user)
-        .catch(error => error);
-    */
-    signOut({ commit }) {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          localStorage.removeItem('user')
-          commit('setLogout')
-        }, _error => { })
+  async loginUser({ commit, dispatch }, payload) {
+    // send request to server
+    try {
+      commit('SET_REQUEST_PROCESS', true)
+      const response = await AuthenticationService.login(payload)
+      // store user return data
+      commit('SET_USER_STATE', response.data.user)
+      // create success notification
+      const notification = {
+        type: 'success',
+        message: response.data.message
+      }
+      dispatch('notification/add', notification, { root: true })
+      commit('SET_REQUEST_PROCESS', false)
+      router.push('/dashboard')
+    } catch (err) {
+      commit('SET_REQUEST_PROCESS', false)
+      // console.log(err.response.data.message)
+      const notification = {
+        type: 'error',
+        message: err.response.data.message
+      }
+      // dispatch notification action for creating notifications
+      dispatch('notification/add', notification, { root: true })
+      throw err
     }
+  },
+  logoutUser({ commit }) {
+    commit('LOGOUT_USER');
+  }
+}
+export const getters = {
+  isLoggedIn(state) {
+    return !!state.user
+  },
+  currentUser(state) {
+    if (state.user !== null || state.user !== undefined) {
+      return state.user
+    }
+    return state.user
+  },
+  processing(state) {
+    return state.processing
   }
 }

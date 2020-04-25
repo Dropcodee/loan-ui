@@ -1,6 +1,6 @@
 export const defaultMenuType = 'menu-default' // 'menu-default', 'menu-sub-hidden', 'menu-hidden';
-export const defaultStartPath = '/app/piaf/start'
-export const searchPath = '#'
+export const defaultStartPath = '/app/dashboards/default'
+export const searchPath = '/app/pages/miscellaneous/search'
 export const buyUrl = 'https://1.envato.market/nEyZa'
 
 export const subHiddenBreakpoint = 1440
