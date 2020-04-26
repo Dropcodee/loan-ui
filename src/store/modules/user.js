@@ -26,31 +26,29 @@ export const mutations = {
 
 export const actions = {
   async registerUser({ commit, dispatch }, payload) {
-    try {
       commit('SET_REQUEST_PROCESS', true)
+    try {
       const response = await AuthenticationService.register(payload)
-      commit('SET_USER_STATE', response.data.data)
-      // create success notification
-      const notification = {
-        type: 'success',
-        message: response.data.message
-      }
-      dispatch('notification/add', notification, { root: true })
+      console.log(response.data)
       commit('SET_REQUEST_PROCESS', false)
-      router.push('/')
+      // commit('SET_USER_STATE', response.data.data)
+      // // create success notification
+      // const notification = {
+      //   type: 'success',
+      //   message: response.data.message
+      // }
+      // dispatch('notification/add', notification, { root: true })
+      // commit('SET_REQUEST_PROCESS', false)
+      // router.push('/')
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
-      // array of errors
-      const errors = err.response.data
-      for (let i in errors) {
-        // foreach error create a new notification
-        const notification = {
-          type: 'error',
-          message: errors[i].message
-        }
-        // dispatch notification action for creating notifications
-        dispatch('notification/add', notification, { root: true })
+      // console.log(err.response.data.message)
+      const notification = {
+        type: 'error',
+        message: err.response.data.message
       }
+      // dispatch notification action for creating notifications
+      dispatch('notification/add', notification, { root: true })
       throw err
     }
   },

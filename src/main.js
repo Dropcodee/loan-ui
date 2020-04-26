@@ -10,7 +10,7 @@ import store from './store'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import VueI18n from 'vue-i18n'
-import { defaultLocale, localeOptions, firebaseConfig } from './constants/config'
+import { defaultLocale, localeOptions } from './constants/config'
 // Notification Component Add
 import Notifications from './components/Common/Notification'
 // Breadcrumb Component Add
@@ -26,11 +26,11 @@ import VueLineClamp from 'vue-line-clamp'
 import VCalendar from 'v-calendar'
 import 'v-calendar/lib/v-calendar.min.css'
 import VueScrollTo from 'vue-scrollto'
-import firebase from 'firebase/app'
-import 'firebase/auth'
+import axios from 'axios'
+import Vuelidate from 'vuelidate'
 
-// import Vuelidate from 'vuelidate'
-// Vue.use(Vuelidate);
+
+Vue.use(Vuelidate)
 
 
 Vue.use(BootstrapVue);
@@ -69,7 +69,6 @@ Vue.use(VCalendar, {
 });
 Vue.use(VueScrollTo);
 
-firebase.initializeApp(firebaseConfig);
 
 Vue.config.productionTip = false
 
@@ -77,5 +76,24 @@ export default new Vue({
   i18n,
   router,
   store,
+  created() {
+    // fetch user details from localstorage
+    //  just incase user refreshes page without logout
+    const userString = localStorage.getItem('user')
+    if (userString) {
+      // change localstorage string to json
+      const userData = JSON.parse(userString)
+      this.$store.commit('user/SET_USER_STATE', userData)
+    }
+    axios.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response.status === 401) {
+          this.$store.dispatch('user/logoutUser')
+        }
+        return Promise.reject(error)
+      }
+    )
+  },
   render: h => h(App)
 }).$mount('#app')

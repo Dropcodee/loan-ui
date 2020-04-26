@@ -356,6 +356,12 @@ const routes = [
         path: "app/blank-page",
         component: () =>
           import(/* webpackChunkName: "blank-page" */ "./views/app/blank-page")
+      },
+      {
+        path: "/404",
+        name: '404',
+        component: () =>
+          import("./components/payo/Errors/NotFound-404")
       }
     ]
   },
@@ -382,7 +388,7 @@ const routes = [
         path: "forgot-password",
         component: () =>
           import(/* webpackChunkName: "user" */ "./views/user/ForgotPassword")
-      },    
+      },
       {
         path: "reset-password",
         component: () =>

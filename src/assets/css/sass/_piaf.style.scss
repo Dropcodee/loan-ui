@@ -3750,7 +3750,12 @@ div[data-notify="container"] {
   transform: translate3d(100%, 0, 0);
   transition: all 0.4s;
 }
-
+.error-text {
+  color: #e63229 !important;
+}
+.success-text {
+  color: #3aca26 !important;
+}
 /* 21.Forms */
 .is-invalid .av-label,
 .form-group.text-danger,
@@ -3763,7 +3768,7 @@ div[data-notify="container"] {
 .control-input.is-invalid ~ .custom-control-label,
 .was-validated .form-check-input:invalid ~ .form-check-label,
 .form-check-input.is-invalid ~ .form-check-label {
-  color: $primary-color !important;
+  color: #e63229 !important;
 }
 
 .was-validated .form-control:invalid,
@@ -3776,7 +3781,7 @@ div[data-notify="container"] {
 .form-control.is-invalid:focus,
 .was-validated .custom-select:invalid:focus,
 .custom-select.is-invalid:focus {
-  border-color: $separator-color;
+  border-color: #e63229;
   background: initial;
 }
 
@@ -3784,7 +3789,7 @@ div[data-notify="container"] {
   border-radius: $border-radius;
   padding: 0.5rem 1rem;
   font-size: 0.76rem;
-  color: $primary-color;
+  color: #e63229;
   background: $foreground-color;
   border: 1px solid $theme-color-1;
   text-align: center;
