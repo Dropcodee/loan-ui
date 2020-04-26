@@ -32,14 +32,13 @@ export const actions = {
       console.log(response.data)
       commit('SET_REQUEST_PROCESS', false)
       // commit('SET_USER_STATE', response.data.data)
-      // // create success notification
-      // const notification = {
-      //   type: 'success',
-      //   message: response.data.message
-      // }
-      // dispatch('notification/add', notification, { root: true })
-      // commit('SET_REQUEST_PROCESS', false)
-      // router.push('/')
+      // create success notification
+      const notification = {
+        type: 'success',
+        message: response.data.message
+      }
+      dispatch('notification/add', notification, { root: true })
+      router.push('login')
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)
@@ -58,15 +57,16 @@ export const actions = {
       commit('SET_REQUEST_PROCESS', true)
       const response = await AuthenticationService.login(payload)
       // store user return data
-      commit('SET_USER_STATE', response.data.user)
+      // console.log(response.data)
+      commit('SET_USER_STATE', response.data)
       // create success notification
       const notification = {
         type: 'success',
-        message: response.data.message
+        message: 'successfully logged in'
       }
       dispatch('notification/add', notification, { root: true })
       commit('SET_REQUEST_PROCESS', false)
-      router.push('/dashboard')
+      router.push('/app/dashboards/default')
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)

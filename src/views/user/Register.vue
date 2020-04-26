@@ -144,10 +144,14 @@ export default {
           this.registerUser(payload)
         } catch (err) {
           this.requestError = true
-          console.log('component print'+err)
+          console.log('component print' + err)
         }
       }
-    }
+    },
+    removeNotification(notification) {
+      console.log(notification)
+      this.remove(notification)
+    },
   },
   watch: {
     notifications(notifications) {

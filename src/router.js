@@ -19,6 +19,7 @@ const routes = [
         children: [
           {
             path: "default",
+            name: 'dashboard',
             component: () =>
               import(/* webpackChunkName: "dashboards" */ "./views/app/dashboards/Default")
           },
