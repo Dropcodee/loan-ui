@@ -13,6 +13,7 @@ export const mutations = {
   SET_USER_STATE(state, userData) {
     state.user = userData
     localStorage.setItem('user', JSON.stringify(userData))
+    axios.defaults.headers.common['Authorization'] = ` Bearer ${userData.api_token}`
   },
   LOGOUT_USER() {
     localStorage.removeItem('user')
@@ -26,7 +27,7 @@ export const mutations = {
 
 export const actions = {
   async registerUser({ commit, dispatch }, payload) {
-      commit('SET_REQUEST_PROCESS', true)
+    commit('SET_REQUEST_PROCESS', true)
     try {
       const response = await AuthenticationService.register(payload)
       console.log(response.data)
@@ -38,7 +39,7 @@ export const actions = {
         message: response.data.message
       }
       dispatch('notification/add', notification, { root: true })
-      router.push('login')
+      router.push('/login')
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)
@@ -91,7 +92,7 @@ export const getters = {
     if (state.user !== null || state.user !== undefined) {
       return state.user
     }
-    return state.user
+    return null
   },
   processing(state) {
     return state.processing

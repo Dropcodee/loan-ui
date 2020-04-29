@@ -86,21 +86,13 @@
             </vue-perfect-scrollbar>
           </b-dropdown>
         </div>
-        <div class="position-relative d-none d-sm-inline-block ">
-          <div class="btn-group">
-            <div class="d-none d-md-inline-block align-middle ml-3">
-              <switches id="live-mode-switch" v-model="isLiveActive" theme="custom" class="vue-switcher-small" color="primary" />
-              <b-tooltip target="live-mode-switch" placement="left" title="Live Mode"></b-tooltip>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="user d-inline-block">
         <b-dropdown class="dropdown-menu-right" right variant="empty" toggle-class="p-0" menu-class="mt-3" no-caret>
           <template slot="button-content">
-            <span class="name mr-1">{{currentUser.title}}</span>
+            <span class="name mr-1">{{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }} {{ currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) }}</span>
             <span>
-              <img :alt="currentUser.title" :src="currentUser.img" />
+              <img :alt="currentUser.title" src="https://res.cloudinary.com/coderoute/image/upload/v1581870651/coperative/jwme3tnmbsz3faj4xypf.jpg" />
             </span>
           </template>
           <b-dropdown-item>Settings</b-dropdown-item>
@@ -242,11 +234,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      currentUser: 'currentUser',
       menuType: 'getMenuType',
       menuClickCount: 'getMenuClickCount',
       selectedMenuHasSubItems: 'getSelectedMenuHasSubItems'
-    })
+    }),
+    ...mapGetters('user', ['currentUser'])
   },
   beforeDestroy() {
     document.removeEventListener('click', this.handleDocumentforMobileSearch)

@@ -16,70 +16,50 @@ const data = [{
     ]
   },
   {
-    id: "business",
+    id: "services",
     icon: "iconsminds-digital-drawing",
-    label: "Your Business",
-    to: "/app/pages",
+    label: "Our Services",
+    to: "/app/pages/services",
     subs: [{
-        id: "business-transactions",
-        label: "Transactions",
-        to: "/user",
+        id: "services-loan",
+        label: "Loan Application",
+        to: "/app/pages/services/loan-application",
         icon: "simple-icon-check",
       },
       {
-        id: "business-crypto",
-        label: "Crypto Transactions",
-        to: "/user",
+        id: "services-land",
+        label: "Land Application",
+        to: "/app/pages/services/land-application",
         icon: "simple-icon-check",
       },
       {
-        id: "business-customers",
-        label: "Customers",
-        to: "/user",
-        icon: "simple-icon-check",
-      },
-      {
-        id: "business-balance",
-        label: "Balance",
-        to: "/app/pages/product",
-        icon: "simple-icon-check",
-      },
-      {
-        id: "business-transfer",
-        label: "Transfer",
-        to: "/user",
-        icon: "simple-icon-check",
-      },
-      {
-        id: "business-subaccounts",
-        label: "Subaccounts",
-        to: "/user",
-        icon: "simple-icon-check",
-      },
-      {
-        id: "business-cards",
-        label: "Cards",
-        to: "/user",
-        icon: "simple-icon-check",
-      },
-      {
-        id: "business-dstv",
-        label: "Airtime & DSTV",
-        to: "/user",
+        id: "services-savings",
+        label: "Savings Application",
+        to: "/app/pages/services/savings-application",
         icon: "simple-icon-check",
       },
     ]
   },
   {
-    id: "payments",
+    id: "monitors",
     icon: "iconsminds-air-balloon-1",
-    label: "Collect Payments",
-    to: "/app/applications",
+    label: "Your Monitors",
+    to: "/app/pages/monitors",
     subs: [{
-      icon: "simple-icon-check",
-      label: "Payment Links",
-      to: "/app/applications/todo"
-    }, ]
+        icon: "simple-icon-check",
+        label: "Loan Monitor",
+        to: "/app/pages/monitors/loan-monitor"
+      },
+      {
+        icon: "simple-icon-check",
+        label: "Savings Monitor",
+        to: "/app/pages/monitors/savings-monitor"
+      }, {
+        icon: "simple-icon-check",
+        label: "Transactions Monitor",
+        to: "/app/pages/monitors/transactions-monitor"
+      },
+    ]
   },
   {
     id: "billings",
@@ -105,6 +85,6 @@ const data = [{
         icon: "simple-icon-check",
       }
     ]
-  }, 
+  },
 ];
 export default data;

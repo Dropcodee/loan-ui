@@ -1,48 +1,52 @@
 <template>
-    <b-card>
+  <b-card>
     <b-card-header class="p-0 position-relative" v-if="noSuffle!=false">
-        <div class="position-absolute handle card-icon">
-            <i class="simple-icon-shuffle" />
-        </div>
+      <div class="position-absolute handle card-icon">
+        <i class="simple-icon-shuffle" />
+      </div>
     </b-card-header>
     <b-card-body class=" align-items-center">
-        <b-card-text>
-        <h5 class="mb-0 card-title lead">{{ serviceTitle }}</h5>
-           <p class="mt-4" style="font-size: 20px; max-width: 40rem">{{ serviceDesc }}</p>
-        </b-card-text>
-        <router-link :to="serviceLink" size="lg" class="btn mb-2 btn-primary btn-lg">{{ serviceButtontext }}</router-link>.
+      <b-card-text>
+        <h5 class="mb-0 card-title lead">{{ service.title }}</h5>
+        <p class="mt-4" style="font-size: 20px; max-width: 40rem">{{ service.description }}</p>
+      </b-card-text>
+      <div v-if="service.type == 'modal'">
+        <b-button v-b-modal.smallmodal size="lg" class="btn mb-2 btn-primary btn-lg">{{ service.buttonText }}</b-button>
+        <b-modal id="smallmodal" ref="smallmodal" :title="service.title">
+          <ul>
+            <li v-for="(applink, index) in service.location" :key="index">
+              <router-link :to="applink.link">{{ applink.title }}</router-link>
+            </li>
+          </ul>
+          <template slot="modal-footer">
+            <b-button variant="secondary" @click="hideModal('smallmodal')">Cancel</b-button>
+          </template>
+        </b-modal>
+      </div>
+      <div v-else="service.type.mode == 'link'">
+        <router-link :to="service.type.location" size="lg" class="btn mb-2 btn-primary btn-lg">{{ service.buttonText }}</router-link>
+      </div>
     </b-card-body>
-</b-card>
+  </b-card>
 </template>
-
 <script>
+// import SmallModal from '@/components/payo/SmallModal'
 export default {
   name: 'ListcardComponent',
   props: {
-    serviceDesc: {
-        type: String,
-        required: true
+    service: {
+      type: Object,
+      required: true
     },
-    serviceTitle: {
-        type: String,
-        required: true
-    },
-     serviceLink: {
-        type: String,
-        required: true
-    },
-    serviceButtontext: {
-        type: String,
-        required: true
-    }
   },
+  // components: { 'small-modal': SmallModal },
   data() {
     return {
-        noSuffle: false
+      noSuffle: false
     };
   },
 };
-</script>
 
+</script>
 <style lang="css" scoped>
 </style>
