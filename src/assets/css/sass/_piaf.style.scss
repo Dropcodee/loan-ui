@@ -46,6 +46,9 @@ Table of Contents
 */
 
 /* 00.Variables and Imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 @import url("https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700");
 
 $main-menu-item-height: 110px;

@@ -28,7 +28,7 @@ import 'v-calendar/lib/v-calendar.min.css'
 import VueScrollTo from 'vue-scrollto'
 import axios from 'axios'
 import Vuelidate from 'vuelidate'
-
+import '@/assets/css/tailwind.css'
 
 Vue.use(Vuelidate)
 

@@ -4,7 +4,6 @@
     <color-switcher />
   </div>
 </template>
-
 <script>
 import ColorSwitcher from "./components/Common/ColorSwitcher";
 import { getDirection } from "./utils";
@@ -26,4 +25,11 @@ export default {
     }
   }
 };
+
 </script>
+<style>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+</style>

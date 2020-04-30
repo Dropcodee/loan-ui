@@ -5,6 +5,7 @@ import app from '../main'
 import menu from './modules/menu'
 import * as user from './modules/user'
 import * as notification from './modules/notification'
+import * as loan from './modules/loan'
 import chat from './modules/chat'
 import todo from './modules/todo'
 import survey from './modules/survey'
@@ -29,6 +30,7 @@ export default new Vuex.Store({
     menu,
     user,
     notification,
+    loan,
     chat,
     todo,
     survey

@@ -24,10 +24,10 @@
               </div>
             </b-form-group>
             <b-form-group label="Interest Rate" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="form.interest" disabled />
+              <b-form-input type="text" v-model="form.interest + '%'" disabled />
             </b-form-group>
             <b-form-group label="Loan Payment Tenure" class="has-float-label mb-4">
-              <b-form-input type="date" v-model="form.tenure" :class="$v.form.tenure.$error ? 'is-invalid' : ''" @blur="$v.form.tenure.$touch()" />
+              <b-form-select v-model="form.tenure" :options="options"></b-form-select>
               <div v-if="$v.form.tenure.$error">
                 <span v-if="!$v.form.tenure.required" class="error-text">Please lets know how long it will take you to repay your loan thanks.</span>
               </div>
@@ -55,16 +55,17 @@
         </div>
       </b-card>
       <b-card class="w-40 mx-auto">
-        <h2 class="text-center">Loan Request Preview</h2>
-        <h3 class="mt-4">Loan Request Amount: <span class=""> {{ form.amount }}</span></h3>
-        <h3 class="mt-4">Loan Interest Amount: <span class=""> {{ form.amount }}</span></h3>
-        <h3 class="mt-4">Repayment Timeline: <span class=""> {{ form.tenure }}</span></h3>
+        <h2 class="text-center mb-4 mt-4">Loan Request Preview</h2>
+        <h3 class="mt-12">Loan Request Amount: <span class="text-center ml-2"> &#8358; {{ form.amount }}</span></h3>
+        <h3 class="mt-4">Loan Interest Amount: <span class="text-center ml-2"> &#8358; {{ yearlyInterest }}</span></h3>
+        <h3 class="mt-4">Total Amount Payable: <span class="text-center ml-2"> &#8358; {{ loanTotal }}</span></h3>
+        <h3 class="mt-4">Repayment Timeline: <span class=""> {{ form.tenure }} Yr</span></h3>
       </b-card>
     </b-row>
   </div>
 </template>
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 import { required, maxLength, numeric } from 'vuelidate/lib/validators'
 
 export default {
@@ -73,11 +74,17 @@ export default {
 
   data() {
     return {
+      options: [
+        { value: 1, text: '1 year' },
+        { value: 2, text: '2 years' },
+      ],
       form: {
-        amount: '',
-        interest: "5%",
-        tenure: '',
+        amount: 0,
+        interest: 5,
+        tenure: 1,
       },
+      yearlyInterest: 0,
+      loanTotal: 0,
       header: 'Loan Application Form',
       timeout: null,
       requestError: null
@@ -96,8 +103,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ['currentUser', 'processing']),
-    ...mapGetters('notification', ['notifications'])
+    ...mapGetters('loan', ['processing']),
+    ...mapGetters('user', ['currentUser']),
+    ...mapState('notification', ["notifications"]),
   },
   methods: {
     ...mapActions('loan', ['NewLoanRequest']),
@@ -115,10 +123,24 @@ export default {
           this.NewLoanRequest(payload)
           this.requestError = false
         } catch (err) {
-            return err
+          return err
         }
       }
-    }
+    },
+    interest(amount) {
+      if (amount == '' || amount == null) {
+        return 0
+      } else {
+        const interestRate = this.form.interest / 100
+        const newInterest = interestRate * amount
+        this.yearlyInterest = newInterest * this.form.tenure
+        this.loanTotal = parseInt(amount) + parseInt(this.yearlyInterest)
+      }
+    },
+    removeNotification(notification) {
+      console.log(notification)
+      this.remove(notification)
+    },
   },
   watch: {
     notifications(notifications) {
@@ -136,14 +158,32 @@ export default {
             duration: 3000,
             permanent: false
           });
-           let as = this;
+          let as = this;
           setTimeout(() => as.removeNotification(notifications[i]), 3000)
         }
       }
     },
+    'form.amount': function(amount) {
+      this.interest(amount)
+    },
+    'form.tenure': function(tenure) {
+      this.interest(this.form.amount)
+    }
   }
 };
 
 </script>
 <style lang="css" scoped>
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mt-12 {
+  margin-top: 4rem
+}
+
+.mt-8 {
+  margin-top: 3rem
+}
+
 </style>

@@ -48,17 +48,20 @@ const routes = [{
               import( /* webpackChunkName : "product" */ "./views/app/pages/services"),
             redirect: "/app/pages/services/loan-application",
             children: [{
-                path: "loan-application",
+                path: "/app/pages/services/loan-application",
+                name: 'loan-application',
                 component: () =>
                   import( /* webpackChunkName: "product" */ "./views/app/pages/services/LoanApplication")
               },
               {
-                path: "land-application",
+                path: "/app/pages/services/land-application",
+                name: 'land-application',
                 component: () =>
                   import( /* webpackChunkName: "product" */ "./views/app/pages/services/LandApplication")
               },
               {
                 path: "savings-application",
+                name: 'savings-application',
                 component: () =>
                   import( /* webpackChunkName: "product" */ "./views/app/pages/services/SavingsApplication")
               },
@@ -87,17 +90,20 @@ const routes = [{
               import( /* webpackChunkName : "profile" */ "./views/app/pages/monitors"),
             redirect: "/app/pages/monitors/loan-monitor",
             children: [{
-                path: "loan-monitor",
+                path: "/app/pages/monitors/loan-monitor",
+                name: 'loan-monitor',
                 component: () =>
                   import( /* webpackChunkName: "profile" */ "./views/app/pages/monitors/LoanMonitor")
               },
               {
-                path: "savings-monitor",
+                path: "/app/pages/monitors/savings-monitor",
+                name: 'savings-monitor',
                 component: () =>
                   import( /* webpackChunkName: "profile" */ "./views/app/pages/monitors/SavingsMonitor")
               },
               {
-                path: "transactions-monitor",
+                path: "/app/pages/monitors/transactions-monitor",
+                name: 'savings-monitor',
                 component: () =>
                   import( /* webpackChunkName: "profile" */ "./views/app/pages/monitors/TransactionsMonitor")
               }

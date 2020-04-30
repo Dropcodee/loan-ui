@@ -138,8 +138,8 @@ export default {
         {
           type: 'modal',
           location: [
-            { title: 'Personal Loan Application', link: '/loan-application' },
-            { title: 'Land Acquizition Loan Application', link: '/land-application' }
+            { title: 'Personal Loan Application', link: 'loan-application' },
+            { title: 'Land Acquizition Loan Application', link: 'land-application' }
           ],
           title: "Apply for loans",
           description: "Start applying for loans from as low as 50,000 ranging from staff related loans, land acquisition loans with affordable interest rates. check out our loan application types.",

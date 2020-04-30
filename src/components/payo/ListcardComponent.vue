@@ -15,7 +15,7 @@
         <b-modal id="smallmodal" ref="smallmodal" :title="service.title">
           <ul>
             <li v-for="(applink, index) in service.location" :key="index">
-              <router-link :to="applink.link">{{ applink.title }}</router-link>
+              <router-link :to="{ name: `${applink.link}` }">{{ applink.title }}</router-link>
             </li>
           </ul>
           <template slot="modal-footer">
@@ -45,6 +45,24 @@ export default {
       noSuffle: false
     };
   },
+  methods: {
+    hideModal(refname) {
+      this.$refs[refname].hide()
+      console.log('hide modal:: ' + refname)
+
+      if (refname === 'modalnestedinline') {
+        this.$refs['modalnested'].show()
+      }
+    },
+    somethingModal(refname) {
+      this.$refs[refname].hide()
+      console.log('something modal:: ' + refname)
+
+      if (refname === 'modalnestedinline') {
+        this.$refs['modalnested'].show()
+      }
+    }
+  }
 };
 
 </script>
