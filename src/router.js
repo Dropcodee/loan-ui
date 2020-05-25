@@ -16,7 +16,7 @@ const routes = [
         import( /* webpackChunkName: "dashboards" */ "./views/app/dashboards"),
       redirect: "/app/dashboards/default",
       children: [{
-        path: "default",
+        path: "/app/dashboards/default",
         name: 'dashboard',
         component: () =>
           import( /* webpackChunkName: "dashboards" */ "./views/app/dashboards/Default")
@@ -104,7 +104,7 @@ const routes = [
         },
         {
           path: "/app/pages/monitors/transactions-monitor",
-          name: 'savings-monitor',
+          name: 'transactions-monitor',
           component: () =>
             import( /* webpackChunkName: "profile" */ "./views/app/pages/monitors/TransactionsMonitor")
         }
@@ -362,22 +362,26 @@ const routes = [
     component: () => import( /* webpackChunkName: "user" */ "./views/user"),
     redirect: "/user/login",
     children: [{
-      path: "login",
+      path: "/user/login",
+      name: 'Login',
       component: () =>
         import( /* webpackChunkName: "user" */ "./views/user/Login")
     },
     {
-      path: "register",
+      path: "/user/register",
+      name: 'Register',
       component: () =>
         import( /* webpackChunkName: "user" */ "./views/user/Register")
     },
     {
       path: "forgot-password",
+      name: 'ForgotPassword',
       component: () =>
         import( /* webpackChunkName: "user" */ "./views/user/ForgotPassword")
     },
     {
       path: "reset-password",
+      name: 'ResetPassword',
       component: () =>
         import( /* webpackChunkName: "user" */ "./views/user/ResetPassword")
     },

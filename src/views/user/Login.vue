@@ -99,7 +99,7 @@ export default {
     ...mapActions('user', ["loginUser"]),
     ...mapActions('notification', ["remove"]),
     removeNotification(notification) {
-      console.log(notification)
+      // console.log(notification)
       this.remove(notification)
     },
     formSubmit() {
@@ -127,7 +127,7 @@ export default {
       }
     },
     notifications(notifications) {
-      // loop through all notifications and 
+      // loop through all notifications and
       // display one at a time
       notifications.forEach(notification => {
         this.$notify(`${notification.type}`, notification.message, {
@@ -137,8 +137,11 @@ export default {
         if(notification.type == 'error') {
           this.requestError = true
         }
-        let as = this;
-        setTimeout(() => as.removeNotification(notifications[i]), 3000)
+        // let as = this;
+        if(notification.type == 'success') {
+          this.requestError = false
+        }
+        this.removeNotification(notification)
       })
       }
     },

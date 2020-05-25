@@ -1,7 +1,6 @@
 import axios from 'axios'
-import router from '@/router'
 import AuthenticationService from '@/services/AuthenticationService'
-
+import router from '../../router'
 export const namespaced = true
 
 export const state = {
@@ -11,9 +10,9 @@ export const state = {
 
 export const mutations = {
   SET_USER_STATE(state, userData) {
-    state.user = userData
-    localStorage.setItem('user', JSON.stringify(userData))
-    axios.defaults.headers.common['Authorization'] = ` Bearer ${userData.api_token}`
+    state.user = userData.data
+    localStorage.setItem('user', JSON.stringify(userData.data))
+    axios.defaults.headers.common['Authorization'] = ` Bearer ${userData.data.api_token}`
   },
   LOGOUT_USER() {
     localStorage.removeItem('user')
@@ -30,7 +29,7 @@ export const actions = {
     commit('SET_REQUEST_PROCESS', true)
     try {
       const response = await AuthenticationService.register(payload)
-      console.log(response.data)
+      // console.log(response.data)
       commit('SET_REQUEST_PROCESS', false)
       // commit('SET_USER_STATE', response.data.data)
       // create success notification
@@ -39,7 +38,7 @@ export const actions = {
         message: response.data.message
       }
       dispatch('notification/add', notification, { root: true })
-      router.push('/login')
+      router.push({ name: 'Login'})
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)
@@ -66,8 +65,8 @@ export const actions = {
         message: 'Welcome Back'
       }
       dispatch('notification/add', notification, { root: true })
+      router.push({name: 'dashboard'})
       commit('SET_REQUEST_PROCESS', false)
-      router.push('/app/dashboards/default')
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)
