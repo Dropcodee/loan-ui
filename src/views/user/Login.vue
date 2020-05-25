@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('user', ["currentUser", "processing", "loginError"]),
+    ...mapGetters('user', ["currentUser", "processing"]),
     ...mapState('notification', ["notifications"]),
   },
   methods: {
@@ -127,24 +127,21 @@ export default {
       }
     },
     notifications(notifications) {
-      for (let i in notifications) {
-        if (notifications[i].type == 'error') {
-          this.$notify("error", "Error Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
+      // loop through all notifications and 
+      // display one at a time
+      notifications.forEach(notification => {
+        this.$notify(`${notification.type}`, notification.message, {
+          duration: 3000,
+          permanent: false
+        });
+        if(notification.type == 'error') {
           this.requestError = true
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000)
-        } else if (notifications[i].type == 'success') {
-          this.$notify("success", "Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
         }
+        let as = this;
+        setTimeout(() => as.removeNotification(notifications[i]), 3000)
+      })
       }
     },
-  }
 };
 
 </script>

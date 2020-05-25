@@ -4,7 +4,10 @@ export default {
     register(credentials) {
         return api().post('auth/register', credentials)
     },
-     login(credentials) {
+    login(credentials) {
         return api().post(`auth/login`, credentials)
+    },
+    verify(credentials) {
+        return api().post('auth/verify', credentials)
     }
 }

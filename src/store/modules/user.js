@@ -63,7 +63,7 @@ export const actions = {
       // create success notification
       const notification = {
         type: 'success',
-        message: 'successfully logged in'
+        message: 'Welcome Back'
       }
       dispatch('notification/add', notification, { root: true })
       commit('SET_REQUEST_PROCESS', false)

@@ -1,8 +1,8 @@
 {
-  "name": "Loan-app",
+  "name": "LMU-COPERATIVE",
   "version": "1.0.0",
-  "description": "Payo - A payment portal for crypto payments, transactions and more",
-  "author": "FSTACK DEV",
+  "description": "Coperative app for Landmark University, Apply for loans, Account Statements, Inventory System and more.",
+  "author": "Dropcode",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",

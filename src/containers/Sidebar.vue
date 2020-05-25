@@ -3,16 +3,16 @@
     <div class="main-menu">
         <vue-perfect-scrollbar class="scroll" :settings="{ suppressScrollX: true, wheelPropagation: false }">
             <ul class="list-unstyled">
-                <li v-for="(item,index) in menuItems" :class="{ 'active' : (selectedParentMenu === item.id && viewingParentMenu === '') || viewingParentMenu === item.id }" :key="`parent_${item.id}`" :data-flag="item.id">
-                    <a v-if="item.newWindow" :href="item.to" rel="noopener noreferrer" target="_blank">
+                <li v-for="(item) in menuItems" :class="{ 'active' : (selectedParentMenu === item.id && viewingParentMenu === '') || viewingParentMenu === item.id }" :key="`parent_${item.id}`" :data-flag="item.id">
+                    <router-link v-if="item.newWindow" :to="{ name:item.to }" rel="noopener noreferrer" target="_blank">
                         <i :class="item.icon" />
                         {{ $t(item.label) }}
-                    </a>
+                    </router-link>
                     <a v-else-if="item.subs && item.subs.length>0" @click.prevent="openSubMenu($event,item)" :href="`#${item.to}`">
                         <i :class="item.icon" />
                         {{ $t(item.label) }}
                     </a>
-                    <router-link v-else @click.native="changeSelectedParentHasNoSubmenu(item.id)" :to="item.to">
+                    <router-link v-else @click.native="changeSelectedParentHasNoSubmenu(item.id)" :to="{ name:item.to }">
                         <i :class="item.icon" />
                         {{ $t(item.label) }}
                     </router-link>
@@ -24,11 +24,11 @@
     <div class="sub-menu">
         <vue-perfect-scrollbar class="scroll" :settings="{ suppressScrollX: true, wheelPropagation: false }">
             <ul v-for="(item,itemIndex) in menuItems" :class="{'list-unstyled':true, 'd-block' : (selectedParentMenu === item.id && viewingParentMenu === '') || viewingParentMenu === item.id }" :data-parent="item.id" :key="`sub_${item.id}`">
-                <li v-for="(sub,subIndex) in item.subs" :class="{'has-sub-item' : sub.subs && sub.subs.length > 0 , 'active' : $route.path.indexOf(sub.to)>-1}">
-                    <a v-if="sub.newWindow" :href="sub.to" rel="noopener noreferrer" target="_blank">
+                <li v-for="(sub,subIndex) in item.subs" :class="{'has-sub-item' : sub.subs && sub.subs.length > 0 , 'active' : $route.path.indexOf(sub.to)>-1}" :key="subIndex">
+                    <router-link v-if="sub.newWindow" :to="{ name:sub.to }" rel="noopener noreferrer" target="_blank">
                         <i :class="sub.icon" />
                         <span>{{ $t(sub.label) }}</span>
-                    </a>
+                    </router-link>
                     <template v-else-if="sub.subs &&  sub.subs.length > 0">
                         <b-link v-b-toggle="`menu_${itemIndex}_${subIndex}`" variant="link" class="rotate-arrow-icon opacity-50">
                             <i class="simple-icon-arrow-down"></i>
@@ -37,11 +37,11 @@
                         <b-collapse visible :id="`menu_${itemIndex}_${subIndex}`">
                             <ul class="list-unstyled third-level-menu">
                                 <li v-for="(thirdLevelSub, thirdIndex) in sub.subs" :key="`third_${itemIndex}_${subIndex}_${thirdIndex}`" :class="{'third-level-menu':true , 'active' : $route.path ===thirdLevelSub.to}">
-                                    <a v-if="thirdLevelSub.newWindow" :href="thirdLevelSub.to" rel="noopener noreferrer" target="_blank">
+                                    <router-link v-if="thirdLevelSub.newWindow" :to="{ name:thirdLevelSub.to }" rel="noopener noreferrer" target="_blank">
                                         <i :class="thirdLevelSub.icon" />
                                         <span>{{ $t(thirdLevelSub.label) }}</span>
-                                    </a>
-                                    <router-link v-else :to="thirdLevelSub.to">
+                                    </router-link>
+                                    <router-link v-else :to="{ name:thirdLevelSub.to }">
                                         <i :class="thirdLevelSub.icon" />
                                         <span>{{ $t(thirdLevelSub.label) }}</span>
                                     </router-link>
@@ -49,7 +49,7 @@
                             </ul>
                         </b-collapse>
                     </template>
-                    <router-link v-else :to="sub.to">
+                    <router-link v-else :to="{ name:sub.to }">
                         <i :class="sub.icon" />
                         <span>{{ $t(sub.label) }}</span>
                     </router-link>
