@@ -42,10 +42,17 @@ export const actions = {
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       // console.log(err.response.data.message)
+      if (err) {
       const notification = {
         type: 'error',
         message: err.response.data.message
       }
+    } else {
+      const notification = {
+        type: 'error',
+        message: 'Server Error, please try again later'
+      }
+    }
       // dispatch notification action for creating notifications
       dispatch('notification/add', notification, { root: true })
       throw err
