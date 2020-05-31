@@ -10,12 +10,13 @@ export const state = {
 
 export const mutations = {
   SET_USER_STATE(state, userData) {
-    state.user = userData.data
-    localStorage.setItem('user', JSON.stringify(userData.data))
-    axios.defaults.headers.common['Authorization'] = ` Bearer ${userData.data.api_token}`
+    state.user = userData.user
+    localStorage.setItem('user', JSON.stringify(userData.user))
+    axios.defaults.headers.common['Authorization'] = ` Bearer ${userData.user.api_token}`
   },
   LOGOUT_USER() {
     localStorage.removeItem('user')
+    axios.defaults.headers.common['Authorization'] = null
     location.reload()
   },
   SET_REQUEST_PROCESS(state, requestProcess) {
@@ -47,15 +48,19 @@ export const actions = {
         type: 'error',
         message: err.response.data.message
       }
+       // dispatch notification action for creating notifications
+      dispatch('notification/add', notification, { root: true })
+      throw err
     } else {
       const notification = {
         type: 'error',
         message: 'Server Error, please try again later'
       }
-    }
-      // dispatch notification action for creating notifications
+       // dispatch notification action for creating notifications
       dispatch('notification/add', notification, { root: true })
       throw err
+    }
+
     }
   },
   async loginUser({ commit, dispatch }, payload) {
@@ -64,7 +69,7 @@ export const actions = {
       commit('SET_REQUEST_PROCESS', true)
       const response = await AuthenticationService.login(payload)
       // store user return data
-      // console.log(response.data)
+      console.log(response.data)
       commit('SET_USER_STATE', response.data)
       // create success notification
       const notification = {
@@ -76,8 +81,8 @@ export const actions = {
       commit('SET_REQUEST_PROCESS', false)
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
-      // console.log(err.response.data.message)
-      const notification = {
+      // console.log(err.response.data)
+    const notification = {
         type: 'error',
         message: err.response.data.message
       }

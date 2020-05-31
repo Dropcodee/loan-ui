@@ -80,7 +80,7 @@ export default new Vue({
     // fetch user details from localstorage
     //  just incase user refreshes page without logout
     const userString = localStorage.getItem('user')
-    if (userString !== undefined && userString !== null) {
+    if (userString && userString !== 'undefined') {
       // change localstorage string to json
       const userData = JSON.parse(userString)
       this.$store.commit('user/SET_USER_STATE', userData)

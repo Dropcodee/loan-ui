@@ -34,7 +34,7 @@
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
               <router-link tag="a" to="/user/forgot-password">{{ $t('user.forgot-password-question')}}</router-link>
-              <b-button type="submit" variant="primary" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow': true,
+              <b-button type="submit" variant="success" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow': true,
                     'show-spinner': processing,
                     'show-success': !processing && requestError === false,
                     'show-fail': !processing && requestError }">
@@ -119,13 +119,13 @@ export default {
     }
   },
   watch: {
-    currentUser(val) {
-      if (val && val.uid && val.uid.length > 0) {
-        setTimeout(() => {
-          this.$router.push("/");
-        }, 200);
-      }
-    },
+    // currentUser(val) {
+    //   if (val && val.uid && val.uid.length > 0) {
+    //     setTimeout(() => {
+    //       this.$router.push("/");
+    //     }, 200);
+    //   }
+    // },
     notifications(notifications) {
       // loop through all notifications and
       // display one at a time
