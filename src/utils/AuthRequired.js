@@ -1,7 +1,7 @@
 import AuthenticationService from '../services/AuthenticationService'
 import store from '../store'
-export default async (to, from, next) => {
 
+export default async (to, from, next) => {
   const userString = localStorage.getItem('user')
   if (userString && userString !== 'undefined') {
     // verify user with jwt token
@@ -22,5 +22,8 @@ export default async (to, from, next) => {
       localStorage.removeItem('user')
       next('/user/login')
     }
-  }
+  }else {
+        localStorage.removeItem('user')
+        next('/user/login')
+      }
 }
