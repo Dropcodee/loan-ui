@@ -16,7 +16,7 @@ export const mutations = {
       "Authorization"
     ] = ` Bearer ${userData.user.api_token}`;
   },
-  LOGOUT_USER() {
+  LOGOUT_USER(state) {
     localStorage.removeItem("user");
     axios.defaults.headers.common["Authorization"] = null;
     location.reload();
@@ -74,7 +74,7 @@ export const actions = {
       // create success notification
       const notification = {
         type: "success",
-        message: "Welcome Back",
+        message: "Welcome Back, please be patient as we load your account...",
       };
       dispatch("notification/add", notification, { root: true });
       commit("SET_REQUEST_PROCESS", false);
@@ -101,7 +101,7 @@ export const actions = {
       }
     }
   },
-  logoutUser({ commit }) {
+  logoutUser({ commit, dispatch, state }) {
     commit("LOGOUT_USER");
   },
 };

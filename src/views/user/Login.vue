@@ -119,19 +119,12 @@ export default {
     }
   },
   watch: {
-    // currentUser(val) {
-    //   if (val && val.uid && val.uid.length > 0) {
-    //     setTimeout(() => {
-    //       this.$router.push("/");
-    //     }, 200);
-    //   }
-    // },
     notifications(notifications) {
       // loop through all notifications and
       // display one at a time
       notifications.forEach(notification => {
         this.$notify(`${notification.type}`, notification.message, {
-          duration: 3000,
+          duration: 8000,
           permanent: false
         });
         if(notification.type == 'error') {
