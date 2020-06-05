@@ -98,7 +98,7 @@
           <b-dropdown-item>Settings</b-dropdown-item>
           <b-dropdown-item>Referrals</b-dropdown-item>
           <b-dropdown-divider />
-          <b-dropdown-item @click="logout">Sign out</b-dropdown-item>
+          <b-dropdown-item @click.prevent="logout">Sign out</b-dropdown-item>
         </b-dropdown>
       </div>
     </div>
@@ -107,7 +107,6 @@
 <script>
 import Switches from 'vue-switches'
 import notifications from '../data/notifications'
-
 import {
   mapGetters,
   mapMutations,
@@ -151,7 +150,7 @@ export default {
   },
   methods: {
     ...mapMutations(['changeSideMenuStatus', 'changeSideMenuForMobile']),
-    ...mapActions(['setLang', 'signOut']),
+    ...mapActions('user', ["logoutUser"]),
     search() {
       this.$router.push(`${this.searchPath}?search=${this.searchKeyword}`)
       this.searchKeyword = ''
@@ -174,24 +173,22 @@ export default {
         this.searchKeyword = ''
       }
     },
-
     changeLocale(locale, direction) {
       const currentDirection = getDirection().direction
       if (direction !== currentDirection) {
         setDirection(direction)
       }
-
       this.setLang(locale)
     },
     logout() {
-      this.signOut().then(() => {
-        this.$router.push('/user/login')
-      })
+      try {
+          this.logoutUser();
+        } catch (err) {
+          console.log(err)
+        }
     },
-
     toggleFullScreen() {
       const isInFullScreen = this.isInFullScreen()
-
       var docElm = document.documentElement
       if (!isInFullScreen) {
         if (docElm.requestFullscreen) {

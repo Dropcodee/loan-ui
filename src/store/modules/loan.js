@@ -28,6 +28,7 @@ export const actions = {
         message: 'Successfully applied for a new loan, we will contact you shortly.'
       }
       dispatch('notification/add', notification, { root: true })
+      router.push({name: "loan-monitor"})
     } catch (err) {
       commit('SET_REQUEST_PROCESS', false)
       const notification = {
