@@ -33,7 +33,7 @@
               </div>
             </b-form-group>
             <div class="d-flex justify-content-around align-items-center">
-              <b-button type="submit" variant="primary" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow btn-block': true,
+              <b-button type="submit" variant="success" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow btn-block': true,
                     'show-spinner': processing,
                     'show-success': !processing && requestError === false,
                     'show-fail': !processing && requestError }">
