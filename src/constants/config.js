@@ -8,44 +8,55 @@ export const menuHiddenBreakpoint = 768
 
 export const defaultLocale = 'en'
 export const defaultDirection = 'ltr'
-export const localeOptions = [
-  { id: 'en', name: 'English LTR', direction: 'ltr' },
-  { id: 'es', name: 'Español', direction: 'ltr' },
-  { id: 'enrtl', name: 'English RTL', direction: 'rtl' }
+export const localeOptions = [{
+        id: 'en',
+        name: 'English LTR',
+        direction: 'ltr'
+    },
+    {
+        id: 'es',
+        name: 'Español',
+        direction: 'ltr'
+    },
+    {
+        id: 'enrtl',
+        name: 'English RTL',
+        direction: 'rtl'
+    }
 ]
 
 export const firebaseConfig = {
-  apiKey: "AIzaSyDe94G7L-3soXVSpVbsYlB5DfYH2L91aTU",
-  authDomain: "piaf-vue-login.firebaseapp.com",
-  databaseURL: "https://piaf-vue-login.firebaseio.com",
-  projectId: "piaf-vue-login",
-  storageBucket: "piaf-vue-login.appspot.com",
-  messagingSenderId: "557576321564",
-  appId: "1:557576321564:web:bc2ce73477aff5c2197dd9"
+    apiKey: "AIzaSyDe94G7L-3soXVSpVbsYlB5DfYH2L91aTU",
+    authDomain: "piaf-vue-login.firebaseapp.com",
+    databaseURL: "https://piaf-vue-login.firebaseio.com",
+    projectId: "piaf-vue-login",
+    storageBucket: "piaf-vue-login.appspot.com",
+    messagingSenderId: "557576321564",
+    appId: "1:557576321564:web:bc2ce73477aff5c2197dd9"
 };
 
 
 export const apiUrl = 'https://api.coloredstrategies.com'
 
 export const currentUser = {
-  id: 1,
-  title: 'Sarah Kortney',
-  img: '/assets/img/profile-pic-l.jpg',
-  date: 'Last seen today 15:24'
+    id: 1,
+    title: 'Sarah Kortney',
+    img: '/assets/img/profile-pic-l.jpg',
+    date: 'Last seen today 15:24'
 }
 
 export const isDemo = true
 export const themeRadiusStorageKey = 'theme_radius'
-export const defaultColor = 'light.orange'
+export const defaultColor = 'light.green'
 export const colors = [
-  'light.purple',
-  'dark.purple',
-  'light.blue',
-  'dark.blue',
-  'light.green',
-  'dark.green',
-  'light.orange',
-  'dark.orange',
-  'light.red',
-  'dark.red'
+    'light.purple',
+    'dark.purple',
+    'light.blue',
+    'dark.blue',
+    'light.green',
+    'dark.green',
+    'light.orange',
+    'dark.orange',
+    'light.red',
+    'dark.red'
 ]

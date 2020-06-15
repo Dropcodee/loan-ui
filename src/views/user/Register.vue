@@ -128,7 +128,7 @@ export default {
     ...mapState('notification', ["notifications"]),
   },
   methods: {
-    ...mapActions('user', ['registerUser']),
+    ...mapActions('user', ['RegisterUser']),
     formSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -141,7 +141,7 @@ export default {
             email,
             password
           }
-          this.registerUser(payload)
+          this.RegisterUser(payload)
         } catch (err) {
           this.requestError = true
           console.log('component print' + err)
