@@ -390,6 +390,12 @@ const routes = [
   }, {
     path: "*",
     component: () => import( /* webpackChunkName: "error" */ "./views/Error")
+  }, {
+    path: "/table",
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/components/Tables")
+  }, {
+    path: "/test-table",
+    component: () => import( /* webpackChunkName: "new" */ "@/components/Common/Table")
   }
 ];
 
