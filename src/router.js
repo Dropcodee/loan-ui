@@ -82,6 +82,11 @@ const routes = [
           path: "portfolio",
           component: () =>
             import( /* webpackChunkName: "profile" */ "./views/app/pages/profile/Portfolio")
+        },
+        {
+          path: "settings",
+          component: () =>
+            import( /* webpackChunkName: "profile" */ "./views/app/pages/profile/Settings")
         }
         ]
       },
