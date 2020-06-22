@@ -28,7 +28,41 @@
                 />
               </b-card>-->
             </b-colxx>
-            <b-colxx xxs="12" lg="5" xl="4" class="col-left">
+            <b-colxx xxs="12" lg="7" xl="8" class="col-left">
+              <!-- <post
+                v-for="(post,postIndex) in posts"
+                :data="post"
+                :key="`post_${postIndex}`"
+                class="mb-4"
+              />-->
+              <b-form @submit.prevent="onHorizontalSubmit">
+                <b-form-group label-cols="2" horizontal :label="$t('forms.email')">
+                  <b-form-input v-model="horizontalForm.email" :placeholder="$t('forms.email')"></b-form-input>
+                </b-form-group>
+                <b-form-group label-cols="2" horizontal :label="$t('forms.password')">
+                  <b-form-input
+                    type="password"
+                    v-model="horizontalForm.password"
+                    :placeholder="$t('forms.password')"
+                  />
+                </b-form-group>
+                <b-form-group label-cols="2" horizontal :label="$t('forms.radios')">
+                  <b-form-radio-group
+                    stacked
+                    class="pt-2"
+                    :options="horizontalFormRadios"
+                    v-model="horizontalForm.radio"
+                  />
+                </b-form-group>
+                <b-form-group label-cols="2" horizontal :label="$t('forms.checkbox')">
+                  <b-form-checkbox
+                    v-model="horizontalForm.checked"
+                  >{{ $t('forms.custom-checkbox') }}</b-form-checkbox>
+                </b-form-group>
+                <b-button type="submit" variant="primary" class="mt-4">{{ $t('forms.signin') }}</b-button>
+              </b-form>
+            </b-colxx>
+            <b-colxx xxs="12" lg="5" xl="4" class="col-right">
               <single-lightbox
                 thumb="/assets/img/profile-pic-l.jpg"
                 large="/assets/img/profile-pic.jpg"
@@ -80,40 +114,6 @@
                   <gallery-detail />
                 </b-card-body>
               </b-card>-->
-            </b-colxx>
-            <b-colxx xxs="12" lg="7" xl="8" class="col-right">
-              <!-- <post
-                v-for="(post,postIndex) in posts"
-                :data="post"
-                :key="`post_${postIndex}`"
-                class="mb-4"
-              />-->
-              <b-form @submit.prevent="onHorizontalSubmit">
-                <b-form-group label-cols="2" horizontal :label="$t('forms.email')">
-                  <b-form-input v-model="horizontalForm.email" :placeholder="$t('forms.email')"></b-form-input>
-                </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.password')">
-                  <b-form-input
-                    type="password"
-                    v-model="horizontalForm.password"
-                    :placeholder="$t('forms.password')"
-                  />
-                </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.radios')">
-                  <b-form-radio-group
-                    stacked
-                    class="pt-2"
-                    :options="horizontalFormRadios"
-                    v-model="horizontalForm.radio"
-                  />
-                </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.checkbox')">
-                  <b-form-checkbox
-                    v-model="horizontalForm.checked"
-                  >{{ $t('forms.custom-checkbox') }}</b-form-checkbox>
-                </b-form-group>
-                <b-button type="submit" variant="primary" class="mt-4">{{ $t('forms.signin') }}</b-button>
-              </b-form>
             </b-colxx>
           </b-row>
         </b-tab>
