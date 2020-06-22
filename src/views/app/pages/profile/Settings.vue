@@ -59,7 +59,19 @@
                     v-model="horizontalForm.checked"
                   >{{ $t('forms.custom-checkbox') }}</b-form-checkbox>
                 </b-form-group>
-                <b-button type="submit" variant="primary" class="mt-4">{{ $t('forms.signin') }}</b-button>
+                <b-colxx xxs="12">
+                  <b-form>
+                    <b-row>
+                      <b-colxx xxs="12">
+                        <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
+                      </b-colxx>
+                    </b-row>
+                  </b-form>
+                </b-colxx>
+                <b-button type="submit" variant="primary" class="mt-4">
+                  <!-- {{ $t('forms.signin') }} -->
+                  UPDATE PROFILE
+                </b-button>
               </b-form>
             </b-colxx>
             <b-colxx xxs="12" lg="5" xl="4" class="col-right">
@@ -149,6 +161,7 @@ import RecentPost from "../../../../components/Common/RecentPost";
 import UserCardBasic from "../../../../components/Cards/UserCardBasic";
 import Post from "../../../../components/Cards/Post";
 
+import VueDropzone from "vue2-dropzone";
 import InputTag from "@/components/Form/InputTag/";
 import produtcs from "../../../../data/products";
 import recentPosts from "../../../../data/recentPosts";
@@ -163,7 +176,8 @@ export default {
     "recent-post": RecentPost,
     "user-card-basic": UserCardBasic,
     post: Post,
-    InputTag
+    InputTag,
+    "vue-dropzone": VueDropzone
   },
   data() {
     return {
@@ -182,12 +196,41 @@ export default {
         this.$t("forms.first-radio"),
         this.$t("forms.second-radio"),
         { text: this.$t("forms.third-radio-disabled"), disabled: true }
-      ]
+      ],
+      dropzoneOptions: {
+        url: "https://httpbin.org/post",
+        thumbnailHeight: 160,
+        maxFilesize: 2,
+        previewTemplate: this.dropzoneTemplate(),
+        headers: {
+          "My-Awesome-Header": "header value"
+        }
+      }
     };
   },
   methods: {
     onHorizontalSubmit() {
       console.log(JSON.stringify(this.horizontalForm));
+    },
+    dropzoneTemplate() {
+      return `<div class="dz-preview dz-file-preview mb-3">
+                  <div class="d-flex flex-row "> <div class="p-0 w-30 position-relative">
+                      <div class="dz-error-mark"><span><i></i>  </span></div>
+                      <div class="dz-success-mark"><span><i></i></span></div>
+                      <div class="preview-container">
+                        <img data-dz-thumbnail class="img-thumbnail border-0" />
+                        <i class="simple-icon-doc preview-icon"></i>
+                      </div>
+                  </div>
+                  <div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative">
+                    <div> <span data-dz-name /> </div>
+                    <div class="text-primary text-extra-small" data-dz-size /> </div>
+                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
+                    <div class="dz-error-message"><span data-dz-errormessage></span></div>
+                  </div>
+                  <a href="#" class="remove" data-dz-remove> <i class="glyph-icon simple-icon-trash"></i> </a>
+                </div>
+        `;
     }
   },
   mounted() {}

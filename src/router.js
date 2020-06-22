@@ -401,6 +401,9 @@ const routes = [
   }, {
     path: "/test-table",
     component: () => import( /* webpackChunkName: "new" */ "@/components/Common/Table")
+  },{
+    path: "/test-form",
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/forms/Components")
   }
 ];
 
