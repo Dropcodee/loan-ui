@@ -95,7 +95,7 @@
               <img :alt="currentUser.title" src="https://res.cloudinary.com/coderoute/image/upload/v1581870651/coperative/jwme3tnmbsz3faj4xypf.jpg" />
             </span>
           </template>
-          <b-dropdown-item>Settings</b-dropdown-item>
+          <b-dropdown-item to="/app/pages/profile/settings">Settings</b-dropdown-item>
           <b-dropdown-item>Referrals</b-dropdown-item>
           <b-dropdown-divider />
           <b-dropdown-item @click.prevent="logout">Sign out</b-dropdown-item>

@@ -82,6 +82,11 @@ const routes = [
           path: "portfolio",
           component: () =>
             import( /* webpackChunkName: "profile" */ "./views/app/pages/profile/Portfolio")
+        },
+        {
+          path: "settings",
+          component: () =>
+            import( /* webpackChunkName: "profile" */ "./views/app/pages/profile/Settings")
         }
         ]
       },
@@ -390,6 +395,15 @@ const routes = [
   }, {
     path: "*",
     component: () => import( /* webpackChunkName: "error" */ "./views/Error")
+  }, {
+    path: "/table",
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/components/Tables")
+  }, {
+    path: "/test-table",
+    component: () => import( /* webpackChunkName: "new" */ "@/components/Common/Table")
+  },{
+    path: "/test-form",
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/forms/Components")
   }
 ];
 
