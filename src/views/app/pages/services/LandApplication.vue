@@ -24,7 +24,7 @@
               </div>
             </b-form-group>
             <b-form-group label="Interest Rate" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="form.interest + '%'" disabled />
+              <b-form-input type="text" v-bind:value="form.interest + '%'" disabled />
             </b-form-group>
             <b-form-group label="Loan Payment Tenure" class="has-float-label mb-4">
               <b-form-select v-model="form.tenure" :options="options"></b-form-select>
