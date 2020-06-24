@@ -196,6 +196,40 @@
               class="mt-4"
             >Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
           </b-card>
+          <b-modal id="modalbasic" ref="modalbasic" title="Terms and Condition">
+            <h6>Terms</h6>
+            <ul>
+              <li>Maximum credit facility is three (3) time the savings per qualified member</li>
+              <li>It is meant for co-operators with personal savings who required financial assistance for car purchase only with evidence of purchase</li>
+              <li>Simple interest of 8% on credit facility per annum</li>
+              <li>Maximum refund duration allowed is twenty-four (24) months</li>
+              <li>It is for only registered Cooperators on thrift savings scheme with consent loan repayments record</li>
+              <li>
+                The CAS form is to be collected from the Cooperative Seceteraiat from
+                <i>non-refundable</i> fee of One Thousand Naira only payable to Landmark University Cooperative through Zenith Bank Account
+                <i>1012910075</i>
+              </li>
+              <li>
+                Benefecial will be attendended to on
+                <b>First-Come-First-Serve</b> basis
+                <i>subject to availability of fund</i>
+              </li>
+              <li>No Co-operator shall leave employment of LU without 100% liquidation of the car credit facility</li>
+              <li>Payment will be made by check in the benefeciary's name or electronic transfer to the benefeciary's account</li>
+            </ul>
+            <h6>Eligibilty</h6>
+            <ul>
+              <li>Your membership of the cooperative must not be less than one year old</li>
+              <li>Monthly savings must not be lses than ₦10,000 monthly at any time after benefitting</li>
+              <li>Co-operator must be without any debt liability from either regulation or emergency credit months duration</li>
+              <li>The above stated conditions/eligibility criteria also applies to guarantors</li>
+            </ul>
+            <p>I {{form.fullname}} approved and agree to the above stated terms/condition for the Car Aquisition Credit Facility Scheme of LUSCMSI</p>
+            <template slot="modal-footer">
+              <b-button variant="primary" type="submit" @click.prevent="formSubmit">I Agree</b-button>
+              <b-button variant="secondary" @click="hideModal('modalbasic')">Cancel</b-button>
+            </template>
+          </b-modal>
         </b-form>
       </div>
       <!-- <b-card class="w-40 mx-auto">
@@ -218,40 +252,6 @@
         </h3>
       </b-card>-->
     </b-row>
-    <b-modal id="modalbasic" ref="modalbasic" title="Terms and Condition">
-      <h6>Terms</h6>
-      <ul>
-        <li>Maximum credit facility is three (3) time the savings per qualified member</li>
-        <li>It is meant for co-operators with personal savings who required financial assistance for car purchase only with evidence of purchase</li>
-        <li>Simple interest of 8% on credit facility per annum</li>
-        <li>Maximum refund duration allowed is twenty-four (24) months</li>
-        <li>It is for only registered Cooperators on thrift savings scheme with consent loan repayments record</li>
-        <li>
-          The CAS form is to be collected from the Cooperative Seceteraiat from
-          <i>non-refundable</i> fee of One Thousand Naira only payable to Landmark University Cooperative through Zenith Bank Account
-          <i>1012910075</i>
-        </li>
-        <li>
-          Benefecial will be attendended to on
-          <b>First-Come-First-Serve</b> basis
-          <i>subject to availability of fund</i>
-        </li>
-        <li>No Co-operator shall leave employment of LU without 100% liquidation of the car credit facility</li>
-        <li>Payment will be made by check in the benefeciary's name or electronic transfer to the benefeciary's account</li>
-      </ul>
-      <h6>Eligibilty</h6>
-      <ul>
-        <li>Your membership of the cooperative must not be less than one year old</li>
-        <li>Monthly savings must not be lses than ₦10,000 monthly at any time after benefitting</li>
-        <li>Co-operator must be without any debt liability from either regulation or emergency credit months duration</li>
-        <li>The above stated conditions/eligibility criteria also applies to guarantors</li>
-      </ul>
-      <p>I {{form.fullname}} approved and agree to the above stated terms/condition for the Car Aquisition Credit Facility Scheme of LUSCMSI</p>
-      <template slot="modal-footer">
-        <b-button variant="primary" @click="somethingModal('modalbasic')" class="mr-1">Do Something</b-button>
-        <b-button variant="secondary" @click="hideModal('modalbasic')">Cancel</b-button>
-      </template>
-    </b-modal>
   </div>
 </template>
 <script>
@@ -341,26 +341,27 @@ export default {
       if (refname === "modalnestedinline") {
         this.$refs["modalnested"].show();
       }
-    }
+    },
     // ...mapActions("loan", ["NewLoanRequest"]),
     // ...mapActions("notification", ["remove"]),
-    // formSubmit() {
-    //   this.$v.$touch();
-    //   if (!this.$v.$invalid) {
-    //     const { amount, tenure, interest } = this.form;
-    //     const payload = {
-    //       principal_amount: amount,
-    //       tenure,
-    //       interest
-    //     };
-    //     try {
-    //       this.NewLoanRequest(payload);
-    //       this.requestError = false;
-    //     } catch (err) {
-    //       return err;
-    //     }
-    //   }
-    // },
+    formSubmit() {
+      // this.$v.$touch();
+      // if (!this.$v.$invalid) {
+      //   const { amount, tenure, interest } = this.form;
+      //   const payload = {
+      //     principal_amount: amount,
+      //     tenure,
+      //     interest
+      //   };
+      //   try {
+      //     this.NewLoanRequest(payload);
+      //     this.requestError = false;
+      //   } catch (err) {
+      //     return err;
+      //   }
+      // }
+      console.log(this.form);
+    }
     // interest(amount) {
     //   if (amount == "" || amount == null) {
     //     return 0;
