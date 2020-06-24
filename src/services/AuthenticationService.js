@@ -9,5 +9,8 @@ export default {
     },
     verify(credentials) {
         return api().post('auth/verify', credentials)
+    },
+    update(credentials) {
+        return api().post('auth/profile/edit', credentials)
     }
 }

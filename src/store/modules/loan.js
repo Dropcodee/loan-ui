@@ -3,54 +3,74 @@ import LoanServices from '@/services/LoanServices'
 export const namespaced = true
 
 export const state = {
-    userLoans: null,
-    processing: false,
+  userLoans: null,
+  processing: false,
+  potentialGuarantors: []
 }
 
 
 export const mutations = {
-    SET_REQUEST_PROCESS(state, requestProcess) {
-        state.processing = requestProcess
-    },
-    STORE_USER_LOANS(state, loanData) {
-        state.loans = loanData
-    }
+  SET_REQUEST_PROCESS(state, requestProcess) {
+    state.processing = requestProcess
+  },
+  STORE_USER_LOANS(state, loanData) {
+    state.loans = loanData
+  },
+  STORE_POTENTIAL_GUARANTORS(state, guarantors) {
+    state.potentialGuarantors = guarantors
+  }
 }
 
 export const actions = {
-    async CommodityLoanRequest({
-        commit,
-        dispatch
-    }, payload) {
-        try {
-            commit('SET_REQUEST_PROCESS', true)
-            const response = await LoanServices.create(payload)
-            commit('SET_REQUEST_PROCESS', false)
-            const notification = {
-                type: 'success',
-                message: 'Successfully applied for a new loan, we will contact you shortly.'
-            }
-            dispatch('notification/add', notification, {
-                root: true
-            })
-            router.push({
-                name: "loan-monitor"
-            })
-        } catch (err) {
-            commit('SET_REQUEST_PROCESS', false)
-            const notification = {
-                type: 'error',
-                message: err.response.data.error,
-            }
-            dispatch('notification/add', notification, {
-                root: true
-            })
-            throw err
-        }
+  async CommodityLoanRequest({
+    commit,
+    dispatch
+  }, payload) {
+    try {
+      commit('SET_REQUEST_PROCESS', true)
+      const response = await LoanServices.create(payload)
+      commit('SET_REQUEST_PROCESS', false)
+      const notification = {
+        type: 'success',
+        message: 'Successfully applied for a new loan, we will contact you shortly.'
+      }
+      dispatch('notification/add', notification, {
+        root: true
+      })
+      router.push({
+        name: "loan-monitor"
+      })
+    } catch (err) {
+      commit('SET_REQUEST_PROCESS', false)
+      const notification = {
+        type: 'error',
+        message: err.response.data.error,
+      }
+      dispatch('notification/add', notification, {
+        root: true
+      })
+      throw err
     }
+  },
+  async FetchGuarantors({ commit, dispatch }) {
+    commit('SET_REQUEST_PROCESS', true)
+    try {
+      // fetch guarantors
+      const response = await LoanServices.guarantors()
+      commit('SET_REQUEST_PROCESS', false)
+      // save potential guarantors
+      // console.log(response.data)
+      commit('STORE_POTENTIAL_GUARANTORS', response.data.guarantors)
+    } catch (err) {
+      commit('SET_REQUEST_PROCESS', false)
+    }
+  }
 }
 export const getters = {
-    processing(state) {
-        return state.processing
-    }
+  processing(state) {
+    return state.processing
+  },
+  potentialGuarantors(state) {
+    return state.potentialGuarantors
+  }
 }

@@ -10,28 +10,29 @@
         <p v-else> Please fill out all the details for your loan application</p>
       </b-colxx>
     </b-row>
-      <b-colxx xxs="12" xs="12" md="12" lg="10" >
-                    <b-card class="mb-4" no-body >
-                        <b-tabs card no-fade>
-                            <b-tab title="Commodity Loan" active title-item-class="w-30 text-center">
-                                <commodity-loan :user="currentUser" />
-                            </b-tab>
-                             <b-tab title="Regular & Emmergency Loan" active title-item-class="w-30 text-center">
-                                <h5 class="mb-4 card-title">Wedding Cake with Flowers Macarons and Blueberries</h5>
-                                <b-button size="sm" variant="outline-primary">Edit</b-button>
-                            </b-tab>
-                              <b-tab title="Car Aquizition Loan" active title-item-class="w-30 text-center">
-                                <h5 class="mb-4 card-title">Cheesecake with Chocolate Cookies and Cream Biscuits</h5>
-                                <b-button size="sm" variant="outline-primary">Edit</b-button>
-                            </b-tab>
-                        </b-tabs>
-                    </b-card>
-                </b-colxx>
+    <b-colxx xxs="12" xs="12" md="12" lg="10">
+      <b-card class="mb-4" no-body>
+        <b-tabs card no-fade>
+          <b-tab title="Commodity Loan" active title-item-class="w-30 text-center">
+            <commodity-loan :user="currentUser" :guarantors="guarantorsList" />
+          </b-tab>
+          <b-tab title="Regular & Emmergency Loan" active title-item-class="w-30 text-center">
+            <h5 class="mb-4 card-title">Wedding Cake with Flowers Macarons and Blueberries</h5>
+            <b-button size="sm" variant="outline-primary">Edit</b-button>
+          </b-tab>
+          <b-tab title="Car Acquisition Loan" active title-item-class="w-30 text-center">
+            <h5 class="mb-4 card-title">Cheesecake with Chocolate Cookies and Cream Biscuits</h5>
+            <b-button size="sm" variant="outline-primary">Edit</b-button>
+          </b-tab>
+        </b-tabs>
+      </b-card>
+    </b-colxx>
   </div>
 </template>
 <script>
 import CommodityLoan from '@/components/payo/CommodityLoanForm'
 import { mapGetters, mapActions, mapState } from 'vuex'
+import ash from 'lodash'
 
 export default {
 
@@ -41,16 +42,19 @@ export default {
   },
   data() {
     return {
-      header: 'Loan Application Form'
+      header: 'Loan Application Form',
+      guarantorsList: []
     };
   },
 
   computed: {
     ...mapGetters('user', ['currentUser']),
+    ...mapGetters('loan', ['potentialGuarantors']),
     ...mapState('notification', ["notifications"]),
   },
   methods: {
     ...mapActions('notification', ["remove"]),
+    ...mapActions('loan', ["FetchGuarantors"]),
     interest(amount, interest) {
       if (amount == '' || amount == null) {
         return 0
@@ -65,6 +69,13 @@ export default {
       console.log(notification)
       this.remove(notification)
     },
+    pushToGurantorsList(guarantor) {
+      // console.log(guarantor);
+      this.guarantorsList.push({
+        'value': guarantor.id,
+        'text': ash.startCase(guarantor.first_name) + ' ' + ash.startCase(guarantor.last_name)
+      })
+    }
   },
   watch: {
     notifications(notifications) {
@@ -87,12 +98,19 @@ export default {
         }
       }
     },
-    'form.amount': function(amount) {
-      this.interest(amount)
-    },
-    'form.tenure': function(tenure) {
-      this.interest(this.form.amount)
+    potentialGuarantors: {
+      handler: function(potentialGuarantors) {
+        // let as be root this to enable us get the root methods.
+        let as = this;
+        potentialGuarantors.forEach(function(guarantor) {
+          // statements
+          as.pushToGurantorsList(guarantor);
+        });
+      }
     }
+  },
+  created() {
+    this.FetchGuarantors()
   }
 };
 
