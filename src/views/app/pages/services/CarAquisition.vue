@@ -196,7 +196,7 @@
               class="mt-4"
             >Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
           </b-card>
-          <b-modal id="modalbasic" ref="modalbasic" title="Terms and Condition">
+          <b-modal id="modalbasic" ref="modalbasic" size="lg" title="Terms and Condition">
             <h6>Terms</h6>
             <ul>
               <li>Maximum credit facility is three (3) time the savings per qualified member</li>
