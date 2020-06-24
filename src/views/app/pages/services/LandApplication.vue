@@ -6,8 +6,8 @@
         <div class="separator mb-5"></div>
         <p class="lead">Welcome back {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }} {{ currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) }}</p>
         <p v-if="currentUser.account_number == null">Please Complete your profile to get started. <router-link to="/" class="primary"> Click Here </router-link>
-          <p v-else> Please fill out all the details for your loan application</p>
         </p>
+        <p v-else> Please fill out all the details for your loan application</p>
       </b-colxx>
     </b-row>
     <b-row>
