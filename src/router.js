@@ -410,6 +410,9 @@ const routes = [
   },{
     path: "/test-form",
     component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/forms/Layouts")
+  },{
+    path: "/test-modal",
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/components/Modal")
   }
 ];
 
