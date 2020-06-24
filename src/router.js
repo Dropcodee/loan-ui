@@ -66,6 +66,12 @@ const routes = [
           component: () =>
             import( /* webpackChunkName: "product" */ "./views/app/pages/services/SavingsApplication")
         },
+        {
+          path: "/app/pages/services/car-aquisition",
+          name: 'car-aquisition',
+          component: () =>
+            import( /* webpackChunkName: "product" */ "./views/app/pages/services/CarAquisition")
+        },
         ]
       },
       {
@@ -403,7 +409,7 @@ const routes = [
     component: () => import( /* webpackChunkName: "new" */ "@/components/Common/Table")
   },{
     path: "/test-form",
-    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/forms/Components")
+    component: () => import( /* webpackChunkName: "new" */ "./views/app/ui/forms/Layouts")
   }
 ];
 
