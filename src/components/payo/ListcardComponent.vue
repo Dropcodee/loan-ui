@@ -11,7 +11,7 @@
         <p class="mt-4" style="font-size: 20px; max-width: 40rem">{{ service.description }}</p>
       </b-card-text>
       <div v-if="service.type == 'modal'">
-        <b-button v-b-modal.smallmodal size="lg" class="btn mb-2 btn-success btn-lg">{{ service.buttonText }}</b-button>
+        <b-button v-b-modal.smallmodal variant="success" size="lg" class="btn-lg">{{ service.buttonText }}</b-button>
         <b-modal id="smallmodal" ref="smallmodal" :title="service.title">
           <ul>
             <li v-for="(applink, index) in service.location" :key="index">
@@ -19,11 +19,11 @@
             </li>
           </ul>
           <template slot="modal-footer">
-            <b-button variant="secondary" @click="hideModal('smallmodal')">Cancel</b-button>
+            <b-button variant="success" @click="hideModal('smallmodal')">Cancel</b-button>
           </template>
         </b-modal>
       </div>
-      <div v-else="service.type.mode == 'link'">
+      <div v-if="service.type.mode == 'link'">
         <router-link :to="service.type.location" size="lg" class="btn mb-2 btn-success btn-lg">{{ service.buttonText }}</router-link>
       </div>
     </b-card-body>

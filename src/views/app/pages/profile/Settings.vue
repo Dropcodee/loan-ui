@@ -1,16 +1,9 @@
 <template>
   <b-row>
     <b-colxx xxs="12">
-      <h1>Sarah Kortney</h1>
+      <h1>{{ userData.first_name }} {{ userData.last_name }}</h1>
       <div class="top-right-button-container">
-        <b-dropdown
-          id="ddown5"
-          :text="$t('pages.actions')"
-          size="lg"
-          variant="outline-primary"
-          class="top-right-button top-right-button-single"
-          no-fade="true"
-        >
+        <b-dropdown id="ddown5" :text="$t('pages.actions')" size="lg" variant="outline-primary" class="top-right-button top-right-button-single" no-fade="true">
           <b-dropdown-item>{{ $t('dashboards.last-week') }}</b-dropdown-item>
           <b-dropdown-item>{{ $t('dashboards.this-month') }}</b-dropdown-item>
         </b-dropdown>
@@ -29,75 +22,44 @@
               </b-card>-->
             </b-colxx>
             <b-colxx xxs="12" lg="7" xl="8" class="col-left">
-              <!-- <post
-                v-for="(post,postIndex) in posts"
-                :data="post"
-                :key="`post_${postIndex}`"
-                class="mb-4"
-              />-->
-              <b-form @submit.prevent="onHorizontalSubmit">
-                <b-form-group label-cols="2" horizontal :label="$t('forms.email')">
-                  <b-form-input v-model="horizontalForm.email" :placeholder="$t('forms.email')"></b-form-input>
+              <b-form >
+                <b-form-group label-cols="2" horizontal label="Working College">
+                  <b-form-input v-model="userData.college" :placeholder="userData.college"></b-form-input>
                 </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.password')">
-                  <b-form-input
-                    type="password"
-                    v-model="horizontalForm.password"
-                    :placeholder="$t('forms.password')"
-                  />
+                <b-form-group label-cols="2" horizontal label="Working Department">
+                  <b-form-input v-model="userData.department" :placeholder="userData.department"></b-form-input>
                 </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.radios')">
-                  <b-form-radio-group
-                    stacked
-                    class="pt-2"
-                    :options="horizontalFormRadios"
-                    v-model="horizontalForm.radio"
-                  />
+                <b-form-group label-cols="2" horizontal label="Staff ID Number">
+                  <b-form-input v-model="userData.employed_valid_id_card" :placeholder="userData.employed_valid_id_card"></b-form-input>
                 </b-form-group>
-                <b-form-group label-cols="2" horizontal :label="$t('forms.checkbox')">
-                  <b-form-checkbox
-                    v-model="horizontalForm.checked"
-                  >{{ $t('forms.custom-checkbox') }}</b-form-checkbox>
+                <b-form-group label-cols="2" horizontal label="Email">
+                  <b-form-input v-model="userData.email" :placeholder="userData.email"></b-form-input>
                 </b-form-group>
-                <b-colxx xxs="12">
-                  <b-form>
-                    <b-row>
-                      <b-colxx xxs="12">
-                        <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions"></vue-dropzone>
-                      </b-colxx>
-                    </b-row>
-                  </b-form>
-                </b-colxx>
-                <b-button type="submit" variant="primary" class="mt-4">
-                  <!-- {{ $t('forms.signin') }} -->
+                <b-button type="button" @click.prevent="updateProfile" variant="primary" class="mt-4">
                   UPDATE PROFILE
                 </b-button>
               </b-form>
             </b-colxx>
             <b-colxx xxs="12" lg="5" xl="4" class="col-right">
-              <single-lightbox
-                thumb="/assets/img/profile-pic-l.jpg"
-                large="/assets/img/profile-pic.jpg"
-                class-name="img-thumbnail card-img social-profile-img"
-              />
+              <single-lightbox :thumb="userData.avatar" :large="userData.avatar" class-name="img-thumbnail card-img social-profile-img" />
               <b-card class="mb-4" no-body>
                 <b-card-body>
                   <div class="text-center pt-4">
-                    <p class="list-item-heading pt-2">Sarah Cortney</p>
+                    <p class="list-item-heading pt-2">{{ userData.first_name }} {{ userData.last_name }}</p>
                   </div>
-                  <p
-                    class="mb-3"
-                  >I’m a web developer. I spend my whole day, practically every day, experimenting with HTML, CSS, and JavaScript; dabbling with Python and Ruby; and inhaling a wide variety of potentially useless information through a few hundred RSS feeds. I build websites that delight and inform. I do it well.</p>
                   <p class="text-muted text-small mb-2">{{$t('pages.location')}}</p>
-                  <p class="mb-3">Nairobi, Kenya</p>
-                  <p class="text-muted text-small mb-2">{{$t('pages.responsibilities')}}</p>
+                  <p class="mb-3">Omu-Aran Kwara, Nigeria</p>
+                  <p class="text-muted text-small mb-2">Your Role</p>
                   <p class="mb-3">
-                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>FRONTEND</b-badge>
-                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>JAVASCRIPT</b-badge>
-                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>SECURITY</b-badge>
-                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>DESIGN</b-badge>
+                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>{{ userData.role }}</b-badge>
                   </p>
+                  <p class="text-muted text-small mb-2">Employment</p>
+                  <p class="mb-3"><span class="text-muted">College:</span> {{ userData.college ? userData.college : 'N/A' }}</p>
+                  <p class="mb-3"><span class="text-muted">Department:</span> {{ userData.department ? userData.department : 'N/A' }}</p>
                   <p class="text-muted text-small mb-2">{{$t('menu.contact')}}</p>
+                  <p><span class="text-muted">Address:</span> {{ userData.address ? userData.address : 'N/A' }}</p>
+                  <p><span class="text-muted">Phone Number:</span> {{ userData.phone_number ? userData.phone_number : 'N/A' }}</p>
+                  <p><span class="text-muted">Email:</span> {{ userData.email ? userData.email : 'N/A' }}</p>
                   <div class="social-icons">
                     <ul class="list-unstyled list-inline">
                       <li class="list-inline-item">
@@ -119,7 +81,6 @@
                   </div>
                 </b-card-body>
               </b-card>
-
               <!-- <b-card class="mb-4" no-body>
                 <b-card-body>
                   <b-card-title>{{$t('pages.similar-projects')}}</b-card-title>
@@ -129,29 +90,13 @@
             </b-colxx>
           </b-row>
         </b-tab>
-
         <b-tab :title="$t('pages.images')">
           <gallery-profile />
-        </b-tab>
-
-        <b-tab :title="$t('pages.friends')">
-          <b-row>
-            <b-colxx
-              v-for="(follower,followerIndex) in friends"
-              xxs="12"
-              md="6"
-              lg="4"
-              :key="`follower_${followerIndex}`"
-            >
-              <user-card-basic :data="follower" />
-            </b-colxx>
-          </b-row>
         </b-tab>
       </b-tabs>
     </b-colxx>
   </b-row>
 </template>
-
 <script>
 import SingleLightbox from "../../../../components/Pages/SingleLightbox";
 import GalleryDetail from "../../../../components/Pages/GalleryDetail";
@@ -167,6 +112,8 @@ import produtcs from "../../../../data/products";
 import recentPosts from "../../../../data/recentPosts";
 import followers from "../../../../data/follow";
 import posts from "../../../../data/posts";
+// Application Imports
+import { mapGetters, mapActions } from 'vuex'
 export default {
   components: {
     "single-lightbox": SingleLightbox,
@@ -181,58 +128,45 @@ export default {
   },
   data() {
     return {
-      produtcs: produtcs.slice(0, 15),
-      recentPosts,
-      followers: followers.slice(0, 5),
-      friends: followers.slice(0),
-      posts,
-      horizontalForm: {
-        email: "",
-        password: "",
-        radio: "",
-        checked: false
+      userData: null,
+      form: {
+        email: '',
+        college: '',
+        department: '',
+        staffId: ''
       },
-      horizontalFormRadios: [
-        this.$t("forms.first-radio"),
-        this.$t("forms.second-radio"),
-        { text: this.$t("forms.third-radio-disabled"), disabled: true }
-      ],
-      dropzoneOptions: {
-        url: "https://httpbin.org/post",
-        thumbnailHeight: 160,
-        maxFilesize: 2,
-        previewTemplate: this.dropzoneTemplate(),
-        headers: {
-          "My-Awesome-Header": "header value"
-        }
-      }
     };
   },
+  computed: {
+    ...mapGetters('user', ['currentUser'])
+  },
   methods: {
+    ...mapActions('loan', ['UpdateUserProfile']),
     onHorizontalSubmit() {
       console.log(JSON.stringify(this.horizontalForm));
     },
-    dropzoneTemplate() {
-      return `<div class="dz-preview dz-file-preview mb-3">
-                  <div class="d-flex flex-row "> <div class="p-0 w-30 position-relative">
-                      <div class="dz-error-mark"><span><i></i>  </span></div>
-                      <div class="dz-success-mark"><span><i></i></span></div>
-                      <div class="preview-container">
-                        <img data-dz-thumbnail class="img-thumbnail border-0" />
-                        <i class="simple-icon-doc preview-icon"></i>
-                      </div>
-                  </div>
-                  <div class="pl-3 pt-2 pr-2 pb-1 w-70 dz-details position-relative">
-                    <div> <span data-dz-name /> </div>
-                    <div class="text-primary text-extra-small" data-dz-size /> </div>
-                    <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>
-                    <div class="dz-error-message"><span data-dz-errormessage></span></div>
-                  </div>
-                  <a href="#" class="remove" data-dz-remove> <i class="glyph-icon simple-icon-trash"></i> </a>
-                </div>
-        `;
+    updateProfile() {
+      try {
+      this.UpdateUserProfile(userData)
+      }catch(err) {
+        return err
+      }
+    }
+  },
+  watch: {
+    currentUser: {
+      immediate: true,
+      handler: function(currentUser) {
+        let as = this;
+        if(currentUser && currentUser != null) {
+          as.userData = currentUser;
+          console.log(as.userData)
+          console.log(currentUser)
+        }
+      }
     }
   },
   mounted() {}
 };
+
 </script>

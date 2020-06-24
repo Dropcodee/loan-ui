@@ -89,7 +89,7 @@ export default new Vue({
       response => response,
       error => {
         if (error.response.status === 401) {
-          this.$store.dispatch('user/logoutUser')
+          this.$store.dispatch('user/LogoutUser')
         }
         return Promise.reject(error)
       }

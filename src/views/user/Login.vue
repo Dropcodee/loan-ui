@@ -96,7 +96,7 @@ export default {
     ...mapState('notification', ["notifications"]),
   },
   methods: {
-    ...mapActions('user', ["loginUser"]),
+    ...mapActions('user', ["LoginUser"]),
     ...mapActions('notification', ["remove"]),
     removeNotification(notification) {
       // console.log(notification)
@@ -110,7 +110,7 @@ export default {
           password: this.form.password
         }
         try {
-          this.loginUser(payload);
+          this.LoginUser(payload);
         } catch (err) {
           // console.log(err)
           this.requestError = true

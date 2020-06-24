@@ -27,7 +27,10 @@ export const mutations = {
 };
 
 export const actions = {
-  async registerUser({ commit, dispatch }, payload) {
+  async RegisterUser({
+    commit,
+    dispatch
+  }, payload) {
     commit("SET_REQUEST_PROCESS", true);
     try {
       const response = await AuthenticationService.register(payload);
@@ -39,8 +42,12 @@ export const actions = {
         type: "success",
         message: response.data.message,
       };
-      dispatch("notification/add", notification, { root: true });
-      router.push({ name: "Login" });
+      dispatch("notification/add", notification, {
+        root: true
+      });
+      router.push({
+        name: "Login"
+      });
     } catch (err) {
       commit("SET_REQUEST_PROCESS", false);
       // console.log(err.response.data.message)
@@ -50,7 +57,9 @@ export const actions = {
           message: err.response.data.message,
         };
         // dispatch notification action for creating notifications
-        dispatch("notification/add", notification, { root: true });
+        dispatch("notification/add", notification, {
+          root: true
+        });
         throw err;
       } else {
         const notification = {
@@ -58,12 +67,17 @@ export const actions = {
           message: "Server Error, please try again later",
         };
         // dispatch notification action for creating notifications
-        dispatch("notification/add", notification, { root: true });
+        dispatch("notification/add", notification, {
+          root: true
+        });
         throw err;
       }
     }
   },
-  async loginUser({ commit, dispatch }, payload) {
+  async LoginUser({
+    commit,
+    dispatch
+  }, payload) {
     // send request to server
     try {
       commit("SET_REQUEST_PROCESS", true);
@@ -76,34 +90,81 @@ export const actions = {
         type: "success",
         message: "Welcome Back, please be patient as we load your account...",
       };
-      dispatch("notification/add", notification, { root: true });
+      dispatch("notification/add", notification, {
+        root: true
+      });
       commit("SET_REQUEST_PROCESS", false);
-      router.push({ name: "dashboard" });
+      router.push({
+        name: "dashboard"
+      });
     } catch (err) {
       commit("SET_REQUEST_PROCESS", false);
       // console.log(err.response.data)
       if (err) {
-        const notification = {
-          type: "error",
-          message: err.response.data.message,
-        };
-        // dispatch notification action for creating notifications
-        dispatch("notification/add", notification, { root: true });
-        throw err;
+        if (err.response.status == '500') {
+          const notification = {
+            type: "error",
+            message: "Server Error, Please try again",
+          };
+          // dispatch notification action for creating notifications
+          dispatch("notification/add", notification, {
+            root: true
+          });
+          throw err;
+        } else {
+          const notification = {
+            type: "error",
+            message: err.response.data.message,
+          };
+          // dispatch notification action for creating notifications
+          dispatch("notification/add", notification, {
+            root: true
+          });
+          throw err;
+        }
+
       } else {
         const notification = {
           type: "error",
           message: "Server error, please try again later",
         };
         // dispatch notification action for creating notifications
-        dispatch("notification/add", notification, { root: true });
+        dispatch("notification/add", notification, {
+          root: true
+        });
         throw err;
       }
     }
   },
-  logoutUser({ commit, dispatch, state }) {
+  LogoutUser({
+    commit,
+    dispatch,
+    state
+  }) {
+
     commit("LOGOUT_USER");
   },
+  async UpdateUserProfile({ commit }, payload) {
+    commit("SET_REQUEST_PROCESS", true);
+    try {
+      const response = await AuthenticationService.update(payload);
+      // create success notification
+      // console.log(response.data)
+      // update user state with new data
+      commit('SET_USER_STATE', response.data.data)
+      commit("SET_REQUEST_PROCESS", false);
+      const notification = {
+        type: "success",
+        message: response.data.message,
+      };
+    } catch (err) {
+      commit("SET_REQUEST_PROCESS", false);
+      const notification = {
+        type: "success",
+        message: response.data.message,
+      };
+    }
+  }
 };
 export const getters = {
   isLoggedIn(state) {

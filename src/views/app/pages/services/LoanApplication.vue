@@ -6,141 +6,76 @@
         <div class="separator mb-5"></div>
         <p class="lead">Welcome back {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }} {{ currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) }}</p>
         <p v-if="currentUser.account_number == null">Please Complete your profile to get started. <router-link to="/" class="primary"> Click Here </router-link>
-          <p v-else> Please fill out all the details for your loan application</p>
         </p>
+        <p v-else> Please fill out all the details for your loan application</p>
       </b-colxx>
     </b-row>
-    <b-row>
-      <b-card class="w-40 mx-auto">
-        <div class="form-side">
-          <h6 class="mb-4 text-center">Apply for personal loan</h6>
-          <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
-            <b-form-group label="Loan Amount" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="form.amount" :class="$v.form.amount.$error ? 'is-invalid' : ''" @blur="$v.form.amount.$touch()" />
-              <div v-if="$v.form.amount.$error">
-                <span v-if="!$v.form.amount.required" class="error-text">Please enter your loan requst amount </span>
-                <span v-if="!$v.form.amount.maxLength" class="error-text">Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
-                <span v-if="!$v.form.amount.numeric" class="error-text">Loan Amount must contain numbers alone.</span>
-              </div>
-            </b-form-group>
-            <b-form-group label="Interest Rate" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="form.interest + '%'" disabled />
-            </b-form-group>
-            <b-form-group label="Loan Payment Tenure" class="has-float-label mb-4">
-              <b-form-select v-model="form.tenure" :options="options"></b-form-select>
-              <div v-if="$v.form.tenure.$error">
-                <span v-if="!$v.form.tenure.required" class="error-text">Please lets know how long it will take you to repay your loan thanks.</span>
-              </div>
-            </b-form-group>
-            <div class="d-flex justify-content-around align-items-center">
-              <b-button type="submit" variant="success" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow btn-block': true,
-                    'show-spinner': processing,
-                    'show-success': !processing && requestError === false,
-                    'show-fail': !processing && requestError }">
-                <span class="spinner d-inline-block">
-                  <span class="bounce1"></span>
-                  <span class="bounce2"></span>
-                  <span class="bounce3"></span>
-                </span>
-                <span class="icon success">
-                  <i class="simple-icon-check"></i>
-                </span>
-                <span class="icon fail">
-                  <i class="simple-icon-exclamation"></i>
-                </span>
-                <span class="label">Apply</span>
-              </b-button>
-            </div>
-          </b-form>
-        </div>
+    <b-colxx xxs="12" xs="12" md="12" lg="10">
+      <b-card class="mb-4" no-body>
+        <b-tabs card no-fade>
+          <b-tab title="Commodity Loan" active title-item-class="w-30 text-center">
+            <commodity-loan :user="currentUser" :guarantors="guarantorsList" />
+          </b-tab>
+          <b-tab title="Regular & Emmergency Loan" active title-item-class="w-30 text-center">
+            <h5 class="mb-4 card-title">Wedding Cake with Flowers Macarons and Blueberries</h5>
+            <b-button size="sm" variant="outline-primary">Edit</b-button>
+          </b-tab>
+          <b-tab title="Car Acquisition Loan" active title-item-class="w-30 text-center">
+            <h5 class="mb-4 card-title">Cheesecake with Chocolate Cookies and Cream Biscuits</h5>
+            <b-button size="sm" variant="outline-primary">Edit</b-button>
+          </b-tab>
+        </b-tabs>
       </b-card>
-      <b-card class="w-40 mx-auto">
-        <h2 class="text-center mb-4 mt-4">Loan Request Preview</h2>
-        <h3 class="mt-12">Loan Request Amount: <span class="text-center ml-2"> &#8358; {{ form.amount }}</span></h3>
-        <h3 class="mt-4">Loan Interest Amount: <span class="text-center ml-2"> &#8358; {{ yearlyInterest }}</span></h3>
-        <h3 class="mt-4">Total Amount Payable: <span class="text-center ml-2"> &#8358; {{ loanTotal }}</span></h3>
-        <h3 class="mt-4">Repayment Timeline: <span class=""> {{ form.tenure }} Yr</span></h3>
-      </b-card>
-    </b-row>
+    </b-colxx>
   </div>
 </template>
 <script>
+import CommodityLoan from '@/components/payo/CommodityLoanForm'
 import { mapGetters, mapActions, mapState } from 'vuex'
-import { required, maxLength, numeric } from 'vuelidate/lib/validators'
+import ash from 'lodash'
 
 export default {
 
   name: 'loan-application',
-
+  components: {
+    CommodityLoan
+  },
   data() {
     return {
-      options: [
-        { value: 1, text: '1 year' },
-        { value: 2, text: '2 years' },
-      ],
-      form: {
-        amount: 0,
-        interest: 5,
-        tenure: 1,
-      },
-      yearlyInterest: 0,
-      loanTotal: 0,
       header: 'Loan Application Form',
-      timeout: null,
-      requestError: null
+      guarantorsList: []
     };
   },
-  validations: {
-    form: {
-      amount: {
-        required,
-        maxLength: maxLength(30000),
-        numeric
-      },
-      tenure: {
-        required
-      },
-    }
-  },
+
   computed: {
-    ...mapGetters('loan', ['processing']),
     ...mapGetters('user', ['currentUser']),
+    ...mapGetters('loan', ['potentialGuarantors']),
     ...mapState('notification', ["notifications"]),
   },
   methods: {
-    ...mapActions('loan', ['NewLoanRequest']),
     ...mapActions('notification', ["remove"]),
-    formSubmit() {
-      this.$v.$touch()
-      if (!this.$v.$invalid) {
-        const { amount, tenure, interest } = this.form
-        const payload = {
-          principal_amount: amount,
-          tenure,
-          interest
-        }
-        try {
-          this.NewLoanRequest(payload)
-          this.requestError = false
-        } catch (err) {
-          return err
-        }
-      }
-    },
-    interest(amount) {
+    ...mapActions('loan', ["FetchGuarantors"]),
+    interest(amount, interest) {
       if (amount == '' || amount == null) {
         return 0
       } else {
         const interestRate = this.form.interest / 100
         const newInterest = interestRate * amount
         this.yearlyInterest = newInterest * this.form.tenure
-        this.loanTotal = parseInt(amount) + parseInt(this.yearlyInterest)
+        return parseInt(amount) + parseInt(this.yearlyInterest)
       }
     },
     removeNotification(notification) {
       console.log(notification)
       this.remove(notification)
     },
+    pushToGurantorsList(guarantor) {
+      // console.log(guarantor);
+      this.guarantorsList.push({
+        'value': guarantor.id,
+        'text': ash.startCase(guarantor.first_name) + ' ' + ash.startCase(guarantor.last_name)
+      })
+    }
   },
   watch: {
     notifications(notifications) {
@@ -163,21 +98,24 @@ export default {
         }
       }
     },
-    'form.amount': function(amount) {
-      this.interest(amount)
-    },
-    'form.tenure': function(tenure) {
-      this.interest(this.form.amount)
+    potentialGuarantors: {
+      handler: function(potentialGuarantors) {
+        // let as be root this to enable us get the root methods.
+        let as = this;
+        potentialGuarantors.forEach(function(guarantor) {
+          // statements
+          as.pushToGurantorsList(guarantor);
+        });
+      }
     }
+  },
+  created() {
+    this.FetchGuarantors()
   }
 };
 
 </script>
 <style lang="css" scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .mt-12 {
   margin-top: 4rem
 }

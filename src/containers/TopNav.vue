@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     ...mapMutations(['changeSideMenuStatus', 'changeSideMenuForMobile']),
-    ...mapActions('user', ["logoutUser"]),
+    ...mapActions('user', ["LogoutUser"]),
     search() {
       this.$router.push(`${this.searchPath}?search=${this.searchKeyword}`)
       this.searchKeyword = ''
@@ -182,7 +182,7 @@ export default {
     },
     logout() {
       try {
-          this.logoutUser();
+          this.LogoutUser();
         } catch (err) {
           console.log(err)
         }
