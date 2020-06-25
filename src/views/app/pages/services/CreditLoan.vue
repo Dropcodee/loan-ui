@@ -192,6 +192,7 @@
             >Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
           </b-card>
           <b-modal id="modalbasic" ref="modalbasic" size="lg" title="Terms and Condition">
+            I {{form.fullname}} hereby declare that the statements made herein are true and correct
             <h6>Terms</h6>
             <ul style="text-align: justify">
               <li>The agreement made this {{days[new Date().getDay().toString()]}} of _not_sure_whats_here_ between Landmark University Staff Cooperative Multipurpose Society Limited (herin after referred to as the lender) on the one hand and {{form.fullname}} (herein refered as the borrower) on the other hand requires ₦{{form.loan_name}} for the purpose of {{form.loan_purpose}} and whereas the borrower has applied to the lender for the said sum of ₦{{form.loan_ammount}} for the purpose aforementioned which the lender has agreed upon having the repayment therefore together with the 10% interest thereon secured in thereinafter appearing</li>
