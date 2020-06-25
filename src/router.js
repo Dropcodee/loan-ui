@@ -72,6 +72,12 @@ const routes = [
           component: () =>
             import( /* webpackChunkName: "product" */ "./views/app/pages/services/CarAquisition")
         },
+        {
+          path: "/app/pages/services/credit-loan",
+          name: 'credit-loan',
+          component: () =>
+            import( /* webpackChunkName: "product" */ "./views/app/pages/services/CreditLoan")
+        },
         ]
       },
       {
