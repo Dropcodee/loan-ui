@@ -38,6 +38,18 @@ const data = [{
     to: "savings-application",
     icon: "simple-icon-check",
   },
+  {
+    id: "car-aquisition",
+    label: "Car Aquisition",
+    to: "car-aquisition",
+    icon: "simple-icon-check",
+  },
+  {
+    id: "credit-loan",
+    label: "Credit Loan",
+    to: "credit-loan",
+    icon: "simple-icon-check",
+  },
   ]
 },
 {
