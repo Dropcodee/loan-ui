@@ -22,13 +22,11 @@ export const mutations = {
 }
 
 export const actions = {
-  async CommodityLoanRequest({
-    commit,
-    dispatch
-  }, payload) {
+  async CommodityLoanRequest({ commit, dispatch }, payload) {
+    let response
     try {
       commit('SET_REQUEST_PROCESS', true)
-      const response = await LoanServices.create(payload)
+      response = await LoanServices.commodity(payload)
       commit('SET_REQUEST_PROCESS', false)
       const notification = {
         type: 'success',
@@ -40,16 +38,39 @@ export const actions = {
       router.push({
         name: "loan-monitor"
       })
-    } catch (err) {
+    } catch (ex) {
       commit('SET_REQUEST_PROCESS', false)
+      if (ex.response.status === 500 || ex.response.status === 401) {
+        if (ex.response.data.errors) {
+          let errors = ex.response.data.errors
+          errors.forEach(function(error) {
+            // statements
+            const notification = {
+              type: 'error',
+              message: error,
+            }
+            dispatch('notification/add', notification, {
+              root: true
+            })
+          });
+        } else if(ex.response.data.error) {
+           const notification = {
+              type: 'error',
+              message: ex.response.data.error,
+            }
+            dispatch('notification/add', notification, {
+              root: true
+            })
+        }
+      }
       const notification = {
         type: 'error',
-        message: err.response.data.error,
+        message: "server error, please try again later",
       }
       dispatch('notification/add', notification, {
         root: true
       })
-      throw err
+      throw ex
     }
   },
   async FetchGuarantors({ commit, dispatch }) {

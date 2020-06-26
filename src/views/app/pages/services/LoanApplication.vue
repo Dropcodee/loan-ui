@@ -55,16 +55,6 @@ export default {
   methods: {
     ...mapActions('notification', ["remove"]),
     ...mapActions('loan', ["FetchGuarantors"]),
-    interest(amount, interest) {
-      if (amount == '' || amount == null) {
-        return 0
-      } else {
-        const interestRate = this.form.interest / 100
-        const newInterest = interestRate * amount
-        this.yearlyInterest = newInterest * this.form.tenure
-        return parseInt(amount) + parseInt(this.yearlyInterest)
-      }
-    },
     removeNotification(notification) {
       console.log(notification)
       this.remove(notification)

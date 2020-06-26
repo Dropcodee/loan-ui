@@ -111,6 +111,7 @@ export default {
         staffId: this.user.employed_valid_id_card,
         nature: '',
         amountWords: '',
+        repaymentAmount: '',
         startDate: null,
         amount: null,
         interest: 5,
@@ -121,13 +122,11 @@ export default {
         { value: null, text: 'Sorry there are no guarantors available for now, try again later...' },
       ],
       options: [
-        { value: 13, text: '3 months' },
-        { value: 26, text: '6 months' },
-        { value: 52, text: '1 year' },
-        { value: 104, text: '2 years' },
+        { value: 90, text: '3 months' },
+        { value: 180, text: '6 months' },
+        { value: 365, text: '1 year' },
+        { value: 730, text: '2 years' },
       ],
-      yearlyInterest: 0,
-      loanTotal: 0,
       timeout: null,
       requestError: null
     }
@@ -154,8 +153,8 @@ export default {
       },
       staffId: {
         required,
-        minLength: minLength(11),
-        maxLength: maxLength(11),
+        minLength: minLength(7),
+        maxLength: maxLength(8),
         numeric
       },
       guarantors: {
@@ -183,15 +182,41 @@ export default {
   },
   methods: {
     ...mapActions('loan', ['CommodityLoanRequest']),
+    calcRepaymentAmount() {
+      let { amount, interest, tenure } = this.form
+      let payload = {
+        amount,
+        interest,
+        duration: tenure
+      }
+      this.form.repaymentAmount = this.interest(payload)
+    },
+    interest(payload) {
+      console.log(payload)
+      if (payload.amount == '' || payload.amount == null) {
+        return 0
+      } else {
+        // calculate loan timeline divide days/365
+        let loanDuration = Number(payload.duration) / 365
+        const interestRate = Number(payload.interest) / 100
+        return Math.round(payload.amount * (1 + (interestRate * loanDuration)))
+      }
+    },
     formSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
         const loggedInUser = this.user
-        const { amount, tenure, interest } = this.form
+        const loanDate = this.form.startDate
         const payload = {
-          principal_amount: amount,
-          tenure,
-          interest
+          commodity_nature: this.form.nature,
+          loan_type: 'Commodity Loan',
+          tenure: this.form.tenure,
+          interest: this.form.interest,
+          principal_amount: this.form.amount,
+          principal_amount_words: this.form.amountWords,
+          repayment_amount: this.form.repaymentAmount.toString(),
+          repayment_date: loanDate.getFullYear() + '-' + loanDate.getMonth() + '-' + loanDate.getDate(),
+          guarantors: this.form.guarantors
         }
         try {
           this.CommodityLoanRequest(payload)
@@ -201,6 +226,22 @@ export default {
         }
       }
     },
+  },
+  watch: {
+    'form.amount': {
+      handler: function(amount) {
+        console.log(amount)
+        if (amount.length >= 5) {
+          this.calcRepaymentAmount()
+        }
+      }
+    },
+    'form.tenure': {
+      handler: function(tenure) {
+        // console.log(amount)
+        this.calcRepaymentAmount()
+      }
+    }
   }
 }
 

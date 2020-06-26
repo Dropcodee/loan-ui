@@ -22,21 +22,47 @@
               </b-card>-->
             </b-colxx>
             <b-colxx xxs="12" lg="7" xl="8" class="col-left">
-              <b-form >
+              <b-form @submit.prevent="updateProfile">
                 <b-form-group label-cols="2" horizontal label="Working College">
                   <b-form-input v-model="userData.college" :placeholder="userData.college"></b-form-input>
+                  <div v-if="$v.userData.college.$error">
+                    <span v-if="!$v.userData.college.alpha" class="error-text">your college should contain letters only.</span>
+                    <span v-if="!$v.userData.college.maxLength" class="error-text">This college is above maximun length.</span>
+                  </div>
                 </b-form-group>
                 <b-form-group label-cols="2" horizontal label="Working Department">
                   <b-form-input v-model="userData.department" :placeholder="userData.department"></b-form-input>
                 </b-form-group>
                 <b-form-group label-cols="2" horizontal label="Staff ID Number">
                   <b-form-input v-model="userData.employed_valid_id_card" :placeholder="userData.employed_valid_id_card"></b-form-input>
+                  <div v-if="$v.userData.employed_valid_id_card.$error">
+                    <span v-if="!$v.userData.employed_valid_id_card.alphaNum" class="error-text">your staff id should contain both numbers and letters.</span>
+                    <span v-if="!$v.userData.employed_valid_id_card.minLength" class="error-text">Sorry your id should have a minimum of {{ $v.userData.employed_valid_id_card.$params.minLength.min }} values,</span>
+                    <span v-if="!$v.userData.employed_valid_id_card.maxLength" class="error-text">Sorry your id should have a maximum of {{ $v.userData.employed_valid_id_card.$params.maxLength.max }} values, </span>
+                  </div>
                 </b-form-group>
                 <b-form-group label-cols="2" horizontal label="Email">
-                  <b-form-input v-model="userData.email" :placeholder="userData.email"></b-form-input>
+                  <b-form-input v-model="userData.email" :placeholder="userData.email" :class="$v.userData.email.$error ? 'is-invalid' : ''" @blur="$v.userData.email.$touch()"></b-form-input>
+                  <div v-if="$v.userData.email.$error">
+                    <span v-if="!$v.userData.email.email" class="error-text">Please select two guarantors for your loan applications.</span>
+                  </div>
                 </b-form-group>
-                <b-button type="button" @click.prevent="updateProfile" variant="primary" class="mt-4">
-                  UPDATE PROFILE
+                <b-button type="submit" variant="success" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow': true,
+                    'show-spinner': processing,
+                    'show-success': !processing && requestError === false,
+                    'show-fail': !processing && requestError }">
+                  <span class="spinner d-inline-block">
+                    <span class="bounce1"></span>
+                    <span class="bounce2"></span>
+                    <span class="bounce3"></span>
+                  </span>
+                  <span class="icon success">
+                    <i class="simple-icon-check"></i>
+                  </span>
+                  <span class="icon fail">
+                    <i class="simple-icon-exclamation"></i>
+                  </span>
+                  <span class="label">UPDATE PROFILE</span>
                 </b-button>
               </b-form>
             </b-colxx>
@@ -113,7 +139,8 @@ import recentPosts from "../../../../data/recentPosts";
 import followers from "../../../../data/follow";
 import posts from "../../../../data/posts";
 // Application Imports
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
+import { maxLength, numeric, email, minLength, alpha, alphaNum } from 'vuelidate/lib/validators'
 export default {
   components: {
     "single-lightbox": SingleLightbox,
@@ -129,27 +156,62 @@ export default {
   data() {
     return {
       userData: null,
-      form: {
-        email: '',
-        college: '',
-        department: '',
-        staffId: ''
-      },
+      requestError: null,
     };
   },
   computed: {
-    ...mapGetters('user', ['currentUser'])
+    ...mapGetters('user', ['currentUser', 'processing']),
+    ...mapState('notification', ["notifications"]),
+  },
+  validations: {
+    userData: {
+      college: {
+        maxLength: maxLength(4),
+        alpha
+      },
+      phone_number: {
+        minLength: minLength(11),
+        maxLength: maxLength(11),
+        numeric
+      },
+      email: {
+        email
+      },
+      employed_valid_id_card: {
+        minLength: minLength(7),
+        maxLength: maxLength(8),
+        alphaNum
+      },
+    }
   },
   methods: {
-    ...mapActions('loan', ['UpdateUserProfile']),
+    ...mapActions('user', ['UpdateUserProfile']),
+    ...mapActions('notification', ["remove"]),
+    removeNotification(notification) {
+      // console.log(notification)
+      this.remove(notification)
+    },
     onHorizontalSubmit() {
       console.log(JSON.stringify(this.horizontalForm));
     },
     updateProfile() {
-      try {
-      this.UpdateUserProfile(userData)
-      }catch(err) {
-        return err
+      let as = this
+      this.$v.$touch()
+      if (!this.$v.$invalid) {
+        let payload = {
+          'college': this.userData.college,
+          'department': this.userData.department,
+          'email': this.userData.email,
+          'employed_valid_id_card': this.userData.employed_valid_id_card
+        }
+        try {
+          console.log('clicked again ooo')
+          as.UpdateUserProfile(payload)
+          as.requestError = false
+        } catch (err) {
+          // return err
+          as.requestError = true
+        }
       }
     }
   },
@@ -158,12 +220,30 @@ export default {
       immediate: true,
       handler: function(currentUser) {
         let as = this;
-        if(currentUser && currentUser != null) {
+        if (currentUser && currentUser != null) {
           as.userData = currentUser;
           console.log(as.userData)
           console.log(currentUser)
         }
       }
+    },
+    notifications(notifications) {
+      // loop through all notifications and
+      // display one at a time
+      notifications.forEach(notification => {
+        this.$notify(`${notification.type}`, notification.message, {
+          duration: 8000,
+          permanent: false
+        });
+        if (notification.type == 'error') {
+          this.requestError = true
+        }
+        // let as = this;
+        if (notification.type == 'success') {
+          this.requestError = false
+        }
+        this.removeNotification(notification)
+      })
     }
   },
   mounted() {}

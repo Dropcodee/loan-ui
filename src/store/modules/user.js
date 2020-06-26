@@ -16,6 +16,14 @@ export const mutations = {
       "Authorization"
     ] = ` Bearer ${userData.user.api_token}`;
   },
+    UPDATE_USER_STATE(state, userData) {
+    state.user = userData;
+    localStorage.removeItem("user");
+    localStorage.setItem("user", JSON.stringify(userData));
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = ` Bearer ${userData.api_token}`;
+  },
   LOGOUT_USER(state) {
     localStorage.removeItem("user");
     axios.defaults.headers.common["Authorization"] = null;
@@ -144,25 +152,30 @@ export const actions = {
 
     commit("LOGOUT_USER");
   },
-  async UpdateUserProfile({ commit }, payload) {
+  async UpdateUserProfile({ commit, dispatch }, payload) {
     commit("SET_REQUEST_PROCESS", true);
     try {
       const response = await AuthenticationService.update(payload);
       // create success notification
       // console.log(response.data)
       // update user state with new data
-      commit('SET_USER_STATE', response.data.data)
       commit("SET_REQUEST_PROCESS", false);
       const notification = {
         type: "success",
         message: response.data.message,
       };
+      dispatch("notification/add", notification, { root: true });
+      commit('UPDATE_USER_STATE', response.data.user)
     } catch (err) {
       commit("SET_REQUEST_PROCESS", false);
-      const notification = {
-        type: "success",
-        message: response.data.message,
-      };
+      if (err.response.status === 500 || err.response.status === 401) {
+        const notification = {
+          type: err.response.data.status,
+          message: err.response.data.message,
+        };
+        dispatch("notification/add", notification, { root: true });
+    }
+      throw err
     }
   }
 };
