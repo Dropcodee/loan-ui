@@ -10,12 +10,12 @@
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Staff ID">
-            <b-form-input type="text" v-model="form.staff_id"  disabled/>
+            <b-form-input type="text" v-model="form.staff_id" disabled />
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="GSM NO">
-            <b-form-input type="text" v-model="form.phoneNo"  disabled/>
+            <b-form-input type="text" v-model="form.phoneNo" disabled />
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
@@ -190,8 +190,8 @@
   </b-form>
 </template>
 <script>
+import { required, maxLength, numeric, minLength } from 'vuelidate/lib/validators'
 export default {
-
   name: 'CreditLoan',
   props: { user: Object },
   data() {
