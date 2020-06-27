@@ -5,32 +5,50 @@
       <b-row>
         <b-colxx sm="6">
           <b-form-group label="Fullname">
-            <b-form-input type="text" v-model="form.fullname" disabled />
+            <b-form-input type="text" v-model="form.fullname" disabled :class="$v.form.fullname.$error ? 'is-invalid' : ''" @blur="$v.form.fullname.$touch()" />
+            <div v-if="$v.form.fullname.$error">
+              <span v-if="!$v.form.fullname.required" class="error-text">Please complete your profile to fill this details</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Staff ID">
-            <b-form-input type="text" v-model="form.staff_id" disabled />
+            <b-form-input type="text" v-model="form.staff_id" disabled :class="$v.form.staff_id.$error ? 'is-invalid' : ''" @blur="$v.form.staff_id.$touch()" />
+            <div v-if="$v.form.staff_id.$error">
+              <span v-if="!$v.form.staff_id.required" class="error-text">Please complete your profile to fill this details</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="GSM NO">
-            <b-form-input type="text" v-model="form.phoneNo" disabled />
+            <b-form-input type="text" v-model="form.phone" disabled :class="$v.form.phone.$error ? 'is-invalid' : ''" @blur="$v.form.phone.$touch()" />
+            <div v-if="$v.form.phone.$error">
+              <span v-if="!$v.form.phone.required" class="error-text">Please complete your profile to fill this details</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Email">
-            <b-form-input type="email" v-model="form.email" disabled />
+            <b-form-input type="email" v-model="form.email" disabled :class="$v.form.email.$error ? 'is-invalid' : ''" @blur="$v.form.email.$touch()" />
+            <div v-if="$v.form.email.$error">
+              <span v-if="!$v.form.email.required" class="error-text">Please complete your profile to fill this details</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Natur of Credit (REGULAR OR EMERGENCY)">
-            <b-form-select v-model="form.credit_nature" :options="loanNature"></b-form-select>
+            <b-form-select v-model="form.credit_nature" :options="loanNature" :class="$v.form.email.$error ? 'is-invalid' : ''" @blur="$v.form.email.$touch()"></b-form-select>
+            <div v-if="$v.form.credit_nature.$error">
+              <span v-if="!$v.form.credit_nature.required" class="error-text">Please Lets know the nature of your loan</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Loan Amount">
-            <b-form-input type="text" v-model="form.loan_amount" />
+            <b-form-input type="text" v-model="form.loan_amount" :class="$v.form.loan_amount.$error ? 'is-invalid' : ''" @blur="$v.form.loan_amount.$touch()" />
+            <div v-if="$v.form.loan_amount.$error">
+              <span v-if="!$v.form.loan_amount.required" class="error-text">Let us know how much loan you wish to request for.</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
@@ -191,6 +209,8 @@
 </template>
 <script>
 import { required, maxLength, numeric, minLength } from 'vuelidate/lib/validators'
+import { mapActions } from 'vuex'
+
 export default {
   name: 'CreditLoan',
   props: { user: Object },
@@ -219,7 +239,7 @@ export default {
         credit_nature: "",
         loan_purpose: "",
         loan_amount: "",
-        phoneNo: this.user.phone_number,
+        phone: this.user.phone_number,
         loan_obligation: "",
         monthly_thrift_contribution: "",
         regular_loan_repayment: "",
@@ -245,6 +265,120 @@ export default {
       },
     };
   },
+  validations: {
+    form: {
+      fullname: {
+        required
+      },
+      college: {
+        required
+      },
+      department: {
+        required
+      },
+      email: {
+        required
+      },
+      phone: {
+        required,
+        minLength: minLength(11),
+        maxLength: maxLength(11),
+        numeric
+      },
+      staff_id: {
+        required,
+        minLength: minLength(7),
+        maxLength: maxLength(8),
+        numeric
+      },
+      credit_nature: {
+        required
+      },
+      loan_amount: {
+        required
+      }
+    }
+  },
+  methods: {
+    hideModal(refname) {
+      this.$refs[refname].hide();
+      console.log("hide modal:: " + refname);
+
+      if (refname === "modalnestedinline") {
+        this.$refs["modalnested"].show();
+      }
+    },
+    somethingModal(refname) {
+      this.$refs[refname].hide();
+      console.log("something modal:: " + refname);
+
+      if (refname === "modalnestedinline") {
+        this.$refs["modalnested"].show();
+      }
+    },
+    ...mapActions("loan", ["CreditLoanRequest"]),
+    ...mapActions("notification", ["remove"]),
+    formSubmit() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        const { amount, tenure, interest } = this.form;
+        const payload = {
+          principal_amount: amount,
+          tenure,
+          interest
+        };
+        try {
+          this.NewLoanRequest(payload);
+          this.requestError = false;
+        } catch (err) {
+          return err;
+        }
+      }
+      console.log(this.form);
+    }
+    // interest(amount) {
+    //   if (amount == "" || amount == null) {
+    //     return 0;
+    //   } else {
+    //     const interestRate = this.form.interest / 100;
+    //     const newInterest = interestRate * amount;
+    //     this.yearlyInterest = newInterest * this.form.tenure;
+    //     this.loanTotal = parseInt(amount) + parseInt(this.yearlyInterest);
+    //   }
+    // },
+    // removeNotification(notification) {
+    //   console.log(notification);
+    //   this.remove(notification);
+    // }
+  },
+  watch: {
+    // notifications(notifications) {
+    //   for (let i in notifications) {
+    //     if (notifications[i].type == "error") {
+    //       this.$notify("error", "Error Message", notifications[i].message, {
+    //         duration: 3000,
+    //         permanent: false
+    //       });
+    //       this.requestError = true;
+    //       let as = this;
+    //       setTimeout(() => as.removeNotification(notifications[i]), 3000);
+    //     } else if (notifications[i].type == "success") {
+    //       this.$notify("success", "Message", notifications[i].message, {
+    //         duration: 3000,
+    //         permanent: false
+    //       });
+    //       let as = this;
+    //       setTimeout(() => as.removeNotification(notifications[i]), 3000);
+    //     }
+    //   }
+    // },
+    // "form.amount": function(amount) {
+    //   this.interest(amount);
+    // },
+    // "form.tenure": function(tenure) {
+    //   this.interest(this.form.amount);
+    // }
+  }
 };
 
 </script>
