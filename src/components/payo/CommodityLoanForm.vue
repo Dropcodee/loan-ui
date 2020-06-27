@@ -221,6 +221,7 @@ export default {
         try {
           this.CommodityLoanRequest(payload)
           this.requestError = false
+          location.reload()
         } catch (err) {
           return err
         }
@@ -238,7 +239,6 @@ export default {
     },
     'form.tenure': {
       handler: function(tenure) {
-        // console.log(amount)
         this.calcRepaymentAmount()
       }
     }
