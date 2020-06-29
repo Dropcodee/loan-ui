@@ -117,54 +117,54 @@
 
 <script>
 import AreaShadowChart from "../../../components/Charts/AreaShadow";
-import DoughnutShadowChart from "../../../components/Charts/DoughnutShadow";
-import PolarAreaShadowChart from "../../../components/Charts/PolarAreaShadow";
-import RadarShadowChart from "../../../components/Charts/RadarShadow";
-import LineShadowChart from "../../../components/Charts/LineShadow";
+// import DoughnutShadowChart from "../../../components/Charts/DoughnutShadow";
+// import PolarAreaShadowChart from "../../../components/Charts/PolarAreaShadow";
+// import RadarShadowChart from "../../../components/Charts/RadarShadow";
+// import LineShadowChart from "../../../components/Charts/LineShadow";
 
-import SmallLineChartCard from "../../../components/Cards/SmallLineChartCard";
-import RadialProgressCard from "../../../components/Cards/RadialProgressCard";
+// import SmallLineChartCard from "../../../components/Cards/SmallLineChartCard";
+// import RadialProgressCard from "../../../components/Cards/RadialProgressCard";
 
 import Draggable from "vuedraggable";
 
 import {
   areaChartData,
   conversionChartData,
-  doughnutChartData,
-  smallChartData1,
-  smallChartData2,
-  smallChartData3,
-  smallChartData4,
-  polarAreaChartData,
-  radarChartData,
-  lineChartData
+  // doughnutChartData,
+  // smallChartData1,
+  // smallChartData2,
+  // smallChartData3,
+  // smallChartData4,
+  // polarAreaChartData,
+  // radarChartData,
+  // lineChartData
 } from "../../../data/charts";
 import profileStatuses from "../../../data/profileStatuses";
 
 export default {
   components: {
     "area-shadow-chart": AreaShadowChart,
-    "doughnut-shadow-chart": DoughnutShadowChart,
-    "small-line-chart-card": SmallLineChartCard,
-    draggable: Draggable,
-    "radial-progress-card": RadialProgressCard,
-    "polar-area-shadow-chart": PolarAreaShadowChart,
-    "radar-shadow-chart": RadarShadowChart,
-    "line-shadow-chart": LineShadowChart
+    // "doughnut-shadow-chart": DoughnutShadowChart,
+    // "small-line-chart-card": SmallLineChartCard,
+    // draggable: Draggable,
+    // "radial-progress-card": RadialProgressCard,
+    // "polar-area-shadow-chart": PolarAreaShadowChart,
+    // "radar-shadow-chart": RadarShadowChart,
+    // "line-shadow-chart": LineShadowChart
   },
   data() {
     return {
       areaChartData,
       conversionChartData,
-      doughnutChartData,
+      // doughnutChartData,
       profileStatuses,
-      smallChartData1,
-      smallChartData2,
-      smallChartData3,
-      smallChartData4,
-      polarAreaChartData,
-      radarChartData,
-      lineChartData
+      // smallChartData1,
+      // smallChartData2,
+      // smallChartData3,
+      // smallChartData4,
+      // polarAreaChartData,
+      // radarChartData,
+      // lineChartData
     };
   }
 };
