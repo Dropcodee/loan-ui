@@ -11,7 +11,7 @@ const data = [{
   {
     icon: "simple-icon-pie-chart",
     label: "Overview",
-    to: "/app/dashboards/analytics"
+    to: "overview"
   },
   ]
 },

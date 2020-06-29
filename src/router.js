@@ -22,9 +22,10 @@ const routes = [
           import( /* webpackChunkName: "dashboards" */ "./views/app/dashboards/Default")
       },
       {
-        path: "analytics",
+        path: "overview",
+        name: "overview",
         component: () =>
-          import( /* webpackChunkName: "dashboards" */ "./views/app/dashboards/Analytics")
+          import( /* webpackChunkName: "dashboards" */ "./views/app/dashboards/Overview")
       },
       {
         path: "ecommerce",
