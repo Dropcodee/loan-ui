@@ -112,47 +112,6 @@
       </b-row>-->
       <!-- </b-colxx> -->
     </b-row>
-    <draggable class="row">
-      <b-colxx xl="3" lg="6" class="mb-4">
-        <radial-progress-card :title="$t('dashboards.payment-status')" :percent="64" />
-      </b-colxx>
-      <b-colxx xl="3" lg="6" class="mb-4">
-        <radial-progress-card :title="$t('dashboards.work-progress')" :percent="75" />
-      </b-colxx>
-      <b-colxx xl="3" lg="6" class="mb-4">
-        <radial-progress-card :title="$t('dashboards.tasks-completed')" :percent="32" />
-      </b-colxx>
-      <b-colxx xl="3" lg="6" class="mb-4">
-        <radial-progress-card :title="$t('dashboards.payments-done')" :percent="45" />
-      </b-colxx>
-    </draggable>
-
-    <b-row>
-      <b-colxx lg="6" xxs="12" class="mb-4">
-        <b-card :title="$t('dashboards.order-stock')">
-          <div class="chart-container">
-            <radar-shadow-chart :data="radarChartData" :height="300" />
-          </div>
-        </b-card>
-      </b-colxx>
-      <b-colxx lg="6" xxs="12" class="mb-4">
-        <b-card :title="$t('dashboards.categories')">
-          <div class="chart-container">
-            <polar-area-shadow-chart :data="polarAreaChartData" :height="300" />
-          </div>
-        </b-card>
-      </b-colxx>
-    </b-row>
-
-    <b-row>
-      <b-colxx xxs="12" class="mb-4">
-        <b-card :title="$t('dashboards.sales')">
-          <div class="dashboard-line-chart">
-            <line-shadow-chart :data="lineChartData" :height="285" />
-          </div>
-        </b-card>
-      </b-colxx>
-    </b-row>
   </div>
 </template>
 
