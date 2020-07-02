@@ -17,12 +17,10 @@
             <commodity-loan :user="currentUser" :guarantors="guarantorsList" />
           </b-tab>
           <b-tab title="Regular & Emmergency Loan" active title-item-class="w-30 text-center">
-            <h5 class="mb-4 card-title">Wedding Cake with Flowers Macarons and Blueberries</h5>
-            <b-button size="sm" variant="outline-primary">Edit</b-button>
+            <credit-loan :user="currentUser" :guarantors="guarantorsList" />
           </b-tab>
           <b-tab title="Car Acquisition Loan" active title-item-class="w-30 text-center">
-            <h5 class="mb-4 card-title">Cheesecake with Chocolate Cookies and Cream Biscuits</h5>
-            <b-button size="sm" variant="outline-primary">Edit</b-button>
+            <car-acquisition-loan :user="currentUser" :guarantors="guarantorsList" />
           </b-tab>
         </b-tabs>
       </b-card>
@@ -31,6 +29,8 @@
 </template>
 <script>
 import CommodityLoan from '@/components/payo/CommodityLoanForm'
+import CreditLoan from '@/components/payo/CreditLoan'
+import CarAcquisitionLoan from '@/components/payo/CarAcquisitionLoan'
 import { mapGetters, mapActions, mapState } from 'vuex'
 import ash from 'lodash'
 
@@ -38,7 +38,9 @@ export default {
 
   name: 'loan-application',
   components: {
-    CommodityLoan
+    CommodityLoan,
+    CreditLoan,
+    CarAcquisitionLoan
   },
   data() {
     return {
@@ -55,16 +57,6 @@ export default {
   methods: {
     ...mapActions('notification', ["remove"]),
     ...mapActions('loan', ["FetchGuarantors"]),
-    interest(amount, interest) {
-      if (amount == '' || amount == null) {
-        return 0
-      } else {
-        const interestRate = this.form.interest / 100
-        const newInterest = interestRate * amount
-        this.yearlyInterest = newInterest * this.form.tenure
-        return parseInt(amount) + parseInt(this.yearlyInterest)
-      }
-    },
     removeNotification(notification) {
       console.log(notification)
       this.remove(notification)
