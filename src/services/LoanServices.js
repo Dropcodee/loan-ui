@@ -6,5 +6,8 @@ export default {
     },
     guarantors() {
         return api().get('guarantors')
+    },
+    creditloan(credentials) {
+        return api().post('loans/credit', credentials)
     }
 }

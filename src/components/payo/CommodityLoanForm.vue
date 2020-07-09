@@ -113,23 +113,6 @@
           </div>
         </b-form-group>
         <b-form-group
-          label="Loan Amount In Words"
-          class="has-float-label mb-4"
-        >
-          <b-form-input
-            type="text"
-            v-model="form.amountWords"
-            :class="$v.form.amountWords.$error ? 'is-invalid' : ''"
-            @blur="$v.form.amountWords.$touch()"
-          />
-          <div v-if="$v.form.amountWords.$error">
-            <span
-              v-if="!$v.form.amountWords.required"
-              class="error-text"
-            >Please enter your loan request amount in words </span>
-          </div>
-        </b-form-group>
-        <b-form-group
           label="Loan Amount"
           class="has-float-label mb-4"
         >
@@ -279,7 +262,6 @@ export default {
         department: this.user.department,
         staffId: this.user.employed_valid_id_card,
         nature: "",
-        amountWords: "",
         repaymentAmount: "",
         startDate: null,
         displayDate: null,
@@ -340,9 +322,6 @@ export default {
       startDate: {
         required
       },
-      amountWords: {
-        required
-      },
       amount: {
         required,
         minLength: minLength(5),
@@ -394,7 +373,6 @@ export default {
           tenure: this.form.tenure,
           interest: this.form.interest,
           principal_amount: this.form.amount,
-          principal_amount_words: this.form.amountWords,
           repayment_amount: this.form.repaymentAmount.toString(),
           repayment_date: backendDate,
           guarantors: this.form.guarantors
@@ -402,7 +380,6 @@ export default {
         try {
           this.CommodityLoanRequest(payload);
           this.requestError = false;
-          location.reload();
         } catch (err) {
           return err;
         }

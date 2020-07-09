@@ -31,14 +31,14 @@ export default {
   },
   data() {
     return {
-      header: "Loan Application Form",
+      header: "Commodity Loan Application",
       guarantorsList: []
     };
   },
 
   computed: {
     ...mapGetters("user", ["currentUser"]),
-    ...mapGetters("loan", ["potentialGuarantors"]),
+    ...mapGetters("loan", ["potentialGuarantors", "processing"]),
     ...mapState("notification", ["notifications"])
   },
   methods: {
@@ -60,23 +60,23 @@ export default {
     }
   },
   watch: {
-    notifications(notifications) {
-      for (let i in notifications) {
-        if (notifications[i].type == "error") {
-          this.$notify("error", "Error Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
-          this.requestError = true;
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000);
-        } else if (notifications[i].type == "success") {
-          this.$notify("success", "Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000);
+    notifications: {
+      handler: function(notifications) {
+        for (let i in notifications) {
+          if (notifications[i].type == "error") {
+            this.$notify("error", "Error Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false
+            });
+            this.requestError = true;
+            setTimeout(() => this.removeNotification(notifications[i]), 5000);
+          } else if (notifications[i].type == "success") {
+            this.$notify("success", "Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false
+            });
+            setTimeout(() => this.removeNotification(notifications[i]), 3000);
+          }
         }
       }
     },
