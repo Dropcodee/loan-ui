@@ -50,34 +50,28 @@ const routes = [{
                             import ( /* webpackChunkName : "product" */ "./views/app/pages/services"),
                         redirect: "/app/pages/services/loan-application",
                         children: [{
-                                path: "/app/pages/services/loan-application",
-                                name: 'loan-application',
+                                path: "/app/pages/services/commodity-application",
+                                name: 'commodity-application',
                                 component: () =>
                                     import ( /* webpackChunkName: "product" */ "./views/app/pages/services/LoanApplication")
                             },
                             {
-                                path: "/app/pages/services/land-application",
-                                name: 'land-application',
+                                path: "/app/pages/services/credit-application",
+                                name: 'credit-application',
                                 component: () =>
-                                    import ( /* webpackChunkName: "product" */ "./views/app/pages/services/LandApplication")
+                                    import ( /* webpackChunkName: "product" */ "./views/app/pages/services/CreditLoanApplication")
+                            },
+                            {
+                                path: "/app/pages/services/car-application",
+                                name: 'car-application',
+                                component: () =>
+                                    import ( /* webpackChunkName: "product" */ "./views/app/pages/services/CarAquisitionLoan")
                             },
                             {
                                 path: "savings-application",
                                 name: 'savings-application',
                                 component: () =>
                                     import ( /* webpackChunkName: "product" */ "./views/app/pages/services/SavingsApplication")
-                            },
-                            {
-                                path: "/app/pages/services/car-aquisition",
-                                name: 'car-aquisition',
-                                component: () =>
-                                    import ( /* webpackChunkName: "product" */ "./views/app/pages/services/CarAquisition")
-                            },
-                            {
-                                path: "/app/pages/services/credit-loan",
-                                name: 'credit-loan',
-                                component: () =>
-                                    import ( /* webpackChunkName: "product" */ "./views/app/pages/services/CreditLoan")
                             },
                         ]
                     },

@@ -22,32 +22,26 @@ const data = [{
         to: "/app/pages/services",
         subs: [{
                 id: "services-loan",
-                label: "Loan Application",
-                to: "loan-application",
+                label: "Commodity Loan",
+                to: "commodity-application",
                 icon: "simple-icon-check",
             },
             {
-                id: "services-land",
-                label: "Land Application",
-                to: "land-application",
+                id: "services-credit",
+                label: "Credit Loan Application",
+                to: "credit-application",
+                icon: "simple-icon-check",
+            },
+            {
+                id: "services-car",
+                label: "Car Aquisition Loan",
+                to: "car-application",
                 icon: "simple-icon-check",
             },
             {
                 id: "services-savings",
                 label: "Savings Application",
                 to: "savings-application",
-                icon: "simple-icon-check",
-            },
-            {
-                id: "car-aquisition",
-                label: "Car Aquisition",
-                to: "car-aquisition",
-                icon: "simple-icon-check",
-            },
-            {
-                id: "credit-loan",
-                label: "Credit Loan",
-                to: "credit-loan",
                 icon: "simple-icon-check",
             },
         ]
