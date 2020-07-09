@@ -210,8 +210,15 @@ export default {
 };
 </script>
 
-<style scoped>
-.table thead th {
-  vertical-align: top;
+<style>
+.table-responsive th {
+  vertical-align: top !important;
+}
+.table-responsive table {
+  table-layout: flexible;
+}
+.table-responsive th,
+.table-responsive td {
+  min-width: 120px;
 }
 </style>
