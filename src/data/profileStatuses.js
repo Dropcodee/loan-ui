@@ -1,28 +1,18 @@
 const data = [
   {
-    title: 'Loan Borrowed',
-    total: 18,
-    status: 12
+    title: "Credit Loan",
+    total: 60000,
+    status: 10000
   },
   {
-    title: 'Amount Paid',
-    total: 8,
-    status: 1
+    title: "Car Loan",
+    total: 650000,
+    status: 300000
   },
-  // {
-  //   title: 'Billing Details',
-  //   total: 6,
-  //   status: 2
-  // },
   {
-    title: 'Interests',
-    total: 10,
-    status: 0
-  },
-  // {
-  //   title: 'Legal Documents',
-  //   total: 2,
-  //   status: 1
-  // }
-]
-export default data
+    title: "Loan on food commodities",
+    total: 55000,
+    status: 45000
+  }
+];
+export default data;

@@ -53,7 +53,10 @@
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Loan Purpose">
-            <b-form-input type="text" v-model="form.loan_purpose" />
+            <b-form-input type="text" v-model="form.loan_purpose" :class="$v.form.loan_purpose.$error ? 'is-invalid' : ''" @blur="$v.form.loan_purpose.$touch()"/>
+            <div v-if="$v.form.loan_purpose.$error">
+              <span v-if="!$v.form.loan_purpose.required" class="error-text">Let us know how the purpose for requesting for this loan.</span>
+            </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
@@ -63,7 +66,10 @@
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Monthly Thrift Contribution">
-            <b-form-input type="text" v-model="form.monthly_thrift_contribution" />
+            <b-form-input type="text" v-model="form.monthly_thrift_contribution" :class="$v.form.monthly_thrift_contribution.$error ? 'is-invalid' : ''" @blur="$v.form.monthly_thrift_contribution.$touch()"/>
+              <div v-if="$v.form.monthly_thrift_contribution.$error">
+                  <span v-if="!$v.form.monthly_thrift_contribution.required" class="error-text">Sorry please this information is vital.</span>
+              </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
@@ -83,12 +89,18 @@
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Borrower Account Details">
-            <b-form-input type="text" v-model="form.borrower_acct_details" />
+            <b-form-input type="text" v-model="form.borrower_acct_details" disabled :class="$v.form.borrower_acct_details.$error ? 'is-invalid' : ''" @blur="$v.form.borrower_acct_details.$touch()"/>
+              <div v-if="$v.form.borrower_acct_details.$error">
+                  <span v-if="!$v.form.borrower_acct_details.required" class="error-text">Sorry please complete your profile to fill this details.</span>
+              </div>
           </b-form-group>
         </b-colxx>
         <b-colxx sm="6">
           <b-form-group label="Method of Repayment (Monthly or Single)">
-            <b-form-input type="text" v-model="form.repayment_method" />
+          <b-form-select v-model="form.repayment_method" :options="options" :class="$v.form.repayment_method.$error ? 'is-invalid' : ''" @blur="$v.form.repayment_method.$touch()"></b-form-select>
+                        <div v-if="$v.form.repayment_method.$error">
+                  <span v-if="!$v.form.repayment_method.required" class="error-text">Sorry please choose how you wish to pay.</span>
+              </div>
           </b-form-group>
         </b-colxx>
       </b-row>
@@ -181,18 +193,18 @@
           </b-form-group>
         </b-colxx>
       </b-row>
-      <b-button style="border-radius: 0" v-b-modal.modalbasic variant="primary" class="mt-4">Submit</b-button>
+      <b-button style="border-radius: 0" v-b-modal.basicModal variant="primary" class="mt-4">Submit</b-button>
       <h6 class="mt-4">Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
     </b-card>
-    <b-modal id="modalbasic" ref="modalbasic" size="lg" title="Terms and Condition">
-      I {{form.fullname}} hereby declare that the statements made herein are true and correct
+    <b-modal id="basicModal" ref="basicModal" size="lg" title="Terms and Condition">
+      I drake hereby declare that the statements made herein are true and correct
       <h6>Terms</h6>
       <ul style="text-align: justify">
-        <li>The agreement made this {{days[new Date().getDay().toString()]}} of _not_sure_whats_here_ between Landmark University Staff Cooperative Multipurpose Society Limited (herin after referred to as the lender) on the one hand and {{form.fullname}} (herein refered as the borrower) on the other hand requires ₦{{form.loan_name}} for the purpose of {{form.loan_purpose}} and whereas the borrower has applied to the lender for the said sum of ₦{{form.loan_ammount}} for the purpose aforementioned which the lender has agreed upon having the repayment therefore together with the 10% interest thereon secured in thereinafter appearing</li>
+        <li>The agreement made this {{days[new Date().getDay().toString()]}} of _not_sure_whats_here_ between Landmark University Staff Cooperative Multipurpose Society Limited (herin after referred to as the lender) on the one hand and (herein refered as the borrower) on the other hand requires ₦ for the purpose of gh and whereas the borrower has applied to the lender for the said sum of ₦ for the purpose aforementioned which the lender has agreed upon having the repayment therefore together with the 10% interest thereon secured in thereinafter appearing</li>
         <li>
-          In pursusance of the above agreement and in consideration of the sum of ₦{{form.loan_amount}} now paid by the lender to the borrower, receipt whereof the borrower hereby acknowledges, the borrower's agreement with the lender shall be that:
+          In pursusance of the above agreement and in consideration of the sum of ₦ now paid by the lender to the borrower, receipt whereof the borrower hereby acknowledges, the borrower's agreement with the lender shall be that:
           <ul>
-            <li>The borrower shall repay the sum of ₦{{form.loan_amount}} with interest thereon at the rate of 10% from the date hereof over a period _computed_months_ in equal and consecutive monthly installments of _computed_repayment_ the first installment being due on _computed_date_</li>
+            <li>The borrower shall repay the sum of ₦ with interest thereon at the rate of 10% from the date hereof over a period _computed_months_ in equal and consecutive monthly installments of _computed_repayment_ the first installment being due on _computed_date_</li>
             <li>During continuance of this agreement, the borrower shall pay by check-off from his or her salary monthly the sum of N _computed_ to the lender</li>
           </ul>
         </li>
@@ -217,8 +229,8 @@ export default {
   data() {
     return {
       options: [
-        { value: 1, text: "1 year" },
-        { value: 2, text: "2 years" }
+        { value: 'monthly', text: "Monthly" },
+        { value: 'yearly', text: "Yearly" }
       ],
       loanNature: [
         { value: 'regular', text: "Regular Credit Loan" },
@@ -291,12 +303,12 @@ export default {
         maxLength: maxLength(8),
         numeric
       },
-      credit_nature: {
-        required
-      },
-      loan_amount: {
-        required
-      }
+      credit_nature: {required},
+      loan_amount: {required},
+      loan_purpose: {required},
+      monthly_thrift_contribution: {required},
+      borrower_acct_details: {required},
+      repayment_method: {required},
     }
   },
   methods: {
@@ -308,14 +320,14 @@ export default {
         this.$refs["modalnested"].show();
       }
     },
-    somethingModal(refname) {
-      this.$refs[refname].hide();
-      console.log("something modal:: " + refname);
+    // somethingModal(refname) {
+    //   this.$refs[refname].hide();
+    //   console.log("something modal:: " + refname);
 
-      if (refname === "modalnestedinline") {
-        this.$refs["modalnested"].show();
-      }
-    },
+    //   if (refname === "modalnestedinline") {
+    //     this.$refs["modalnested"].show();
+    //   }
+    // },
     ...mapActions("loan", ["CreditLoanRequest"]),
     ...mapActions("notification", ["remove"]),
     formSubmit() {
