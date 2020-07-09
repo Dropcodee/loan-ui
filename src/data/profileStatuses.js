@@ -1,28 +1,17 @@
-const data = [
-  {
-    title: 'Basic Information',
-    total: 18,
-    status: 12
-  },
-  {
-    title: 'Portfolio',
-    total: 8,
-    status: 1
-  },
-  {
-    title: 'Billing Details',
-    total: 6,
-    status: 2
-  },
-  {
-    title: 'Interests',
-    total: 10,
-    status: 0
-  },
-  {
-    title: 'Legal Documents',
-    total: 2,
-    status: 1
-  }
+const data = [{
+        title: 'Credit Loan',
+        total: 60000,
+        status: 10000
+    },
+    {
+        title: 'Car Loan',
+        total: 650000,
+        status: 300000
+    },
+    {
+        title: 'Loan on food commodities',
+        total: 55000,
+        status: 45000
+    },
 ]
 export default data

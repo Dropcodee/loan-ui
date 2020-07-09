@@ -5,88 +5,78 @@
         <piaf-breadcrumb :heading="header" />
         <div class="separator mb-5"></div>
         <p class="lead">Welcome back {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }} {{ currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) }}</p>
-        <p v-if="currentUser.account_number == null">Please Complete your profile to get started. <router-link to="/" class="primary"> Click Here </router-link>
+        <p v-if="currentUser.account_number == null">Please Complete your profile to get started. <router-link
+            to="/"
+            class="primary"
+          > Click Here </router-link>
         </p>
         <p v-else> Please fill out all the details for your loan application</p>
       </b-colxx>
     </b-row>
-    <b-colxx xxs="12" xs="12" md="12" lg="10">
-      <b-card class="mb-4" no-body>
-        <b-tabs card no-fade>
-          <b-tab title="Commodity Loan" active title-item-class="w-30 text-center">
-            <commodity-loan :user="currentUser" :guarantors="guarantorsList" />
-          </b-tab>
-          <b-tab title="Regular & Emmergency Loan" active title-item-class="w-30 text-center">
-            <credit-loan :user="currentUser" :guarantors="guarantorsList" />
-          </b-tab>
-          <b-tab title="Car Acquisition Loan" active title-item-class="w-30 text-center">
-            <car-acquisition-loan :user="currentUser" :guarantors="guarantorsList" />
-          </b-tab>
-        </b-tabs>
-      </b-card>
-    </b-colxx>
+    <CommodityLoan
+      :guarantors="guarantorsList"
+      :user="currentUser"
+    />
   </div>
 </template>
 <script>
-import CommodityLoan from '@/components/payo/CommodityLoanForm'
-import CreditLoan from '@/components/payo/CreditLoan'
-import CarAcquisitionLoan from '@/components/payo/CarAcquisitionLoan'
-import { mapGetters, mapActions, mapState } from 'vuex'
-import ash from 'lodash'
+import CommodityLoan from "@/components/payo/CommodityLoanForm";
+import { mapGetters, mapActions, mapState } from "vuex";
+import ash from "lodash";
 
 export default {
-
-  name: 'loan-application',
+  name: "loan-application",
   components: {
-    CommodityLoan,
-    CreditLoan,
-    CarAcquisitionLoan
+    CommodityLoan
   },
   data() {
     return {
-      header: 'Loan Application Form',
+      header: "Commodity Loan Application",
       guarantorsList: []
     };
   },
 
   computed: {
-    ...mapGetters('user', ['currentUser']),
-    ...mapGetters('loan', ['potentialGuarantors']),
-    ...mapState('notification', ["notifications"]),
+    ...mapGetters("user", ["currentUser"]),
+    ...mapGetters("loan", ["potentialGuarantors", "processing"]),
+    ...mapState("notification", ["notifications"])
   },
   methods: {
-    ...mapActions('notification', ["remove"]),
-    ...mapActions('loan', ["FetchGuarantors"]),
+    ...mapActions("notification", ["remove"]),
+    ...mapActions("loan", ["FetchGuarantors"]),
     removeNotification(notification) {
-      console.log(notification)
-      this.remove(notification)
+      console.log(notification);
+      this.remove(notification);
     },
     pushToGurantorsList(guarantor) {
       // console.log(guarantor);
       this.guarantorsList.push({
-        'value': guarantor.id,
-        'text': ash.startCase(guarantor.first_name) + ' ' + ash.startCase(guarantor.last_name)
-      })
+        value: guarantor.id,
+        text:
+          ash.startCase(guarantor.first_name) +
+          " " +
+          ash.startCase(guarantor.last_name)
+      });
     }
   },
   watch: {
-    notifications(notifications) {
-      for (let i in notifications) {
-        if (notifications[i].type == 'error') {
-          this.$notify("error", "Error Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
-          this.requestError = true
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000)
-        } else if (notifications[i].type == 'success') {
-          this.$notify("success", "Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false
-          });
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000)
+    notifications: {
+      handler: function(notifications) {
+        for (let i in notifications) {
+          if (notifications[i].type == "error") {
+            this.$notify("error", "Error Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false
+            });
+            this.requestError = true;
+            setTimeout(() => this.removeNotification(notifications[i]), 5000);
+          } else if (notifications[i].type == "success") {
+            this.$notify("success", "Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false
+            });
+            setTimeout(() => this.removeNotification(notifications[i]), 3000);
+          }
         }
       }
     },
@@ -102,18 +92,16 @@ export default {
     }
   },
   created() {
-    this.FetchGuarantors()
+    this.FetchGuarantors();
   }
 };
-
 </script>
 <style lang="css" scoped>
 .mt-12 {
-  margin-top: 4rem
+  margin-top: 4rem;
 }
 
 .mt-8 {
-  margin-top: 3rem
+  margin-top: 3rem;
 }
-
 </style>
