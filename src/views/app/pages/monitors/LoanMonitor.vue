@@ -149,7 +149,7 @@ export default {
         // interest
         // status
       ],
-      perPage: 5,
+      perPage: 10,
       data: []
     };
   },
