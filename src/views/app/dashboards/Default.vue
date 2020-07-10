@@ -153,7 +153,7 @@ export default {
             },
             {
               title: "Credit Loans (Regular or Emmergency Loans)",
-              link: "credit-application"
+              link: "credit-loan"
             },
             { title: "Car Aquizition Loan", link: "car-application" }
           ],
