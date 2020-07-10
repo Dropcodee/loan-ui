@@ -64,8 +64,8 @@ const routes = [
             redirect: "/app/pages/services/loan-application",
             children: [
               {
-                path: "/app/pages/services/loan-application",
-                name: "loan-application",
+                path: "/app/pages/services/commodity-application",
+                name: "commodity-application",
                 component: () =>
                   import(
                     /* webpackChunkName: "product" */ "./views/app/pages/services/LoanApplication"

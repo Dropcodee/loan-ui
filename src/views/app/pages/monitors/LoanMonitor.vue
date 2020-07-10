@@ -39,112 +39,113 @@ export default {
           sortField: "loan_type",
           title: "Loan Type",
           titleClass: "",
-          dataClass: "list-item-heading"
+          dataClass: "list-item-heading",
+          sortDirection: "desc"
         },
-        {
-          name: "loan_purpose",
-          sortField: "loan_purpose",
-          title: "Loan Purpose",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "credit_loan_type",
-          sortField: "credit_loan_type",
-          title: "Credit Loan Type",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "commodity_nature",
-          sortField: "commodity_nature",
-          title: "Commodity Nature",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "guarantor_verify_link",
-          sortField: "guarantor_verify_link",
-          title: "Guarantor Verify Link",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "principal_amount_words",
-          sortField: "principal_amount_words",
-          title: "Principal Amount in Words",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "asset_brand",
-          sortField: "asset_brand",
-          title: "Asset Brand",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "target_loan",
-          sortField: "target_loan",
-          title: "Target Loan",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "monthly_thrift_contribution",
-          sortField: "monthly_thrift_contribution",
-          title: "Monthly Thrift Contribution",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "monthly_regular_loan_repay",
-          sortField: "monthly_regular_loan_repay",
-          title: "Monthly Regular Loan Repay",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "monthly_emergency_loan_repay",
-          sortField: "monthly_emergency_loan_repay",
-          title: "Monthly Emergency Loan Repay",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "quick_loan_repay",
-          sortField: "quick_loan_repay",
-          title: "Quick Loan Repay",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
-        {
-          name: "method_of_repayment",
-          sortField: "method_of_repayment",
-          title: "Method of Repayment",
-          titleClass: "",
-          dataClass: "list-item-heading"
-        },
+        // {
+        //   name: "loan_purpose",
+        //   sortField: "loan_purpose",
+        //   title: "Loan Purpose",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "credit_loan_type",
+        //   sortField: "credit_loan_type",
+        //   title: "Credit Loan Type",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "commodity_nature",
+        //   sortField: "commodity_nature",
+        //   title: "Commodity Nature",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "guarantor_verify_link",
+        //   sortField: "guarantor_verify_link",
+        //   title: "Guarantor Verify Link",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "principal_amount_words",
+        //   sortField: "principal_amount_words",
+        //   title: "Principal Amount in Words",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "asset_brand",
+        //   sortField: "asset_brand",
+        //   title: "Asset Brand",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "target_loan",
+        //   sortField: "target_loan",
+        //   title: "Target Loan",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "monthly_thrift_contribution",
+        //   sortField: "monthly_thrift_contribution",
+        //   title: "Monthly Thrift Contribution",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "monthly_regular_loan_repay",
+        //   sortField: "monthly_regular_loan_repay",
+        //   title: "Monthly Regular Loan Repay",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "monthly_emergency_loan_repay",
+        //   sortField: "monthly_emergency_loan_repay",
+        //   title: "Monthly Emergency Loan Repay",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "quick_loan_repay",
+        //   sortField: "quick_loan_repay",
+        //   title: "Quick Loan Repay",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
+        // {
+        //   name: "method_of_repayment",
+        //   sortField: "method_of_repayment",
+        //   title: "Method of Repayment",
+        //   titleClass: "",
+        //   dataClass: "list-item-heading"
+        // },
         {
           name: "principal_amount",
           sortField: "principal_amount",
           title: "Principal Amount",
           titleClass: "",
-          dataClass: "list-item-heading"
+          dataClass: "text-muted"
         },
         {
           name: "interest",
           sortField: "interest",
           title: "Interest",
           titleClass: "",
-          dataClass: "list-item-heading"
+          dataClass: "text-muted"
         },
         {
           name: "status",
           sortField: "status",
           title: "Status",
           titleClass: "",
-          dataClass: "list-item-heading"
+          dataClass: "text-muted"
         }
         // interest
         // status
@@ -167,6 +168,20 @@ export default {
         // console.log(response)
         const { loans } = response.data;
         this.data = loans;
+        this.data.forEach(loan => {
+          loan.interest += "%";
+          if (loan.status == 0) {
+            loan.status = "Pending";
+          } else if (loan.status == 1) {
+            loan.status = "Verifying";
+          } else if (loan.status == 2) {
+            loan.status = "Running";
+          } else if (loan.status == 3) {
+            loan.status = "Completed";
+          } else {
+            loan.status = "Failed";
+          }
+        });
         console.log(this.data);
       });
   },
@@ -213,10 +228,5 @@ export default {
 <style>
 .table-responsive th {
   vertical-align: top !important;
-}
-
-.table-responsive th,
-.table-responsive td {
-  min-width: 120px;
 }
 </style>
