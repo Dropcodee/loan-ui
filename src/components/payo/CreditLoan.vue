@@ -131,10 +131,10 @@
               v-if="!$v.form.loan_amount.minLength"
               class="error-text"
             >Sorry can't request for a loan less than is 10,000</span>
-            <span
+            <!-- <span
               v-if="!$v.form.loan_amount.maxLength"
               class="error-text"
-            >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
+            >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span> -->
             <span
               v-if="!$v.form.loan_amount.numeric"
               class="error-text"
@@ -223,6 +223,21 @@
             >Please select two guarantors for your loan applications.</span>
           </div>
         </b-form-group>
+        <b-form-group
+          label="Method of loan repayment"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_percentage"
+            :options="percentages"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_percentage.$error">
+            <span
+              v-if="!$v.form.repayment_percentage.required"
+              class="error-text"
+            >Please share the loan among the selected guarantors.</span>
+          </div>
+        </b-form-group>
         <div class="d-flex justify-content-around align-items-center">
           <b-button
             type="submit"
@@ -266,7 +281,7 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
-
+import moment from "moment";
 export default {
   name: "CreditLoan",
   props: {
@@ -285,6 +300,11 @@ export default {
       loanNature: [
         { value: "regular", text: "Regular Credit Loan" },
         { value: "emergency", text: "Emergency Credit Loan" }
+      ],
+      percentages: [
+        { value: "5050", text: "50% - 50%" },
+        { value: "6040", text: "60% - 40%" },
+        { value: "6040", text: "70% - 30%" }
       ],
       days: [
         "Sunday",
@@ -314,7 +334,9 @@ export default {
         borrower_acct_details: "",
         email: this.user.email,
         repayment_method: "",
+        repayment_percentage: "",
         startDate: null,
+        displayDate: null,
         guarantors: []
       }
     };
@@ -325,6 +347,7 @@ export default {
       college: { required },
       department: { required },
       email: { required },
+      repayment_percentage: { required },
       phone: {
         required,
         minLength: minLength(11),
@@ -349,6 +372,9 @@ export default {
   },
   methods: {
     ...mapActions("loan", ["CreditLoanRequest"]),
+    moment: function() {
+      return moment();
+    },
     hideModal(refname) {
       this.$refs[refname].hide();
       console.log("hide modal:: " + refname);
@@ -366,18 +392,26 @@ export default {
         return guarantor;
       });
     },
+    formatDate() {
+      this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
+      console.log(this.form.displayDate);
+    },
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        const { amount, tenure, interest } = this.form;
+        const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
         const payload = {
-          principal_amount: amount,
-          tenure,
-          interest
+          loan_amount: this.form.loan_amount,
+          loan_purpose: this.form.loan_purpose,
+          repayment_date: backendDate,
+          repayment_amount: this.form.regular_loan_repayment,
+          interest: this.form.loanInterest,
+          method_of_repayment: this.form.method_of_repayment,
+          credit_loan_type: this.form.credit_nature,
+          tenure: this.form.method_of_repayment
         };
         try {
-          this.NewLoanRequest(payload);
-          this.requestError = false;
+          this.CreditLoanRequest(payload);
         } catch (err) {
           return err;
         }
@@ -420,6 +454,11 @@ export default {
     "form.loan_amount": {
       handler: function(amount) {
         this.interestCalculator(this.form.repayment_method);
+      }
+    },
+    "form.startDate": {
+      handler: function(startDate) {
+        this.formatDate();
       }
     }
   }

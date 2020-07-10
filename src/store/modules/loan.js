@@ -1,5 +1,5 @@
 import LoanServices from '@/services/LoanServices'
-
+import router from "../../router";
 export const namespaced = true
 
 export const state = {
@@ -35,6 +35,9 @@ export const actions = {
                 type: 'success',
                 message: 'Successfully applied for a new loan, we will contact you shortly.'
             }
+            router.push({
+                name: 'loan-monitor'
+            });
             dispatch('notification/add', notification, {
                 root: true
             })
