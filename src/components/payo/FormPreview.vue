@@ -25,7 +25,7 @@
             </p>
           </b-colxx>
           <b-colxx>
-            <p class="preview preview__text">{{ previewData.staffId }}
+            <p class="preview preview__text">{{ previewData.staffId || previewData.staff_id }}
               <span class="preview__title"> Staff ID Number </span>
             </p>
           </b-colxx>
@@ -49,8 +49,17 @@
             </p>
           </b-colxx>
           <b-colxx>
-            <p class="preview preview__text">{{ previewData.nature ? previewData.nature : 'N/A' }}
+            <p
+              class="preview preview__text"
+              v-if="previewData.nature"
+            >{{ previewData.nature ? previewData.nature : 'N/A' }}
               <span class="preview__title">Nature of items </span>
+            </p>
+            <p
+              class="preview preview__text"
+              v-if="previewData.credit_nature"
+            >{{ previewData.credit_nature ? previewData.credit_nature : 'N/A' }}
+              <span class="preview__title">Nature Of Loan</span>
             </p>
           </b-colxx>
         </b-row>
@@ -58,19 +67,34 @@
           <b-colxx>
             <p
               class="preview preview__text"
-              v-show="previewData.amount"
-            >{{ previewData.amount | toCurrency }}
+              v-show="previewAmount"
+            >{{ previewAmount | toCurrency }}
               <span class="preview__title"> Loan Amount </span>
             </p>
             <p
               class="preview preview__text"
-              v-show="!previewData.amount"
+              v-show="!previewAmount"
             >N/A
               <span class="preview__title"> Loan Amount </span>
             </p>
           </b-colxx>
           <b-colxx>
-            <p class="preview preview__text">{{ previewData.interest ? previewData.interest+"%" : 'N/A' }}
+            <p
+              class="preview preview__text"
+              v-if="previewData.interest"
+            >{{ previewData.interest ? previewData.interest+"%" : 'N/A' }}
+              <span class="preview__title">Loan Interest</span>
+            </p>
+            <p
+              class="preview preview__text"
+              v-if="previewData.loanInterest"
+            >{{ previewData.loanInterest ? previewData.loanInterest+"%" : 'N/A' }}
+              <span class="preview__title">Loan Interest</span>
+            </p>
+            <p
+              class="preview preview__text"
+              v-else
+            >N/A
               <span class="preview__title">Loan Interest</span>
             </p>
           </b-colxx>
@@ -79,32 +103,42 @@
           <b-colxx>
             <p
               class="preview preview__text"
-              v-show="previewData.repaymentAmount"
+              v-if="previewData.repaymentAmount"
             >{{previewData.repaymentAmount | toCurrency }}
               <span class="preview__title">Amount to be repayed</span>
             </p>
             <p
               class="preview preview__text"
-              v-show="!previewData.repaymentAmount"
+              v-if="previewData.regular_loan_repayment"
+            >{{previewData.regular_loan_repayment | toCurrency }}
+              <span class="preview__title">Amount to be repayed</span>
+            </p>
+            <p
+              class="preview preview__text"
+              v-else
             > N/A
               <span class="preview__title">Amount to be repayed</span>
             </p>
           </b-colxx>
           <b-colxx>
-            <p class="preview preview__text">{{ previewData.tenure ? previewData.tenure+" Days" : 'N/A' }}
+            <p
+              class="preview preview__text"
+              v-if="previewData.tenure"
+            >{{ previewData.tenure ? previewData.tenure+" Days" : 'N/A' }}
+              <span class="preview__title">Loan Duration </span>
+            </p>
+            <p
+              class="preview preview__text"
+              v-if="previewData.repayment_method"
+            >{{ previewData.repayment_method ? previewData.repayment_method : 'N/A' }}
               <span class="preview__title">Loan Duration </span>
             </p>
           </b-colxx>
         </b-row>
         <b-row>
-          <b-colxx>
+          <b-colxx v-show="previewData.displayDate">
             <p class="preview preview__text">{{ previewData.displayDate ? previewData.displayDate : 'N/A' }}
               <span class="preview__title">Loan Commencement Date</span>
-            </p>
-          </b-colxx>
-          <b-colxx>
-            <p class="preview preview__text">{{ previewData.tenure ? previewData.tenure+" Days" : 'N/A' }}
-              <span class="preview__title">Loan Guarantors </span>
             </p>
           </b-colxx>
         </b-row>
@@ -125,7 +159,27 @@ export default {
   props: { user: Object, previewData: Object, title: String },
   components: { SingleLightbox },
   data() {
-    return {};
+    return {
+      previewAmount: 0
+    };
+  },
+  watch: {
+    "previewData.amount": {
+      handler: function(amount) {
+        this.previewAmount = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN"
+        }).format(amount);
+      }
+    },
+    "previewData.loan_amount": {
+      handler: function(loan_amount) {
+        this.previewAmount = new Intl.NumberFormat("en-US", {
+          style: "currency",
+          currency: "NGN"
+        }).format(loan_amount);
+      }
+    }
   }
 };
 </script>

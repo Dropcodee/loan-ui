@@ -11,6 +11,6 @@ export default {
         return api().post('auth/verify', credentials)
     },
     update(credentials) {
-        return api().post('auth/profile/edit', credentials)
+        return api().get('auth/profile/edit', credentials)
     }
 }
