@@ -215,7 +215,7 @@
         </b-form>
       </b-colxx>
 
-      <FormPreview
+      <FormPreviewCar
         class="has-float-label mb-4"
         :user="user"
         :previewData="form"
@@ -266,7 +266,7 @@
   </div>
 </template>
 <script>
-import FormPreview from "./FormPreview";
+import FormPreviewCar from "./FormPreviewCar";
 import {
   required,
   maxLength,
@@ -279,7 +279,7 @@ export default {
   name: "CarAcquisition",
   props: { user: Object, guarantors: Array, requestError: [Boolean, null] },
 
-  components: { FormPreview },
+  components: { FormPreviewCar },
   computed: {
     ...mapGetters("loan", ["processing"])
   },
