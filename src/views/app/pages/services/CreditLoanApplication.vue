@@ -16,6 +16,8 @@
     <credit-loan-form
       :processing="processing"
       :user="currentUser"
+      :guarantors="guarantorsList"
+      :requestError='requestError'
     />
   </div>
 </template>
@@ -23,21 +25,25 @@
 import { mapGetters, mapActions, mapState } from "vuex";
 import { required, maxLength, numeric } from "vuelidate/lib/validators";
 import CreditLoanForm from "@/components/payo/CreditLoan";
+import ash from "lodash";
+
 export default {
   name: "land-application",
   components: { CreditLoanForm },
   data() {
     return {
-      header: "Credit Loan Application"
+      header: "Credit Loan Application",
+      guarantorsList: [],
+      requestError: null
     };
   },
   computed: {
-    ...mapGetters("loan", ["processing"]),
+    ...mapGetters("loan", ["processing", "potentialGuarantors"]),
     ...mapGetters("user", ["currentUser"]),
     ...mapState("notification", ["notifications"])
   },
   methods: {
-    ...mapActions("loan", ["NewLoanRequest"]),
+    ...mapActions("loan", ["NewLoanRequest", "FetchGuarantors"]),
     ...mapActions("notification", ["remove"]),
     formSubmit() {
       this.$v.$touch();
@@ -50,7 +56,6 @@ export default {
         };
         try {
           this.NewLoanRequest(payload);
-          this.requestError = false;
         } catch (err) {
           return err;
         }
@@ -69,6 +74,16 @@ export default {
     removeNotification(notification) {
       console.log(notification);
       this.remove(notification);
+    },
+    pushToGurantorsList(guarantor) {
+      // console.log(guarantor);
+      this.guarantorsList.push({
+        value: guarantor.id,
+        name:
+          ash.startCase(guarantor.first_name) +
+          " " +
+          ash.startCase(guarantor.last_name)
+      });
     }
   },
   watch: {
@@ -88,6 +103,7 @@ export default {
             permanent: false
           });
           let as = this;
+          this.requestError = false;
           setTimeout(() => as.removeNotification(notifications[i]), 3000);
         }
       }
@@ -97,15 +113,24 @@ export default {
     },
     "form.tenure": function(tenure) {
       this.interest(this.form.amount);
+    },
+    potentialGuarantors: {
+      handler: function(potentialGuarantors) {
+        // let as be root this to enable us get the root methods.
+        let as = this;
+        potentialGuarantors.forEach(function(guarantor) {
+          // statements
+          as.pushToGurantorsList(guarantor);
+        });
+      }
     }
+  },
+  created() {
+    this.FetchGuarantors();
   }
 };
 </script>
 <style lang="css" scoped>
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 .mt-12 {
   margin-top: 4rem;
 }

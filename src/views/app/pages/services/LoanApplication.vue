@@ -16,6 +16,7 @@
     <CommodityLoan
       :guarantors="guarantorsList"
       :user="currentUser"
+      :requestError='requestError'
     />
   </div>
 </template>
@@ -32,7 +33,8 @@ export default {
   data() {
     return {
       header: "Commodity Loan Application",
-      guarantorsList: []
+      guarantorsList: [],
+      requestError: null
     };
   },
 
@@ -52,7 +54,7 @@ export default {
       // console.log(guarantor);
       this.guarantorsList.push({
         value: guarantor.id,
-        text:
+        name:
           ash.startCase(guarantor.first_name) +
           " " +
           ash.startCase(guarantor.last_name)
@@ -75,6 +77,7 @@ export default {
               duration: 3000,
               permanent: false
             });
+            this.requestError = false;
             setTimeout(() => this.removeNotification(notifications[i]), 3000);
           }
         }

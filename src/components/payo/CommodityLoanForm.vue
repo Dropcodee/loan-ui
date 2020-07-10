@@ -186,12 +186,18 @@
           label="Choose Loan Guarantors (two)"
           class="has-float-label mb-4"
         >
-          <b-form-select
-            multiple
+          <multiselect
+            v-if="guarantors && guarantors.length"
             v-model="form.guarantors"
             :options="guarantors"
-            v-if="guarantors.length && processing == false"
-          ></b-form-select>
+            :multiple="true"
+            :searchable="true"
+            deselectLabel="Press enter to remove"
+            :max="2"
+            label="name"
+            placeholder="Select two guarantors of your choice"
+            @remove="removeGuarantor"
+          ></multiselect>
           <b-form-select
             v-model="form.guarantors"
             :options="emptyOptions"
@@ -234,6 +240,7 @@
     <form-preview
       :user="user"
       :previewData="form"
+      title="Commodity Loan Application Preview"
     />
   </b-row>
 
@@ -251,7 +258,7 @@ import moment from "moment";
 
 export default {
   name: "CommodityLoanForm",
-  props: { user: Object, guarantors: Array },
+  props: { user: Object, guarantors: Array, requestError: [Boolean, null] },
   components: { FormPreview },
   data() {
     return {
@@ -283,8 +290,7 @@ export default {
         { value: 365, text: "1 year" },
         { value: 730, text: "2 years" }
       ],
-      timeout: null,
-      requestError: null
+      timeout: null
     };
   },
   computed: {
@@ -338,6 +344,15 @@ export default {
     moment: function() {
       return moment();
     },
+    removeGuarantor(removedOption, id) {
+      // console.log(removedOption.value);
+      this.form.guarantors.forEach(guarantor => {
+        if (guarantor.value === removedOption.value) {
+          this.form.guarantors.splice(guarantor);
+        }
+        return guarantor;
+      });
+    },
     calcRepaymentAmount() {
       let { amount, interest, tenure } = this.form;
       let payload = {
@@ -348,7 +363,7 @@ export default {
       this.form.repaymentAmount = this.interest(payload);
     },
     interest(payload) {
-      console.log(payload);
+      // console.log(payload);
       if (payload.amount == "" || payload.amount == null) {
         return 0;
       } else {
@@ -367,6 +382,10 @@ export default {
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
         const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
+        const guarantorsIds = [];
+        this.form.guarantors.forEach(guarantor => {
+          guarantorsIds.push(guarantor.value);
+        });
         const payload = {
           commodity_nature: this.form.nature,
           loan_type: "Commodity Loan",
@@ -375,11 +394,10 @@ export default {
           principal_amount: this.form.amount,
           repayment_amount: this.form.repaymentAmount.toString(),
           repayment_date: backendDate,
-          guarantors: this.form.guarantors
+          guarantors: guarantorsIds
         };
         try {
           this.CommodityLoanRequest(payload);
-          this.requestError = false;
         } catch (err) {
           return err;
         }

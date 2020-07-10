@@ -6,13 +6,22 @@
         <piaf-breadcrumb :heading="$t('menu.default')" />
         <div class="separator mb-5"></div>
         <p class="lead">Welcome back {{ currentUser.first_name.charAt(0).toUpperCase() + currentUser.first_name.slice(1) }} {{ currentUser.last_name.charAt(0).toUpperCase() + currentUser.last_name.slice(1) }}</p>
-        <p>Please Complete your profile to get started. <router-link to="/" class="primary"> Click Here </router-link>
+        <p>Please Complete your profile to get started. <router-link
+            to="/"
+            class="primary"
+          > Click Here </router-link>
         </p>
       </b-colxx>
     </b-row>
     <h2 class="text-center mt-4">Here are some of our services</h2>
     <draggable class="col mt-4">
-      <b-colxx xl="12" lg="12" class="mb-4" v-for="(service, index) in serviceListing" :key="index">
+      <b-colxx
+        xl="12"
+        lg="12"
+        class="mb-4"
+        v-for="(service, index) in serviceListing"
+        :key="index"
+      >
         <list-card-component :service="service">
         </list-card-component>
       </b-colxx>
@@ -20,38 +29,38 @@
   </div>
 </template>
 <script>
-import GlideComponent from '../../../components/Carousel/GlideComponent'
-import ListcardComponent from '@/components/payo/ListcardComponent'
+import GlideComponent from "../../../components/Carousel/GlideComponent";
+import ListcardComponent from "@/components/payo/ListcardComponent";
 
 import {
   CalendarView,
   CalendarViewHeader,
   CalendarMathMixin
-} from 'vue-simple-calendar'
+} from "vue-simple-calendar";
 
-import Vuetable from 'vuetable-2/src/components/Vuetable'
-import VuetablePaginationBootstrap from '../../../components/Common/VuetablePaginationBootstrap'
+import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePaginationBootstrap from "../../../components/Common/VuetablePaginationBootstrap";
 
-import Draggable from 'vuedraggable'
+import Draggable from "vuedraggable";
 
-import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
+import vSelect from "vue-select";
+import "vue-select/dist/vue-select.css";
 
-import IconCard from '../../../components/Cards/IconCard'
-import GradientCard from '../../../components/Cards/GradientCard'
-import GradientWithRadialProgressCard from '../../../components/Cards/GradientWithRadialProgressCard'
-import SmallLineChartCard from '../../../components/Cards/SmallLineChartCard'
+import IconCard from "../../../components/Cards/IconCard";
+import GradientCard from "../../../components/Cards/GradientCard";
+import GradientWithRadialProgressCard from "../../../components/Cards/GradientWithRadialProgressCard";
+import SmallLineChartCard from "../../../components/Cards/SmallLineChartCard";
 
-import RadialProgressCard from '../../../components/Cards/RadialProgressCard'
-import LineShadowChart from '../../../components/Charts/LineShadow'
-import PolarAreaShadowChart from '../../../components/Charts/PolarAreaShadow'
-import AreaShadowChart from '../../../components/Charts/AreaShadow'
+import RadialProgressCard from "../../../components/Cards/RadialProgressCard";
+import LineShadowChart from "../../../components/Charts/LineShadow";
+import PolarAreaShadowChart from "../../../components/Charts/PolarAreaShadow";
+import AreaShadowChart from "../../../components/Charts/AreaShadow";
 
-import RecentOrderItem from '../../../components/Listing/RecentOrderItem'
-import LogList from '../../../components/Listing/LogList'
-import ListWithUserItem from '../../../components/Listing/ListWithUserItem'
-import TwoColumnList from '../../../components/Listing/TwoColumnList'
-import TopRatedSlideItem from '../../../components/Listing/TopRatedSlideItem'
+import RecentOrderItem from "../../../components/Listing/RecentOrderItem";
+import LogList from "../../../components/Listing/LogList";
+import ListWithUserItem from "../../../components/Listing/ListWithUserItem";
+import TwoColumnList from "../../../components/Listing/TwoColumnList";
+import TopRatedSlideItem from "../../../components/Listing/TopRatedSlideItem";
 
 import {
   lineChartData,
@@ -62,41 +71,39 @@ import {
   smallChartData2,
   smallChartData3,
   smallChartData4
-} from '../../../data/charts'
-import logs from '../../../data/logs'
-import products from '../../../data/products'
-import tickets from '../../../data/tickets'
-import profileStatuses from '../../../data/profileStatuses'
-import cakes from '../../../data/cakes'
-import {
-  apiUrl
-} from '../../../constants/config'
+} from "../../../data/charts";
+import logs from "../../../data/logs";
+import products from "../../../data/products";
+import tickets from "../../../data/tickets";
+import profileStatuses from "../../../data/profileStatuses";
+import cakes from "../../../data/cakes";
+import { apiUrl } from "../../../constants/config";
 
-import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 
 export default {
   components: {
-    'glide-component': GlideComponent,
-    'icon-card': IconCard,
-    'gradient-card': GradientCard,
-    'line-shadow-chart': LineShadowChart,
-    'recent-order-item': RecentOrderItem,
-    'polar-area-shadow-chart': PolarAreaShadowChart,
-    'area-shadow-chart': AreaShadowChart,
-    'log-list': LogList,
-    'list-with-user-item': ListWithUserItem,
-    'calendar-view': CalendarView,
-    'calendar-view-header': CalendarViewHeader,
-    'vuetable': Vuetable,
-    'vuetable-pagination-bootstrap': VuetablePaginationBootstrap,
-    'two-column-list': TwoColumnList,
-    'draggable': Draggable,
-    'radial-progress-card': RadialProgressCard,
-    'gradient-with-radial-progress-card': GradientWithRadialProgressCard,
-    'v-select': vSelect,
-    'small-line-chart-card': SmallLineChartCard,
-    'top-rated-slide-item': TopRatedSlideItem,
-    'list-card-component': ListcardComponent
+    "glide-component": GlideComponent,
+    "icon-card": IconCard,
+    "gradient-card": GradientCard,
+    "line-shadow-chart": LineShadowChart,
+    "recent-order-item": RecentOrderItem,
+    "polar-area-shadow-chart": PolarAreaShadowChart,
+    "area-shadow-chart": AreaShadowChart,
+    "log-list": LogList,
+    "list-with-user-item": ListWithUserItem,
+    "calendar-view": CalendarView,
+    "calendar-view-header": CalendarViewHeader,
+    vuetable: Vuetable,
+    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
+    "two-column-list": TwoColumnList,
+    draggable: Draggable,
+    "radial-progress-card": RadialProgressCard,
+    "gradient-with-radial-progress-card": GradientWithRadialProgressCard,
+    "v-select": vSelect,
+    "small-line-chart-card": SmallLineChartCard,
+    "top-rated-slide-item": TopRatedSlideItem,
+    "list-card-component": ListcardComponent
   },
   mixins: [CalendarMathMixin],
   data() {
@@ -126,103 +133,116 @@ export default {
       polarAreaChartData,
       logs,
       tickets,
-      serviceListing: [{
+      serviceListing: [
+        {
           type: {
-            mode: 'link',
+            mode: "link",
             location: "/transfer"
           },
           title: "Create a savings account",
-          description: "Create your savings account to enable you for loan applications.",
+          description:
+            "Create your savings account to enable you for loan applications.",
           buttonText: "Create Acount"
         },
         {
-          type: 'modal',
+          type: "modal",
           location: [
-            { title: 'Commodity Loan Application', link: 'loan-application' },
-            { title: 'Credit Loans (Regular or Emmergency Loans)', link: 'land-application' },
-            { title: 'Car Aquizition Loan', link: 'land-application' }
+            {
+              title: "Commodity Loan Application",
+              link: "commodity-application"
+            },
+            {
+              title: "Credit Loans (Regular or Emmergency Loans)",
+              link: "credit-application"
+            },
+            { title: "Car Aquizition Loan", link: "car-application" }
           ],
           title: "Apply for loans",
-          description: "Start applying for loans from as low as 50,000 ranging from staff related loans, land acquisition loans with affordable interest rates. check out our loan application types.",
+          description:
+            "Start applying for loans from as low as 50,000 ranging from staff related loans, land acquisition loans with affordable interest rates. check out our loan application types.",
           buttonText: "Loan Application"
         },
         {
           type: {
-            mode: 'link',
+            mode: "link",
             location: "/payment-link"
           },
           title: "Verified Loan Application",
-          description: "Checkout all your verified loan application status and progress.",
-          buttonText: "View Verified Loans",
+          description:
+            "Checkout all your verified loan application status and progress.",
+          buttonText: "View Verified Loans"
         },
         {
           type: {
-            mode: 'link',
+            mode: "link",
             location: "/payment-link"
           },
           title: "Add new guarantors",
-          description: "Add new guarantors that have better track records and are members of this community.",
-          buttonText: "Add New Guarantors",
-        },
+          description:
+            "Add new guarantors that have better track records and are members of this community.",
+          buttonText: "Add New Guarantors"
+        }
       ],
       calendar: {
         showDate: this.thisMonth(1),
-        events: [{
-            id: 'e2',
+        events: [
+          {
+            id: "e2",
             startDate: this.thisMonth(15),
-            title: 'Meeting',
-            classes: 'secondary'
+            title: "Meeting",
+            classes: "secondary"
           },
           {
-            id: 'e3',
+            id: "e3",
             startDate: this.thisMonth(8, 9, 25),
             endDate: this.thisMonth(9, 16, 30),
-            title: 'Sales',
-            classes: 'primary'
+            title: "Sales",
+            classes: "primary"
           },
           {
-            id: 'e5',
+            id: "e5",
             startDate: this.thisMonth(5),
             endDate: this.thisMonth(12),
-            title: 'Tax Days',
-            classes: 'secondary'
+            title: "Tax Days",
+            classes: "secondary"
           },
           {
-            id: 'e10',
+            id: "e10",
             startDate: this.thisMonth(27),
-            title: 'My Birthday!'
+            title: "My Birthday!"
           }
         ]
       },
       bestsellers: {
-        apiUrl: apiUrl + '/cakes/fordatatable',
-        fields: [{
-            name: 'title',
-            sortField: 'title',
-            title: 'Name',
-            titleClass: '',
-            dataClass: 'list-item-heading'
+        apiUrl: apiUrl + "/cakes/fordatatable",
+        fields: [
+          {
+            name: "title",
+            sortField: "title",
+            title: "Name",
+            titleClass: "",
+            dataClass: "list-item-heading"
           },
           {
-            name: 'sales',
-            sortField: 'sales',
-            title: 'Sales',
-            titleClass: '',
-            dataClass: 'text-muted'
+            name: "sales",
+            sortField: "sales",
+            title: "Sales",
+            titleClass: "",
+            dataClass: "text-muted"
           },
           {
-            name: 'stock',
-            sortField: 'stock',
-            title: 'Stock',
-            titleClass: '',
-            dataClass: 'text-muted'
+            name: "stock",
+            sortField: "stock",
+            title: "Stock",
+            titleClass: "",
+            dataClass: "text-muted"
           },
           {
-            name: 'category',
-            sortField: 'category',
-            title: 'Category',
-            titleClass: '',
-            dataClass: 'text-muted'
+            name: "category",
+            sortField: "category",
+            title: "Category",
+            titleClass: "",
+            dataClass: "text-muted"
           }
         ]
       },
@@ -230,29 +250,30 @@ export default {
       cakes,
       areaChartData,
       conversionChartData,
-      selectData: [{
-          label: 'Chocolate',
-          value: 'chocolate'
+      selectData: [
+        {
+          label: "Chocolate",
+          value: "chocolate"
         },
         {
-          label: 'Vanilla',
-          value: 'vanilla'
+          label: "Vanilla",
+          value: "vanilla"
         },
         {
-          label: 'Strawberry',
-          value: 'strawberry'
+          label: "Strawberry",
+          value: "strawberry"
         },
         {
-          label: 'Caramel',
-          value: 'caramel'
+          label: "Caramel",
+          value: "caramel"
         },
         {
-          label: 'Cookies and Cream',
-          value: 'cookiescream'
+          label: "Cookies and Cream",
+          value: "cookiescream"
         },
         {
-          label: 'Peppermint',
-          value: 'peppermint'
+          label: "Peppermint",
+          value: "peppermint"
         }
       ],
       smallChartData1,
@@ -279,43 +300,42 @@ export default {
           }
         },
         hideNav: true
-      },
-    }
+      }
+    };
   },
   computed: {
-    ...mapGetters('user', ['currentUser'])
+    ...mapGetters("user", ["currentUser"])
   },
   methods: {
     refreshButtonClick() {
-      console.log('refreshButtonClick')
+      console.log("refreshButtonClick");
     },
     thisMonth(d, h, m) {
-      const t = new Date()
-      return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0)
+      const t = new Date();
+      return new Date(t.getFullYear(), t.getMonth(), d, h || 0, m || 0);
     },
     onClickDay(d) {
-      console.log(`You clicked: ${d.toLocaleDateString()}`)
+      console.log(`You clicked: ${d.toLocaleDateString()}`);
     },
     onClickEvent(e) {
-      console.log(`You clicked: ${e.title}`)
+      console.log(`You clicked: ${e.title}`);
     },
     setShowDate(d) {
-      this.calendar.showDate = d
+      this.calendar.showDate = d;
     },
     onDropDate(event, date) {
-      console.log(`You dropped ${event.id} on ${date.toLocaleDateString()}`)
+      console.log(`You dropped ${event.id} on ${date.toLocaleDateString()}`);
 
-      const eLength = this.dayDiff(event.startDate, date)
-      event.originalEvent.startDate = this.addDays(event.startDate, eLength)
-      event.originalEvent.endDate = this.addDays(event.endDate, eLength)
+      const eLength = this.dayDiff(event.startDate, date);
+      event.originalEvent.startDate = this.addDays(event.startDate, eLength);
+      event.originalEvent.endDate = this.addDays(event.endDate, eLength);
     },
     onPaginationData(paginationData) {
-      this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.pagination.setPaginationData(paginationData);
     },
     onChangePage(page) {
-      this.$refs.vuetable.changePage(page)
+      this.$refs.vuetable.changePage(page);
     }
   }
-}
-
+};
 </script>
