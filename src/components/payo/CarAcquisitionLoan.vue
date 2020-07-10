@@ -184,7 +184,7 @@ export default {
         asset_nature: "",
         car_brand: "",
         salary: "",
-        repayment_duration: "",
+        repayment_duration: ""
         // guarantor_a: {
         //   fullname: "",
         //   staff_id: "",
@@ -218,12 +218,12 @@ export default {
     moment: function() {
       return moment();
     },
-    hideModal (refname) {
-      this.$refs[refname].hide()
-      console.log('hide modal:: ' + refname)
+    hideModal(refname) {
+      this.$refs[refname].hide();
+      console.log("hide modal:: " + refname);
 
-      if (refname === 'modalnestedinline') {
-        this.$refs['modalnested'].show()
+      if (refname === "modalnestedinline") {
+        this.$refs["modalnested"].show();
       }
     },
     removeGuarantor(removedOption, id) {
