@@ -186,17 +186,32 @@
                 </div>
               </b-form-group>
             </b-colxx>
-            <b-colxx sm="12">
-              <b-form-group>
-                <b-button
-                  style="border-radius: 0"
-                  v-b-modal.modalbasic
-                  variant="primary"
-                  class="mt-4"
-                >Submit</b-button>
-              </b-form-group>
-            </b-colxx>
           </b-row>
+          <div class="d-flex justify-content-around align-items-center">
+            <b-button
+              variant="success"
+              v-b-modal.modalbasic
+              size="lg"
+              :disabled="$v.$anyError || processing"
+              :class="{'btn-multiple-state btn-shadow btn-block': true,
+                    'show-spinner': processing,
+                    'show-success': !processing && requestError === false,
+                    'show-fail': !processing && requestError }"
+            >
+              <span class="spinner d-inline-block">
+                <span class="bounce1"></span>
+                <span class="bounce2"></span>
+                <span class="bounce3"></span>
+              </span>
+              <span class="icon success">
+                <i class="simple-icon-check"></i>
+              </span>
+              <span class="icon fail">
+                <i class="simple-icon-exclamation"></i>
+              </span>
+              <span class="label">Apply</span>
+            </b-button>
+          </div>
         </b-form>
       </b-colxx>
 
