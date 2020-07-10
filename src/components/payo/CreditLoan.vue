@@ -99,12 +99,12 @@
           label="Nature Of Credit (Regular or Emmergency)"
           class="has-float-label mb-4"
         >
-          <b-form-input
-            type="text"
+          <b-form-select
             v-model="form.credit_nature"
+            :options="loanNature"
             :class="$v.form.credit_nature.$error ? 'is-invalid' : ''"
             @blur="$v.form.credit_nature.$touch()"
-          />
+          ></b-form-select>
           <div v-if="$v.form.credit_nature.$error">
             <span
               v-if="!$v.form.credit_nature.required"
@@ -128,17 +128,32 @@
               class="error-text"
             >Please enter your loan requst amount </span>
             <span
-              v-if="!$v.form.amount.minLength"
+              v-if="!$v.form.loan_amount.minLength"
               class="error-text"
             >Sorry can't request for a loan less than is 10,000</span>
             <span
-              v-if="!$v.form.amount.maxLength"
+              v-if="!$v.form.loan_amount.maxLength"
               class="error-text"
             >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
             <span
-              v-if="!$v.form.amount.numeric"
+              v-if="!$v.form.loan_amount.numeric"
               class="error-text"
             >Loan Amount must contain numbers alone.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Method of loan repayment"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_method"
+            :options="options"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_method.$error">
+            <span
+              v-if="!$v.form.repayment_method.required"
+              class="error-text"
+            >Please lets know how you wish to make your loan payments.</span>
           </div>
         </b-form-group>
         <b-form-group
@@ -183,21 +198,6 @@
           </div>
         </b-form-group>
         <b-form-group
-          label="Method of loan repayment"
-          class="has-float-label mb-4"
-        >
-          <b-form-select
-            v-model="form.repayment_method"
-            :options="options"
-          ></b-form-select>
-          <div v-if="$v.form.repayment_method.$error">
-            <span
-              v-if="!$v.form.repayment_method.required"
-              class="error-text"
-            >Please lets know how you wish to make your loan payments.</span>
-          </div>
-        </b-form-group>
-        <b-form-group
           label="Choose Loan Guarantors (two)"
           class="has-float-label mb-4"
         >
@@ -215,6 +215,10 @@
           <div v-if="$v.form.guarantors.$error">
             <span
               v-if="!$v.form.guarantors.required"
+              class="error-text"
+            >Please select two guarantors for your loan applications.</span>
+            <span
+              v-if="!$v.form.guarantors.minLength"
               class="error-text"
             >Please select two guarantors for your loan applications.</span>
           </div>
@@ -294,10 +298,13 @@ export default {
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
         staff_id: this.user.employed_valid_id_card,
+        phone: this.user.phone_number,
+        college: this.user.college,
+        department: this.user.department,
         credit_nature: "",
         loan_purpose: "",
         loan_amount: "",
-        loanInterest: 5,
+        loanInterest: 6,
         phone: this.user.phone_number,
         loan_obligation: "",
         monthly_thrift_contribution: "",
@@ -332,12 +339,12 @@ export default {
       },
       startDate: { required },
       credit_nature: { required },
-      loan_amount: { required },
+      loan_amount: { required, minLength: minLength(5), numeric },
       loan_purpose: { required },
       monthly_thrift_contribution: { required },
       borrower_acct_details: { required },
       repayment_method: { required },
-      guarantors: { required }
+      guarantors: { required, minLength: minLength(2) }
     }
   },
   methods: {
