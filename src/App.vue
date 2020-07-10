@@ -7,7 +7,6 @@
 import { getDirection } from "./utils";
 
 export default {
-  
   beforeMount() {
     const direction = getDirection();
     if (direction.isRtl) {
@@ -21,11 +20,10 @@ export default {
     }
   }
 };
-
 </script>
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 </style>

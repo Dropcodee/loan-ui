@@ -16,7 +16,7 @@
     >
       <b-card-body>
         <div class="text-center pt-4">
-          <p class="list-item-heading pt-2">Commodity Loan Application Preview</p>
+          <p class="list-item-heading pt-2">{{ title }}</p>
         </div>
         <b-row>
           <b-colxx>
@@ -122,7 +122,7 @@
 <script>
 import SingleLightbox from "@/components/Pages/SingleLightbox";
 export default {
-  props: { user: Object, previewData: Object },
+  props: { user: Object, previewData: Object, title: String },
   components: { SingleLightbox },
   data() {
     return {};

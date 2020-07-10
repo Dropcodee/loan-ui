@@ -1,378 +1,260 @@
 <template>
-  <b-form
-    @submit.prevent="formSubmit"
-    class="av-tooltip tooltip-label-bottom"
-  >
-    <b-card class="w-100 mx-auto">
-      <h6 class="mb-4 text-center">Applicants Information</h6>
-      <b-row>
-        <b-colxx sm="6">
-          <b-form-group label="Fullname">
-            <b-form-input
-              type="text"
-              v-model="form.fullname"
-              disabled
-              :class="$v.form.fullname.$error ? 'is-invalid' : ''"
-              @blur="$v.form.fullname.$touch()"
-            />
-            <div v-if="$v.form.fullname.$error">
-              <span
-                v-if="!$v.form.fullname.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Staff ID">
-            <b-form-input
-              type="text"
-              v-model="form.staff_id"
-              disabled
-              :class="$v.form.staff_id.$error ? 'is-invalid' : ''"
-              @blur="$v.form.staff_id.$touch()"
-            />
-            <div v-if="$v.form.staff_id.$error">
-              <span
-                v-if="!$v.form.staff_id.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="GSM NO">
-            <b-form-input
-              type="text"
-              v-model="form.phone"
-              disabled
-              :class="$v.form.phone.$error ? 'is-invalid' : ''"
-              @blur="$v.form.phone.$touch()"
-            />
-            <div v-if="$v.form.phone.$error">
-              <span
-                v-if="!$v.form.phone.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Email">
-            <b-form-input
-              type="email"
-              v-model="form.email"
-              disabled
-              :class="$v.form.email.$error ? 'is-invalid' : ''"
-              @blur="$v.form.email.$touch()"
-            />
-            <div v-if="$v.form.email.$error">
-              <span
-                v-if="!$v.form.email.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Natur of Credit (REGULAR OR EMERGENCY)">
-            <b-form-select
-              v-model="form.credit_nature"
-              :options="loanNature"
-              :class="$v.form.email.$error ? 'is-invalid' : ''"
-              @blur="$v.form.email.$touch()"
-            ></b-form-select>
-            <div v-if="$v.form.credit_nature.$error">
-              <span
-                v-if="!$v.form.credit_nature.required"
-                class="error-text"
-              >Please Lets know the nature of your loan</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Loan Amount">
-            <b-form-input
-              type="text"
-              v-model="form.loan_amount"
-              :class="$v.form.loan_amount.$error ? 'is-invalid' : ''"
-              @blur="$v.form.loan_amount.$touch()"
-            />
-            <div v-if="$v.form.loan_amount.$error">
-              <span
-                v-if="!$v.form.loan_amount.required"
-                class="error-text"
-              >Let us know how much loan you wish to request for.</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Loan Purpose">
-            <b-form-input
-              type="text"
-              v-model="form.loan_purpose"
-              :class="$v.form.loan_purpose.$error ? 'is-invalid' : ''"
-              @blur="$v.form.loan_purpose.$touch()"
-            />
-            <div v-if="$v.form.loan_purpose.$error">
-              <span
-                v-if="!$v.form.loan_purpose.required"
-                class="error-text"
-              >Let us know how the purpose for requesting for this loan.</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Target Loan Obligation (If any)">
-            <b-form-input
-              type="text"
-              v-model="form.loan_obligation"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Monthly Thrift Contribution">
-            <b-form-input
-              type="text"
-              v-model="form.monthly_thrift_contribution"
-              :class="$v.form.monthly_thrift_contribution.$error ? 'is-invalid' : ''"
-              @blur="$v.form.monthly_thrift_contribution.$touch()"
-            />
-            <div v-if="$v.form.monthly_thrift_contribution.$error">
-              <span
-                v-if="!$v.form.monthly_thrift_contribution.required"
-                class="error-text"
-              >Sorry please this information is vital.</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Monthly Regular Loan Repayment (If any)">
-            <b-form-input
-              type="text"
-              v-model="form.regular_loan_repayment"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Monthly Emergency Loan Repayment (If any)">
-            <b-form-input
-              type="text"
-              v-model="form.emergency_loan_repayment"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Quick Loan Repayment (If any)">
-            <b-form-input
-              type="text"
-              v-model="form.quick_loan_repayment"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Borrower Account Details">
-            <b-form-input
-              type="text"
-              v-model="form.borrower_acct_details"
-              disabled
-              :class="$v.form.borrower_acct_details.$error ? 'is-invalid' : ''"
-              @blur="$v.form.borrower_acct_details.$touch()"
-            />
-            <div v-if="$v.form.borrower_acct_details.$error">
-              <span
-                v-if="!$v.form.borrower_acct_details.required"
-                class="error-text"
-              >Sorry please complete your profile to fill this details.</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Method of Repayment (Monthly or Single)">
-            <b-form-select
-              v-model="form.repayment_method"
-              :options="options"
-              :class="$v.form.repayment_method.$error ? 'is-invalid' : ''"
-              @blur="$v.form.repayment_method.$touch()"
-            ></b-form-select>
-            <div v-if="$v.form.repayment_method.$error">
-              <span
-                v-if="!$v.form.repayment_method.required"
-                class="error-text"
-              >Sorry please choose how you wish to pay.</span>
-            </div>
-          </b-form-group>
-        </b-colxx>
-      </b-row>
-      <!-- <b-form-group label="Loan Amount" class="has-float-label mb-4">
-              
-            <div class="d-flex justify-content-around align-items-center">
-              <b-button
-                type="submit"
-                variant="primary"
-                size="lg"
-                :disabled="$v.$anyError || processing"
-                :class="{'btn-multiple-state btn-shadow btn-block': true,
+  <b-row>
+    <b-colxx>
+      <b-form
+        @submit.prevent="formSubmit"
+        class="av-tooltip tooltip-label-bottom"
+      >
+        <b-form-group
+          label="Full Name"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.fullname"
+            disabled
+            :class="$v.form.fullname.$error ? 'is-invalid' : ''"
+            @blur="$v.form.fullname.$touch()"
+          />
+          <div v-if="$v.form.fullname.$error">
+            <span
+              v-if="!$v.form.fullname.required"
+              class="error-text"
+            >Please complete your profile to fill this details</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Staff ID Number"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.staff_id"
+            disabled
+            :class="$v.form.staff_id.$error ? 'is-invalid' : ''"
+            @blur="$v.form.staff_id.$touch()"
+          />
+          <div v-if="$v.form.staff_id.$error">
+            <span
+              v-if="!$v.form.staff_id.required"
+              class="error-text"
+            >Please complete your profile to fill this details</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Current College"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.college"
+            disabled
+            :class="$v.form.college.$error ? 'is-invalid' : ''"
+            @blur="$v.form.college.$touch()"
+          />
+          <div v-if="$v.form.college.$error">
+            <span
+              v-if="!$v.form.college.required"
+              class="error-text"
+            >Please complete your profile to fill this details</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Current Department"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.department"
+            disabled
+            :class="$v.form.department.$error ? 'is-invalid' : ''"
+            @blur="$v.form.department.$touch()"
+          />
+          <div v-if="$v.form.department.$error">
+            <span
+              v-if="!$v.form.department.required"
+              class="error-text"
+            >Please complete your profile to fill this details</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Phone Number"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.phone"
+            disabled
+            :class="$v.form.phone.$error ? 'is-invalid' : ''"
+            @blur="$v.form.phone.$touch()"
+          />
+          <div v-if="$v.form.phone.$error">
+            <span
+              v-if="!$v.form.phone.required"
+              class="error-text"
+            >Please complete your profile to fill this details</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Nature Of Credit (Regular or Emmergency)"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.credit_nature"
+            :class="$v.form.credit_nature.$error ? 'is-invalid' : ''"
+            @blur="$v.form.credit_nature.$touch()"
+          />
+          <div v-if="$v.form.credit_nature.$error">
+            <span
+              v-if="!$v.form.credit_nature.required"
+              class="error-text"
+            >Please select the nature of your loan. </span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Loan Amount"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.loan_amount"
+            :class="$v.form.loan_amount.$error ? 'is-invalid' : ''"
+            @blur="$v.form.loan_amount.$touch()"
+          />
+          <div v-if="$v.form.loan_amount.$error">
+            <span
+              v-if="!$v.form.loan_amount.required"
+              class="error-text"
+            >Please enter your loan requst amount </span>
+            <span
+              v-if="!$v.form.amount.minLength"
+              class="error-text"
+            >Sorry can't request for a loan less than is 10,000</span>
+            <span
+              v-if="!$v.form.amount.maxLength"
+              class="error-text"
+            >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
+            <span
+              v-if="!$v.form.amount.numeric"
+              class="error-text"
+            >Loan Amount must contain numbers alone.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Interest Rate"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.loanInterest + '%'"
+            disabled
+          />
+        </b-form-group>
+        <b-form-group
+          label="Loan Purpose"
+          class="has-float-label mb-4"
+        >
+          <b-form-input
+            type="text"
+            v-model="form.loan_purpose"
+          />
+          <div v-if="$v.form.loan_purpose.$error">
+            <span
+              v-if="!$v.form.loan_purpose.required"
+              class="error-text"
+            >Please tell us the purpose of this loan your about to request.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Loan Payment Commencement Date"
+          class="has-float-label mb-4"
+        >
+          <v-date-picker
+            mode="single"
+            v-model="form.startDate"
+            :input-props="{ class:'form-control', placeholder: $t('form-components.date') }"
+          ></v-date-picker>
+          <div v-if="$v.form.startDate.$error">
+            <span
+              v-if="!$v.form.startDate.required"
+              class="error-text"
+            >Choose when you want to begin your loan repayment thanks.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Method of loan repayment"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_method"
+            :options="options"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_method.$error">
+            <span
+              v-if="!$v.form.repayment_method.required"
+              class="error-text"
+            >Please lets know how you wish to make your loan payments.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Choose Loan Guarantors (two)"
+          class="has-float-label mb-4"
+        >
+          <multiselect
+            v-model="form.guarantors"
+            :options="guarantors"
+            :multiple="true"
+            :searchable="true"
+            deselectLabel="Press enter to remove"
+            :max="2"
+            label="name"
+            placeholder="Select two guarantors of your choice"
+            @remove="removeGuarantor"
+          ></multiselect>
+          <div v-if="$v.form.guarantors.$error">
+            <span
+              v-if="!$v.form.guarantors.required"
+              class="error-text"
+            >Please select two guarantors for your loan applications.</span>
+          </div>
+        </b-form-group>
+        <div class="d-flex justify-content-around align-items-center">
+          <b-button
+            type="submit"
+            variant="success"
+            size="lg"
+            :disabled="$v.$anyError || processing"
+            :class="{'btn-multiple-state btn-shadow btn-block': true,
                     'show-spinner': processing,
                     'show-success': !processing && requestError === false,
                     'show-fail': !processing && requestError }"
-              >
-                <span class="spinner d-inline-block">
-                  <span class="bounce1"></span>
-                  <span class="bounce2"></span>
-                  <span class="bounce3"></span>
-                </span>
-                <span class="icon success">
-                  <i class="simple-icon-check"></i>
-                </span>
-                <span class="icon fail">
-                  <i class="simple-icon-exclamation"></i>
-                </span>
-                <span class="label">Apply</span>
-              </b-button>
-            </div>-->
-    </b-card>
-    <b-card
-      style="margin-top: 20px"
-      class="w-100 mx-auto"
-    >
-      <h6 class="mb-4 text-center">Guarantor A</h6>
-      <b-row>
-        <b-colxx sm="6">
-          <b-form-group label="Fullname">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_a.fullname"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Staff ID">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_a.staff_id"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Email">
-            <b-form-input
-              type="email"
-              v-model="form.guarantor_a.email"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="GSM NO">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_a.phoneNo"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Amount Guranteed">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_a.amount_guaranteed"
-            />
-            <span>*In the event the burrower defaults in the monthly repyment, the guarantor will be liable to pay the amount outstanding*</span>
-          </b-form-group>
-        </b-colxx>
-      </b-row>
-    </b-card>
-    <b-card
-      style="margin-top: 20px"
-      class="w-100 mx-auto"
-    >
-      <h6 class="mb-4 text-center">Guarantor B</h6>
-      <b-row>
-        <b-colxx sm="6">
-          <b-form-group label="Fullname">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_b.fullname"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Staff ID">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_b.staff_id"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Email">
-            <b-form-input
-              type="email"
-              v-model="form.guarantor_b.email"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="GSM NO">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_b.phoneNo"
-            />
-          </b-form-group>
-        </b-colxx>
-        <b-colxx sm="6">
-          <b-form-group label="Amount Guranteed">
-            <b-form-input
-              type="text"
-              v-model="form.guarantor_b.amount_guaranteed"
-            />
-            <span>*In the event the burrower defaults in the monthly repyment, the guarantor will be liable to pay the amount outstanding*</span>
-          </b-form-group>
-        </b-colxx>
-      </b-row>
-      <b-button
-        style="border-radius: 0"
-        v-b-modal.basicModal
-        variant="primary"
-        class="mt-4"
-      >Submit</b-button>
-      <h6 class="mt-4">Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
-    </b-card>
-    <b-modal
-      id="basicModal"
-      ref="basicModal"
-      size="lg"
-      title="Terms and Condition"
-    >
-      I drake hereby declare that the statements made herein are true and correct
-      <h6>Terms</h6>
-      <ul style="text-align: justify">
-        <li>The agreement made this {{days[new Date().getDay().toString()]}} of _not_sure_whats_here_ between Landmark University Staff Cooperative Multipurpose Society Limited (herin after referred to as the lender) on the one hand and (herein refered as the borrower) on the other hand requires ₦ for the purpose of gh and whereas the borrower has applied to the lender for the said sum of ₦ for the purpose aforementioned which the lender has agreed upon having the repayment therefore together with the 10% interest thereon secured in thereinafter appearing</li>
-        <li>
-          In pursusance of the above agreement and in consideration of the sum of ₦ now paid by the lender to the borrower, receipt whereof the borrower hereby acknowledges, the borrower's agreement with the lender shall be that:
-          <ul>
-            <li>The borrower shall repay the sum of ₦ with interest thereon at the rate of 10% from the date hereof over a period _computed_months_ in equal and consecutive monthly installments of _computed_repayment_ the first installment being due on _computed_date_</li>
-            <li>During continuance of this agreement, the borrower shall pay by check-off from his or her salary monthly the sum of N _computed_ to the lender</li>
-          </ul>
-        </li>
-        <li>If the borrower is either expelled from membership or leaves the service of the University, the whole outstanding principal plus interest shall become payable forthwith</li>
-        <li>The borrower may terminate this agreement at any time by paying to the society the amount of the principal outstanding and the interest in respect of the said loan</li>
-        <li>No neglect, delay or indulgence by the society enforcing any of the terms or conditions of this agreement shall prejudice the strict right of the lender concerning this loan</li>
-      </ul>
-      <template slot="modal-footer">
-        <b-button
-          variant="primary"
-          type="submit"
-          @click.prevent="formSubmit"
-        >I Agree</b-button>
-        <b-button
-          variant="secondary"
-          @click="hideModal('modalbasic')"
-        >Cancel</b-button>
-      </template>
-    </b-modal>
-  </b-form>
+          >
+            <span class="spinner d-inline-block">
+              <span class="bounce1"></span>
+              <span class="bounce2"></span>
+              <span class="bounce3"></span>
+            </span>
+            <span class="icon success">
+              <i class="simple-icon-check"></i>
+            </span>
+            <span class="icon fail">
+              <i class="simple-icon-exclamation"></i>
+            </span>
+            <span class="label">Apply</span>
+          </b-button>
+        </div>
+      </b-form>
+    </b-colxx>
+    <form-preview
+      :user="user"
+      :previewData="form"
+      title="Credit Loan Application Preview"
+    />
+  </b-row>
 </template>
 <script>
+import FormPreview from "./FormPreview";
 import {
   required,
   maxLength,
@@ -383,7 +265,13 @@ import { mapActions } from "vuex";
 
 export default {
   name: "CreditLoan",
-  props: { user: Object },
+  props: {
+    user: Object,
+    processing: Boolean,
+    guarantors: Array,
+    requestError: [Boolean, null]
+  },
+  components: { FormPreview },
   data() {
     return {
       options: [
@@ -409,46 +297,27 @@ export default {
         credit_nature: "",
         loan_purpose: "",
         loan_amount: "",
+        loanInterest: 5,
         phone: this.user.phone_number,
         loan_obligation: "",
         monthly_thrift_contribution: "",
-        regular_loan_repayment: "",
+        regular_loan_repayment: 0,
         emergency_loan_repayment: "",
         quick_loan_repayment: "",
         borrower_acct_details: "",
         email: this.user.email,
         repayment_method: "",
-        guarantor_a: {
-          fullname: "",
-          staff_id: "",
-          email: "",
-          PhoneNo: "",
-          amount_guaranteed: 0
-        },
-        guarantor_b: {
-          fullname: "",
-          staff_id: "",
-          email: "",
-          PhoneNo: "",
-          amount_guaranteed: 0
-        }
+        startDate: null,
+        guarantors: []
       }
     };
   },
   validations: {
     form: {
-      fullname: {
-        required
-      },
-      college: {
-        required
-      },
-      department: {
-        required
-      },
-      email: {
-        required
-      },
+      fullname: { required },
+      college: { required },
+      department: { required },
+      email: { required },
       phone: {
         required,
         minLength: minLength(11),
@@ -461,15 +330,18 @@ export default {
         maxLength: maxLength(8),
         numeric
       },
+      startDate: { required },
       credit_nature: { required },
       loan_amount: { required },
       loan_purpose: { required },
       monthly_thrift_contribution: { required },
       borrower_acct_details: { required },
-      repayment_method: { required }
+      repayment_method: { required },
+      guarantors: { required }
     }
   },
   methods: {
+    ...mapActions("loan", ["CreditLoanRequest"]),
     hideModal(refname) {
       this.$refs[refname].hide();
       console.log("hide modal:: " + refname);
@@ -478,16 +350,15 @@ export default {
         this.$refs["modalnested"].show();
       }
     },
-    // somethingModal(refname) {
-    //   this.$refs[refname].hide();
-    //   console.log("something modal:: " + refname);
-
-    //   if (refname === "modalnestedinline") {
-    //     this.$refs["modalnested"].show();
-    //   }
-    // },
-    ...mapActions("loan", ["CreditLoanRequest"]),
-    ...mapActions("notification", ["remove"]),
+    removeGuarantor(removedOption, id) {
+      // console.log(removedOption.value);
+      this.form.guarantors.forEach(guarantor => {
+        if (guarantor.value === removedOption.value) {
+          this.form.guarantors.splice(guarantor);
+        }
+        return guarantor;
+      });
+    },
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
@@ -505,51 +376,52 @@ export default {
         }
       }
       console.log(this.form);
+    },
+    interestCalculator(method) {
+      // loan calculation formulars
+      const principal = parseFloat(this.form.loan_amount);
+      const calculatedInterest = parseFloat(this.form.loanInterest) / 100 / 12;
+      const calculatedPayments = parseFloat(1) * 12;
+
+      // compute monthly payments
+      const x = Math.pow(1 + calculatedInterest, calculatedPayments);
+      const monthly = (principal * x * calculatedInterest) / (x - 1);
+      if (isFinite(monthly)) {
+        const loanMonthlyPayment = Number(monthly);
+        const loanTotalPayment = (monthly * calculatedPayments).toFixed(2);
+        const loanTotalInterest = (
+          monthly * calculatedPayments -
+          principal
+        ).toFixed(2);
+        if (method == "monthly") {
+          this.form.regular_loan_repayment = Math.round(loanMonthlyPayment);
+          // console.log("monthly: ", this.form.regular_loan_repayment);
+        } else {
+          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
+          // console.log("yearly: ", this.form.regular_loan_repayment);
+        }
+      }
+      return this.form.regular_loan_repayment;
     }
-    // interest(amount) {
-    //   if (amount == "" || amount == null) {
-    //     return 0;
-    //   } else {
-    //     const interestRate = this.form.interest / 100;
-    //     const newInterest = interestRate * amount;
-    //     this.yearlyInterest = newInterest * this.form.tenure;
-    //     this.loanTotal = parseInt(amount) + parseInt(this.yearlyInterest);
-    //   }
-    // },
-    // removeNotification(notification) {
-    //   console.log(notification);
-    //   this.remove(notification);
-    // }
   },
   watch: {
-    // notifications(notifications) {
-    //   for (let i in notifications) {
-    //     if (notifications[i].type == "error") {
-    //       this.$notify("error", "Error Message", notifications[i].message, {
-    //         duration: 3000,
-    //         permanent: false
-    //       });
-    //       this.requestError = true;
-    //       let as = this;
-    //       setTimeout(() => as.removeNotification(notifications[i]), 3000);
-    //     } else if (notifications[i].type == "success") {
-    //       this.$notify("success", "Message", notifications[i].message, {
-    //         duration: 3000,
-    //         permanent: false
-    //       });
-    //       let as = this;
-    //       setTimeout(() => as.removeNotification(notifications[i]), 3000);
-    //     }
-    //   }
-    // },
-    // "form.amount": function(amount) {
-    //   this.interest(amount);
-    // },
-    // "form.tenure": function(tenure) {
-    //   this.interest(this.form.amount);
-    // }
+    "form.repayment_method": {
+      handler: function(method) {
+        this.interestCalculator(method);
+      }
+    },
+    "form.loan_amount": {
+      handler: function(amount) {
+        this.interestCalculator(this.form.repayment_method);
+      }
+    }
   }
 };
 </script>
-<style lang="css" scoped>
+<style lang="scss" scoped>
+.preview-text {
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: 600;
+}
 </style>
