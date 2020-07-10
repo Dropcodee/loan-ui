@@ -10,7 +10,10 @@ import store from './store'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import VueI18n from 'vue-i18n'
-import { defaultLocale, localeOptions } from './constants/config'
+import {
+    defaultLocale,
+    localeOptions
+} from './constants/config'
 // Notification Component Add
 import Notifications from './components/Common/Notification'
 // Breadcrumb Component Add
@@ -30,13 +33,17 @@ import axios from 'axios'
 import Vuelidate from 'vuelidate'
 import '@/assets/css/tailwind.css'
 import moment from "moment";
+import Multiselect from 'vue-multiselect'
 Vue.use(Vuelidate)
 
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
 
-const messages = { en: en, es: es };
+const messages = {
+    en: en,
+    es: es
+};
 const locale = (localStorage.getItem('currentLanguage') && localeOptions.filter(x => x.id === localStorage.getItem('currentLanguage')).length > 0) ? localStorage.getItem('currentLanguage') : defaultLocale;
 const i18n = new VueI18n({
     locale: locale,
@@ -68,18 +75,18 @@ Vue.use(VCalendar, {
     popoverDirection: 'bottom'
 });
 Vue.use(VueScrollTo);
-
-Vue.filter('toCurrency', function(value) {
-    if (typeof value !== "number") {
-        return value;
-    }
-    var formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'NGN',
-        minimumFractionDigits: 0
+Vue.component('multiselect', Multiselect),
+    Vue.filter('toCurrency', function(value) {
+        if (typeof value !== "number") {
+            return value;
+        }
+        var formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'NGN',
+            minimumFractionDigits: 0
+        });
+        return formatter.format(value);
     });
-    return formatter.format(value);
-});
 Vue.filter('moment', function(date) {
     return moment(date).format('MMMM Do YYYY');
 })
