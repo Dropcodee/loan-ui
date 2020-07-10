@@ -84,7 +84,7 @@
       <form-preview style="margin-top: 65px;"
         :user="currentUser"
         :previewData="form"
-        title="Commodity Loan Application Preview"
+        title="Car Aquisition Application Preview"
       />
     </b-row>
     <b-row>
