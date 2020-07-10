@@ -274,6 +274,7 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
+import moment from "moment";
 
 export default {
   name: "CarAcquisition",
@@ -321,7 +322,8 @@ export default {
         asset_nature: "",
         car_brand: "",
         salary: "",
-        repayment_duration: "",
+        guarantors: [],
+        // repayment_duration: "",
         // guarantor_a: {
         //   fullname: "",
         //   staff_id: "",
@@ -396,7 +398,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("loan", ["CommodityLoanRequest"]),
+    ...mapActions("loan", ["CarAcquisitionRequest"]),
     moment: function() {
       return moment();
     },
@@ -443,27 +445,31 @@ export default {
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        // const loggedInUser = this.user;
+        const loggedInUser = this.user;
         // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        // const guarantorsIds = [];
-        // this.form.guarantors.forEach(guarantor => {
-        //   guarantorsIds.push(guarantor.value);
-        // });
-        // const payload = {
-        //   commodity_nature: this.form.nature,
-        //   loan_type: "Commodity Loan",
-        //   tenure: this.form.tenure,
-        //   interest: this.form.interest,
-        //   principal_amount: this.form.amount,
-        //   repayment_amount: this.form.repaymentAmount.toString(),
-        //   repayment_date: backendDate,
-        //   guarantors: guarantorsIds
-        // };
-        // try {
-        //   this.CommodityLoanRequest(payload);
-        // } catch (err) {
-        //   return err;
-        // }
+        const guarantorsIds = [];
+        this.form.guarantors.forEach(guarantor => {
+          guarantorsIds.push(guarantor.value);
+        });
+        console.log(guarantorsIds);
+        const payload = {
+          commodity_nature: this.form.asset_nature,
+          asset_brand: this.form.car_brand,
+          loan_type: "Car Acquisition Loan",
+          tenure: this.form.tenure,
+          interest: this.form.interest,
+          salary: this.form.salary,
+          // repayment_amount: this.form.repaymentAmount.toString(),
+          // repayment_date: backendDate,
+          guarantors: guarantorsIds
+        };
+        console.log(payload);
+        try {
+          this.CarAcquisitionRequest(payload);
+          this.hideModal("modalbasic");
+        } catch (err) {
+          return err;
+        }
       } else {
         this.hideModal("modalbasic");
       }

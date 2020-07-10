@@ -1,14 +1,8 @@
 <template>
   <b-row>
     <b-colxx>
-      <b-form
-        @submit.prevent="formSubmit"
-        class="av-tooltip tooltip-label-bottom"
-      >
-        <b-form-group
-          label="Full Name"
-          class="has-float-label mb-4"
-        >
+      <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
+        <b-form-group label="Full Name" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.fullname"
@@ -23,10 +17,7 @@
             >Please complete your profile to fill this details</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Staff ID Number"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Staff ID Number" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.staffId"
@@ -41,10 +32,7 @@
             >Please complete your profile to fill this details</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Current College"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Current College" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.college"
@@ -59,10 +47,7 @@
             >Please complete your profile to fill this details</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Current Department"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Current Department" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.department"
@@ -77,10 +62,7 @@
             >Please complete your profile to fill this details</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Phone Number"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Phone Number" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.phone"
@@ -95,10 +77,7 @@
             >Please complete your profile to fill this details</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Nature Of Item(s)"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Nature Of Item(s)" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.nature"
@@ -109,13 +88,10 @@
             <span
               v-if="!$v.form.nature.required"
               class="error-text"
-            >Please enter the nature of the items you wish to purchase. </span>
+            >Please enter the nature of the items you wish to purchase.</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Loan Amount"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Loan Amount" class="has-float-label mb-4">
           <b-form-input
             type="text"
             v-model="form.amount"
@@ -126,7 +102,7 @@
             <span
               v-if="!$v.form.amount.required"
               class="error-text"
-            >Please enter your loan requst amount </span>
+            >Please enter your loan requst amount</span>
             <span
               v-if="!$v.form.amount.minLength"
               class="error-text"
@@ -141,20 +117,10 @@
             >Loan Amount must contain numbers alone.</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Interest Rate"
-          class="has-float-label mb-4"
-        >
-          <b-form-input
-            type="text"
-            v-model="form.interest + '%'"
-            disabled
-          />
+        <b-form-group label="Interest Rate" class="has-float-label mb-4">
+          <b-form-input type="text" v-model="form.interest + '%'" disabled />
         </b-form-group>
-        <b-form-group
-          label="Loan Payment Commencement Date"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Loan Payment Commencement Date" class="has-float-label mb-4">
           <v-date-picker
             mode="single"
             v-model="form.startDate"
@@ -167,14 +133,8 @@
             >Choose when you want to begin your loan repayment thanks.</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Loan Payment Duration"
-          class="has-float-label mb-4"
-        >
-          <b-form-select
-            v-model="form.tenure"
-            :options="options"
-          ></b-form-select>
+        <b-form-group label="Loan Payment Duration" class="has-float-label mb-4">
+          <b-form-select v-model="form.tenure" :options="options"></b-form-select>
           <div v-if="$v.form.tenure.$error">
             <span
               v-if="!$v.form.tenure.required"
@@ -182,10 +142,7 @@
             >Please lets know how long it will take you to repay your loan thanks.</span>
           </div>
         </b-form-group>
-        <b-form-group
-          label="Choose Loan Guarantors (two)"
-          class="has-float-label mb-4"
-        >
+        <b-form-group label="Choose Loan Guarantors (two)" class="has-float-label mb-4">
           <multiselect
             v-if="guarantors && guarantors.length"
             v-model="form.guarantors"
@@ -198,11 +155,7 @@
             placeholder="Select two guarantors of your choice"
             @remove="removeGuarantor"
           ></multiselect>
-          <b-form-select
-            v-model="form.guarantors"
-            :options="emptyOptions"
-            v-else
-          ></b-form-select>
+          <b-form-select v-model="form.guarantors" :options="emptyOptions" v-else></b-form-select>
           <div v-if="$v.form.guarantors.$error">
             <span
               v-if="!$v.form.guarantors.required"
@@ -237,13 +190,8 @@
         </div>
       </b-form>
     </b-colxx>
-    <form-preview
-      :user="user"
-      :previewData="form"
-      title="Commodity Loan Application Preview"
-    />
+    <form-preview :user="user" :previewData="form" title="Commodity Loan Application Preview" />
   </b-row>
-
 </template>
 <script>
 import {
@@ -255,6 +203,7 @@ import {
 import { mapGetters, mapActions } from "vuex";
 import FormPreview from "./FormPreview";
 import moment from "moment";
+import { inWords } from "../../utils/towords";
 
 export default {
   name: "CommodityLoanForm",
@@ -392,6 +341,7 @@ export default {
           tenure: this.form.tenure,
           interest: this.form.interest,
           principal_amount: this.form.amount,
+          principal_amount_words: inWords(this.form.amount),
           repayment_amount: this.form.repaymentAmount.toString(),
           repayment_date: backendDate,
           guarantors: guarantorsIds
