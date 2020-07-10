@@ -80,7 +80,8 @@
           </b-row>
         </b-form>
       </b-colxx>
-      <form-preview
+
+      <form-preview style="margin-top: 65px;"
         :user="currentUser"
         :previewData="form"
         title="Commodity Loan Application Preview"
