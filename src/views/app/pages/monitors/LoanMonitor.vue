@@ -129,7 +129,7 @@ export default {
         {
           name: "principal_amount",
           sortField: "principal_amount",
-          title: "Principal Amount",
+          title: "Amount",
           titleClass: "",
           dataClass: "text-muted"
         },
@@ -169,6 +169,7 @@ export default {
         const { loans } = response.data;
         this.data = loans;
         this.data.forEach(loan => {
+          loan.principal_amount = "₦" + loan.principal_amount;
           loan.interest += "%";
           if (loan.status == 0) {
             loan.status = "Pending";
