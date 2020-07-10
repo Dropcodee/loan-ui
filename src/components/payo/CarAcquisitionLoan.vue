@@ -7,27 +7,87 @@
           <b-row>
             <b-colxx sm="12">
               <b-form-group label="Fullname" class="has-float-label mb-4">
-                <b-form-input disabled type="text" v-model="form.fullname" />
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.fullname"
+                  :class="$v.form.fullname.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.fullname.$touch()"
+                />
+                <div v-if="$v.form.fullname.$error">
+                  <span
+                    v-if="!$v.form.fullname.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Staff ID" class="has-float-label mb-4">
-                <b-form-input disabled type="text" v-model="form.staff_id" />
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.staff_id"
+                  :class="$v.form.staff_id.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.staff_id.$touch()"
+                />
+                <div v-if="$v.form.staff_id.$error">
+                  <span
+                    v-if="!$v.form.staff_id.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="College" class="has-float-label mb-4">
-                <b-form-input disabled type="text" v-model="form.college" />
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.college"
+                  :class="$v.form.college.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.college.$touch()"
+                />
+                <div v-if="$v.form.college.$error">
+                  <span
+                    v-if="!$v.form.college.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Department" class="has-float-label mb-4">
-                <b-form-input disabled type="text" v-model="form.department" />
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.department"
+                  :class="$v.form.department.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.department.$touch()"
+                />
+                <div v-if="$v.form.department.$error">
+                  <span
+                    v-if="!$v.form.department.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="GSM NO" class="has-float-label mb-4">
-                <b-form-input disabled type="text" v-model="form.phone" />
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.phone"
+                  :class="$v.form.phone.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.phone.$touch()"
+                />
+                <div v-if="$v.form.phone.$error">
+                  <span
+                    v-if="!$v.form.phone.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
@@ -35,22 +95,72 @@
                 label="Nature of Asset (Car, Motor Cycle etc.)"
                 class="has-float-label mb-4"
               >
-                <b-form-input type="text" v-model="form.asset_nature" />
+                <b-form-input
+                  type="text"
+                  v-model="form.asset_nature"
+                  :class="$v.form.asset_nature.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.asset_nature.$touch()"
+                />
+                <div v-if="$v.form.asset_nature.$error">
+                  <span
+                    v-if="!$v.form.asset_nature.required"
+                    class="error-text"
+                  >Please enter the nature of the items you wish to purchase.</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Brand of Asset" class="has-float-label mb-4">
-                <b-form-input type="text" v-model="form.car_brand" />
+                <b-form-input
+                  type="text"
+                  v-model="form.car_brand"
+                  :class="$v.form.car_brand.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.car_brand.$touch()"
+                />
+                <div v-if="$v.form.car_brand.$error">
+                  <span
+                    v-if="!$v.form.car_brand.required"
+                    class="error-text"
+                  >Please enter the car brand of the items you wish to purchase.</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Salary" class="has-float-label mb-4">
-                <b-form-input type="text" v-model="form.salary" />
+                <b-form-input
+                  type="text"
+                  v-model="form.salary"
+                  :class="$v.form.salary.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.salary.$touch()"
+                />
+                <div v-if="$v.form.salary.$error">
+                  <span v-if="!$v.form.salary.required" class="error-text">Please enter your salary</span>
+                  <span
+                    v-if="!$v.form.salary.numeric"
+                    class="error-text"
+                  >Salary must contain numbers alone.</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group label="Interest Rate" class="has-float-label mb-4">
+                <b-form-input type="text" v-bind:value="form.interest + '%'" disabled />
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Loan Payment Duration" class="has-float-label mb-4">
-                <b-form-select v-model="form.tenure" :options="options"></b-form-select>
+                <b-form-select
+                  v-model="form.tenure"
+                  :options="options"
+                  :class="$v.form.tenure.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.tenure.$touch()"
+                ></b-form-select>
+                <div v-if="$v.form.tenure.$error">
+                  <span
+                    v-if="!$v.form.tenure.required"
+                    class="error-text"
+                  >Please lets know how long it will take you to repay your loan thanks.</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
@@ -68,6 +178,12 @@
                   @remove="removeGuarantor"
                 ></multiselect>
                 <b-form-select v-model="form.guarantors" :options="emptyOptions" v-else></b-form-select>
+                <div v-if="$v.form.guarantors.$error">
+                  <span
+                    v-if="!$v.form.guarantors.required"
+                    class="error-text"
+                  >Please select two guarantors for your loan applications.</span>
+                </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
@@ -136,6 +252,12 @@
 </template>
 <script>
 import FormPreview from "./FormPreview";
+import {
+  required,
+  maxLength,
+  numeric,
+  minLength
+} from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -166,15 +288,15 @@ export default {
         { value: "regular", text: "Regular Credit Loan" },
         { value: "emergency", text: "Emergency Credit Loan" }
       ],
-      days: [
-        "Sunday",
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday"
-      ],
+      // days: [
+      //   "Sunday",
+      //   "Monday",
+      //   "Tuesday",
+      //   "Wednesday",
+      //   "Thursday",
+      //   "Friday",
+      //   "Saturday"
+      // ],
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
         staff_id: this.user.employed_valid_id_card,
@@ -184,7 +306,7 @@ export default {
         asset_nature: "",
         car_brand: "",
         salary: "",
-        repayment_duration: ""
+        repayment_duration: "",
         // guarantor_a: {
         //   fullname: "",
         //   staff_id: "",
@@ -206,12 +328,57 @@ export default {
         //   amount_guaranteed: 0
         // }
         // amount: 0,
-        // interest: 5,
-        // tenure: 1
+        interest: 8,
+        tenure: null
       },
-      yearlyInterest: 0,
+      // yearlyInterest: 0,
       loanTotal: 0
     };
+  },
+  validations: {
+    form: {
+      fullname: {
+        required
+      },
+      college: {
+        required
+      },
+      department: {
+        required
+      },
+      phone: {
+        required,
+        minLength: minLength(11),
+        maxLength: maxLength(11),
+        numeric
+      },
+      staff_id: {
+        required,
+        minLength: minLength(7),
+        maxLength: maxLength(8),
+        numeric
+      },
+      guarantors: {
+        required
+      },
+      asset_nature: {
+        required
+      },
+      car_brand: {
+        required
+      },
+      salary: {
+        required,
+        // minLength: minLength(5),
+        // maxLength: maxLength(60000),
+        numeric
+      },
+      tenure: {
+        required
+        // minLength: minLength(5),
+        // maxLength: maxLength(60000),
+      }
+    }
   },
   methods: {
     ...mapActions("loan", ["CommodityLoanRequest"]),
@@ -220,7 +387,6 @@ export default {
     },
     hideModal(refname) {
       this.$refs[refname].hide();
-      console.log("hide modal:: " + refname);
 
       if (refname === "modalnestedinline") {
         this.$refs["modalnested"].show();
@@ -262,27 +428,29 @@ export default {
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        const loggedInUser = this.user;
-        const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        const guarantorsIds = [];
-        this.form.guarantors.forEach(guarantor => {
-          guarantorsIds.push(guarantor.value);
-        });
-        const payload = {
-          commodity_nature: this.form.nature,
-          loan_type: "Commodity Loan",
-          tenure: this.form.tenure,
-          interest: this.form.interest,
-          principal_amount: this.form.amount,
-          repayment_amount: this.form.repaymentAmount.toString(),
-          repayment_date: backendDate,
-          guarantors: guarantorsIds
-        };
-        try {
-          this.CommodityLoanRequest(payload);
-        } catch (err) {
-          return err;
-        }
+        // const loggedInUser = this.user;
+        // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
+        // const guarantorsIds = [];
+        // this.form.guarantors.forEach(guarantor => {
+        //   guarantorsIds.push(guarantor.value);
+        // });
+        // const payload = {
+        //   commodity_nature: this.form.nature,
+        //   loan_type: "Commodity Loan",
+        //   tenure: this.form.tenure,
+        //   interest: this.form.interest,
+        //   principal_amount: this.form.amount,
+        //   repayment_amount: this.form.repaymentAmount.toString(),
+        //   repayment_date: backendDate,
+        //   guarantors: guarantorsIds
+        // };
+        // try {
+        //   this.CommodityLoanRequest(payload);
+        // } catch (err) {
+        //   return err;
+        // }
+      } else {
+        this.hideModal("modalbasic");
       }
     }
   },
