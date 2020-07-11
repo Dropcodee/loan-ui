@@ -9,5 +9,8 @@ export default {
     },
     creditloan(credentials) {
         return api().post('loans/credit', credentials)
-    }
+    },
+    carloan(credentials) {
+      return api().post('loans/car_acquisition', credentials)
+  }
 }
