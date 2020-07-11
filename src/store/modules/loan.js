@@ -93,6 +93,9 @@ export const actions = {
             dispatch('notification/add', notification, {
                 root: true
             });
+            router.push({
+                name: 'loan-monitor'
+            });
         } catch (error) {
             commit('SET_REQUEST_PROCESS', false)
             console.log(error)

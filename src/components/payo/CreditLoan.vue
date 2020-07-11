@@ -414,6 +414,7 @@ export default {
           guarantors.forEach(guarantor => {
             guarantorsIds.push({
               id: guarantor.value,
+              name: guarantor.name,
               repayment_amount: Math.round(guarantorAB)
             });
           });
@@ -425,11 +426,13 @@ export default {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorA)
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorB)
               });
             }
@@ -442,11 +445,13 @@ export default {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorA)
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorB)
               });
             }
