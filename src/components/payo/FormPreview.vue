@@ -87,14 +87,8 @@
             </p>
             <p
               class="preview preview__text"
-              v-if="previewData.loanInterest"
-            >{{ previewData.loanInterest ? previewData.loanInterest+"%" : 'N/A' }}
-              <span class="preview__title">Loan Interest</span>
-            </p>
-            <p
-              class="preview preview__text"
               v-else
-            >N/A
+            >{{ previewData.loanInterest ? previewData.loanInterest+"%" : 'N/A' }}
               <span class="preview__title">Loan Interest</span>
             </p>
           </b-colxx>
@@ -103,20 +97,14 @@
           <b-colxx>
             <p
               class="preview preview__text"
-              v-if="previewData.repaymentAmount"
+              v-show="previewData.repaymentAmount"
             >{{previewData.repaymentAmount | toCurrency }}
               <span class="preview__title">Amount to be repayed</span>
             </p>
             <p
               class="preview preview__text"
-              v-if="previewData.regular_loan_repayment"
+              v-show="previewData.regular_loan_repayment"
             >{{previewData.regular_loan_repayment | toCurrency }}
-              <span class="preview__title">Amount to be repayed</span>
-            </p>
-            <p
-              class="preview preview__text"
-              v-else
-            > N/A
               <span class="preview__title">Amount to be repayed</span>
             </p>
           </b-colxx>

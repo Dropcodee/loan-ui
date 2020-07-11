@@ -1,6 +1,6 @@
-import LoanServices from "@/services/LoanServices";
-
-export const namespaced = true;
+import LoanServices from '@/services/LoanServices'
+import router from "../../router";
+export const namespaced = true
 
 export const state = {
   userLoans: null,
