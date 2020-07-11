@@ -14,18 +14,61 @@
       </b-colxx>
     </b-row>
     <h2 class="text-center mt-4">Here are some of our services</h2>
-    <draggable class="col mt-4">
+    <b-row>
       <b-colxx
-        xl="12"
-        lg="12"
-        class="mb-4"
-        v-for="(service, index) in serviceListing"
-        :key="index"
+        lg="8"
+        xl="8"
       >
-        <list-card-component :service="service">
-        </list-card-component>
+        <draggable class="col mt-4">
+          <b-colxx
+            class="mb-4"
+            v-for="(service, index) in serviceListing"
+            :key="index"
+          >
+            <list-card-component :service="service">
+            </list-card-component>
+          </b-colxx>
+        </draggable>
       </b-colxx>
-    </draggable>
+      <b-colxx
+        xl="4"
+        lg="4"
+        class="mb-4 mt-4"
+      >
+        <b-card
+          class="mb-4"
+          :title="'Loan Borrowed / Amount Paid'"
+        >
+          <div
+            v-for="(s,index) in profileStatuses"
+            :key="index"
+            class="mb-4"
+          >
+            <p class="mb-2">
+              {{ s.title }}
+              <span class="float-right text-muted">{{s.status}}/{{s.total}}</span>
+            </p>
+            <b-progress :value="(s.status / s.total) * 100"></b-progress>
+          </div>
+        </b-card>
+        <b-card
+          class="mb-4"
+          :title="'Your Savings from last 3 months '"
+        >
+          <div
+            v-for="(s,index) in profileStatuses"
+            :key="index"
+            class="mb-4"
+          >
+            <p class="mb-2">
+              {{ s.title }}
+              <span class="float-right text-muted">{{s.status}}/{{s.total}}</span>
+            </p>
+            <b-progress :value="(s.status / s.total) * 100"></b-progress>
+          </div>
+        </b-card>
+      </b-colxx>
+    </b-row>
   </div>
 </template>
 <script>

@@ -210,6 +210,21 @@
             >Please select two guarantors for your loan applications.</span>
           </div>
         </b-form-group>
+        <b-form-group
+          label="Guarantors repayment percentage"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_percentage"
+            :options="percentages"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_percentage.$error">
+            <span
+              v-if="!$v.form.repayment_percentage.required"
+              class="error-text"
+            >Please share the loan among the selected guarantors.</span>
+          </div>
+        </b-form-group>
         <div class="d-flex justify-content-around align-items-center">
           <b-button
             type="submit"
@@ -262,6 +277,11 @@ export default {
   components: { FormPreview },
   data() {
     return {
+      percentages: [
+        { value: "5050", text: "50% - 50%" },
+        { value: "6040", text: "60% - 40%" },
+        { value: "7030", text: "70% - 30%" }
+      ],
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
         phone: this.user.phone_number,
@@ -270,6 +290,7 @@ export default {
         staffId: this.user.employed_valid_id_card,
         nature: "",
         repaymentAmount: "",
+        repayment_percentage: "",
         startDate: null,
         displayDate: null,
         amount: null,
@@ -298,15 +319,9 @@ export default {
   },
   validations: {
     form: {
-      fullname: {
-        required
-      },
-      college: {
-        required
-      },
-      department: {
-        required
-      },
+      fullname: { required },
+      college: { required },
+      department: { required },
       phone: {
         required,
         minLength: minLength(11),
@@ -319,24 +334,17 @@ export default {
         maxLength: maxLength(8),
         numeric
       },
-      guarantors: {
-        required
-      },
-      nature: {
-        required
-      },
-      startDate: {
-        required
-      },
+      guarantors: { required },
+      nature: { required },
+      startDate: { required },
       amount: {
         required,
         minLength: minLength(5),
         maxLength: maxLength(60000),
         numeric
       },
-      tenure: {
-        required
-      }
+      tenure: { required },
+      repayment_percentage: { required }
     }
   },
   methods: {
@@ -377,21 +385,68 @@ export default {
       this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
       console.log(this.form.displayDate);
     },
-    setGuarantorDetails(guarantors) {
+    setGuarantorDetails(guarantors, percentage) {
       // calculate guarantors repayment amount
-      switch (this.form.loan_percentage) {
-      }
+      let guarantorAB, guarantorA, guarantorB;
       const guarantorsIds = [];
-      guarantors.forEach(guarantor => {
-        guarantorsIds.push(guarantor.value);
-      });
+      switch (percentage) {
+        case "5050":
+          guarantorAB = (this.form.repaymentAmount / 100) * 50;
+          guarantors.forEach(guarantor => {
+            guarantorsIds.push({
+              id: guarantor.value,
+              name: guarantor.name,
+              repayment_amount: Math.round(guarantorAB)
+            });
+          });
+          break;
+        case "6040":
+          guarantorA = (this.form.repaymentAmount / 100) * 60;
+          guarantorB = (this.form.repaymentAmount / 100) * 40;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorA)
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorB)
+              });
+            }
+          });
+          break;
+        case "7030":
+          guarantorA = (this.form.repaymentAmount / 100) * 70;
+          guarantorB = (this.form.repaymentAmount / 100) * 30;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorA)
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorB)
+              });
+            }
+          });
+          break;
+      }
+      this.form.guarantors = guarantorsIds;
+      console.log(this.form.guarantors);
     },
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
         const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        this.setGuarantorDetails(this.form.guarantors);
         const payload = {
           commodity_nature: this.form.nature,
           loan_type: "Commodity Loan",
@@ -400,7 +455,7 @@ export default {
           principal_amount: this.form.amount,
           repayment_amount: this.form.repaymentAmount.toString(),
           repayment_date: backendDate,
-          guarantors: guarantorsIds
+          guarantors: this.form.guarantors
         };
         try {
           this.CommodityLoanRequest(payload);
@@ -427,6 +482,14 @@ export default {
     "form.startDate": {
       handler: function(startDate) {
         this.formatDate();
+      }
+    },
+    "form.repayment_percentage": {
+      handler: function(percentage) {
+        if (percentage) {
+          this.setGuarantorDetails(this.form.guarantors, percentage);
+        }
+        return 0;
       }
     }
   }
