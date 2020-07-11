@@ -377,15 +377,21 @@ export default {
       this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
       console.log(this.form.displayDate);
     },
+    setGuarantorDetails(guarantors) {
+      // calculate guarantors repayment amount
+      switch (this.form.loan_percentage) {
+      }
+      const guarantorsIds = [];
+      guarantors.forEach(guarantor => {
+        guarantorsIds.push(guarantor.value);
+      });
+    },
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
         const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        const guarantorsIds = [];
-        this.form.guarantors.forEach(guarantor => {
-          guarantorsIds.push(guarantor.value);
-        });
+        this.setGuarantorDetails(this.form.guarantors);
         const payload = {
           commodity_nature: this.form.nature,
           loan_type: "Commodity Loan",

@@ -137,7 +137,7 @@ export default {
         {
           type: {
             mode: "link",
-            location: "/transfer"
+            location: "/app/pages/services/savings-application"
           },
           title: "Create a savings account",
           description:
@@ -165,22 +165,12 @@ export default {
         {
           type: {
             mode: "link",
-            location: "/payment-link"
+            location: "/app/pages/monitors/loan-monitor"
           },
           title: "Verified Loan Application",
           description:
             "Checkout all your verified loan application status and progress.",
           buttonText: "View Verified Loans"
-        },
-        {
-          type: {
-            mode: "link",
-            location: "/payment-link"
-          },
-          title: "Add new guarantors",
-          description:
-            "Add new guarantors that have better track records and are members of this community.",
-          buttonText: "Add New Guarantors"
         }
       ],
       calendar: {

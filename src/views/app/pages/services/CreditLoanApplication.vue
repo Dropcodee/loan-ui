@@ -14,7 +14,6 @@
       </b-colxx>
     </b-row>
     <credit-loan-form
-      :processing="processing"
       :user="currentUser"
       :guarantors="guarantorsList"
       :requestError='requestError'
@@ -45,22 +44,6 @@ export default {
   methods: {
     ...mapActions("loan", ["NewLoanRequest", "FetchGuarantors"]),
     ...mapActions("notification", ["remove"]),
-    formSubmit() {
-      this.$v.$touch();
-      if (!this.$v.$invalid) {
-        const { amount, tenure, interest } = this.form;
-        const payload = {
-          principal_amount: amount,
-          tenure,
-          interest
-        };
-        try {
-          this.NewLoanRequest(payload);
-        } catch (err) {
-          return err;
-        }
-      }
-    },
     interest(amount) {
       if (amount == "" || amount == null) {
         return 0;
