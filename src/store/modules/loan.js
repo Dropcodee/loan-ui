@@ -1,5 +1,5 @@
 import LoanServices from '@/services/LoanServices'
-
+import router from "../../router";
 export const namespaced = true
 
 export const state = {
@@ -35,14 +35,17 @@ export const actions = {
                 type: 'success',
                 message: 'Successfully applied for a new loan, we will contact you shortly.'
             }
+            router.push({
+                name: 'loan-monitor'
+            });
             dispatch('notification/add', notification, {
                 root: true
             })
-        } catch (ex) {
+        } catch (error) {
             commit('SET_REQUEST_PROCESS', false)
-            if (ex.response.status === 500 || ex.response.status === 401) {
-                if (ex.response.data.errors) {
-                    let errors = ex.response.data.errors
+            if (error.response.status === 500 || error.response.status === 401) {
+                if (error.response.data.errors) {
+                    let errors = error.response.data.errors
                     errors.forEach(function(error) {
                         // statements
                         const notification = {
@@ -53,10 +56,10 @@ export const actions = {
                             root: true
                         })
                     });
-                } else if (ex.response.data.error) {
+                } else if (error.response.data.error) {
                     const notification = {
                         type: 'error',
-                        message: ex.response.data.error,
+                        message: error.response.data.error,
                     }
                     dispatch('notification/add', notification, {
                         root: true
@@ -79,21 +82,23 @@ export const actions = {
     }, payload) {
         let response
         try {
-            commit('SET_REQUEST_PROCESS', true)
-            response = await LoanServices.credit(payload)
-            commit('SET_REQUEST_PROCESS', false)
+            commit('SET_REQUEST_PROCESS', true);
+            response = await LoanServices.creditloan(payload);
+            commit('SET_REQUEST_PROCESS', false);
+            console.log(response);
             const notification = {
                 type: 'success',
                 message: 'Successfully applied for a new loan, we will contact you shortly.'
-            }
+            };
             dispatch('notification/add', notification, {
                 root: true
-            })
-        } catch (ex) {
+            });
+        } catch (error) {
             commit('SET_REQUEST_PROCESS', false)
-            if (ex.response.status === 500 || ex.response.status === 401) {
-                if (ex.response.data.errors) {
-                    let errors = ex.response.data.errors
+            console.log(error)
+            if (error.response.status === 500 || error.response.status === 401) {
+                if (error.response.data.errors) {
+                    let errors = error.response.data.errors
                     errors.forEach(function(error) {
                         // statements
                         const notification = {
@@ -104,10 +109,10 @@ export const actions = {
                             root: true
                         })
                     });
-                } else if (ex.response.data.error) {
+                } else if (error.response.data.error) {
                     const notification = {
                         type: 'error',
-                        message: ex.response.data.error,
+                        message: error.response.data.error,
                     }
                     dispatch('notification/add', notification, {
                         root: true
@@ -121,7 +126,7 @@ export const actions = {
             dispatch('notification/add', notification, {
                 root: true
             })
-            throw ex
+            throw error
         }
     },
     async FetchGuarantors({

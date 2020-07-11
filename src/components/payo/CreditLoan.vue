@@ -99,12 +99,12 @@
           label="Nature Of Credit (Regular or Emmergency)"
           class="has-float-label mb-4"
         >
-          <b-form-input
-            type="text"
+          <b-form-select
             v-model="form.credit_nature"
+            :options="loanNature"
             :class="$v.form.credit_nature.$error ? 'is-invalid' : ''"
             @blur="$v.form.credit_nature.$touch()"
-          />
+          ></b-form-select>
           <div v-if="$v.form.credit_nature.$error">
             <span
               v-if="!$v.form.credit_nature.required"
@@ -128,17 +128,32 @@
               class="error-text"
             >Please enter your loan requst amount </span>
             <span
-              v-if="!$v.form.amount.minLength"
+              v-if="!$v.form.loan_amount.minLength"
               class="error-text"
             >Sorry can't request for a loan less than is 10,000</span>
-            <span
-              v-if="!$v.form.amount.maxLength"
+            <!-- <span
+              v-if="!$v.form.loan_amount.maxLength"
               class="error-text"
-            >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
+            >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span> -->
             <span
-              v-if="!$v.form.amount.numeric"
+              v-if="!$v.form.loan_amount.numeric"
               class="error-text"
             >Loan Amount must contain numbers alone.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Method of loan repayment"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_method"
+            :options="options"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_method.$error">
+            <span
+              v-if="!$v.form.repayment_method.required"
+              class="error-text"
+            >Please lets know how you wish to make your loan payments.</span>
           </div>
         </b-form-group>
         <b-form-group
@@ -150,6 +165,12 @@
             v-model="form.loanInterest + '%'"
             disabled
           />
+          <div v-if="$v.form.loanInterest.$error">
+            <span
+              v-if="!$v.form.loanInterest.required"
+              class="error-text"
+            >Please check back for loan percentages.</span>
+          </div>
         </b-form-group>
         <b-form-group
           label="Loan Purpose"
@@ -183,21 +204,6 @@
           </div>
         </b-form-group>
         <b-form-group
-          label="Method of loan repayment"
-          class="has-float-label mb-4"
-        >
-          <b-form-select
-            v-model="form.repayment_method"
-            :options="options"
-          ></b-form-select>
-          <div v-if="$v.form.repayment_method.$error">
-            <span
-              v-if="!$v.form.repayment_method.required"
-              class="error-text"
-            >Please lets know how you wish to make your loan payments.</span>
-          </div>
-        </b-form-group>
-        <b-form-group
           label="Choose Loan Guarantors (two)"
           class="has-float-label mb-4"
         >
@@ -217,11 +223,31 @@
               v-if="!$v.form.guarantors.required"
               class="error-text"
             >Please select two guarantors for your loan applications.</span>
+            <span
+              v-if="!$v.form.guarantors.minLength"
+              class="error-text"
+            >Please select two guarantors for your loan applications.</span>
+          </div>
+        </b-form-group>
+        <b-form-group
+          label="Guarantors repayment percentage"
+          class="has-float-label mb-4"
+        >
+          <b-form-select
+            v-model="form.repayment_percentage"
+            :options="percentages"
+          ></b-form-select>
+          <div v-if="$v.form.repayment_percentage.$error">
+            <span
+              v-if="!$v.form.repayment_percentage.required"
+              class="error-text"
+            >Please share the loan among the selected guarantors.</span>
           </div>
         </b-form-group>
         <div class="d-flex justify-content-around align-items-center">
           <b-button
             type="submit"
+            @click.prevent="formSubmit"
             variant="success"
             size="lg"
             :disabled="$v.$anyError || processing"
@@ -261,13 +287,12 @@ import {
   numeric,
   minLength
 } from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
-
+import { mapActions, mapGetters } from "vuex";
+import moment from "moment";
 export default {
   name: "CreditLoan",
   props: {
     user: Object,
-    processing: Boolean,
     guarantors: Array,
     requestError: [Boolean, null]
   },
@@ -282,6 +307,11 @@ export default {
         { value: "regular", text: "Regular Credit Loan" },
         { value: "emergency", text: "Emergency Credit Loan" }
       ],
+      percentages: [
+        { value: "5050", text: "50% - 50%" },
+        { value: "6040", text: "60% - 40%" },
+        { value: "7030", text: "70% - 30%" }
+      ],
       days: [
         "Sunday",
         "Monday",
@@ -294,10 +324,13 @@ export default {
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
         staff_id: this.user.employed_valid_id_card,
+        phone: this.user.phone_number,
+        college: this.user.college,
+        department: this.user.department,
         credit_nature: "",
         loan_purpose: "",
         loan_amount: "",
-        loanInterest: 5,
+        loanInterest: 6,
         phone: this.user.phone_number,
         loan_obligation: "",
         monthly_thrift_contribution: "",
@@ -307,10 +340,15 @@ export default {
         borrower_acct_details: "",
         email: this.user.email,
         repayment_method: "",
+        repayment_percentage: "",
         startDate: null,
+        displayDate: null,
         guarantors: []
       }
     };
+  },
+  computed: {
+    ...mapGetters("loan", ["processing"])
   },
   validations: {
     form: {
@@ -318,6 +356,8 @@ export default {
       college: { required },
       department: { required },
       email: { required },
+      repayment_percentage: { required },
+      loanInterest: { required },
       phone: {
         required,
         minLength: minLength(11),
@@ -332,16 +372,17 @@ export default {
       },
       startDate: { required },
       credit_nature: { required },
-      loan_amount: { required },
+      loan_amount: { required, minLength: minLength(5), numeric },
       loan_purpose: { required },
-      monthly_thrift_contribution: { required },
-      borrower_acct_details: { required },
       repayment_method: { required },
-      guarantors: { required }
+      guarantors: { required, minLength: minLength(2) }
     }
   },
   methods: {
     ...mapActions("loan", ["CreditLoanRequest"]),
+    moment: function() {
+      return moment();
+    },
     hideModal(refname) {
       this.$refs[refname].hide();
       console.log("hide modal:: " + refname);
@@ -359,23 +400,94 @@ export default {
         return guarantor;
       });
     },
+    formatDate() {
+      this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
+      console.log(this.form.displayDate);
+    },
+    setGuarantorDetails(guarantors, percentage) {
+      // calculate guarantors repayment amount
+      let guarantorAB, guarantorA, guarantorB;
+      const guarantorsIds = [];
+      switch (percentage) {
+        case "5050":
+          guarantorAB = (this.form.regular_loan_repayment / 100) * 50;
+          guarantors.forEach(guarantor => {
+            guarantorsIds.push({
+              id: guarantor.value,
+              repayment_amount: Math.round(guarantorAB)
+            });
+          });
+          break;
+        case "6040":
+          guarantorA = (this.form.regular_loan_repayment / 100) * 60;
+          guarantorB = (this.form.regular_loan_repayment / 100) * 40;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                repayment_amount: Math.round(guarantorA)
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                repayment_amount: Math.round(guarantorB)
+              });
+            }
+          });
+          break;
+        case "7030":
+          guarantorA = (this.form.regular_loan_repayment / 100) * 70;
+          guarantorB = (this.form.regular_loan_repayment / 100) * 30;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                repayment_amount: Math.round(guarantorA)
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                repayment_amount: Math.round(guarantorB)
+              });
+            }
+          });
+          break;
+      }
+      this.form.guarantors = guarantorsIds;
+      // console.log(this.form.guarantors);
+    },
     formSubmit() {
+      console.log("submitted!!!");
       this.$v.$touch();
+      let backendTenure;
       if (!this.$v.$invalid) {
-        const { amount, tenure, interest } = this.form;
+        const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
+        if (this.form.repayment_method == "monthly") {
+          // tenure of the loan will be every 30days for 1yr
+          backendTenure = 30;
+        } else {
+          backendTenure = 365;
+        }
         const payload = {
-          principal_amount: amount,
-          tenure,
-          interest
+          loan_type: "Credit Loan",
+          loan_amount: this.form.loan_amount,
+          loan_purpose: this.form.loan_purpose,
+          repayment_date: backendDate,
+          guarantors: this.form.guarantors,
+          repayment_amount: this.form.regular_loan_repayment.toString(),
+          interest: this.form.loanInterest,
+          method_of_repayment: this.form.repayment_method,
+          credit_loan_type: this.form.credit_nature,
+          tenure: backendTenure
         };
         try {
-          this.NewLoanRequest(payload);
-          this.requestError = false;
+          this.CreditLoanRequest(payload);
         } catch (err) {
           return err;
         }
+      } else {
+        return console.log(this.$v.$invalid);
       }
-      console.log(this.form);
     },
     interestCalculator(method) {
       // loan calculation formulars
@@ -413,6 +525,16 @@ export default {
     "form.loan_amount": {
       handler: function(amount) {
         this.interestCalculator(this.form.repayment_method);
+      }
+    },
+    "form.startDate": {
+      handler: function(startDate) {
+        this.formatDate();
+      }
+    },
+    "form.repayment_percentage": {
+      handler: function(percentage) {
+        this.setGuarantorDetails(this.form.guarantors, percentage);
       }
     }
   }
