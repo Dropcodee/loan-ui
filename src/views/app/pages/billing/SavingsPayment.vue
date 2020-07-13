@@ -45,6 +45,7 @@
 
 <script>
 import paystack from "vue-paystack";
+import { mapGetters } from "vuex";
 import Draggable from "vuedraggable";
 
 export default {
@@ -58,6 +59,9 @@ export default {
       email: "foobar@example.com", // Customer email
       amount: 1000000 // in kobo
     };
+  },
+  computed: {
+    ...mapGetters("user", ["currentUser"])
   },
   watch: {
     reference() {
@@ -74,13 +78,19 @@ export default {
   },
   methods: {
     callback: function(response) {
-      var transaction = JSON.parse(localStorage.getItem("Transactions") || "[]");
-      console.log(transaction);
-      transaction.push(response);
+      var transaction = JSON.parse(
+        localStorage.getItem("Transactions") || "[]"
+      );
+      transaction.push(
+        Object.assign(response, {
+          user_id: this.currentUser.id,
+          amount: this.amount / 100
+        })
+      );
       localStorage.setItem("Transactions", JSON.stringify(transaction));
     },
     close: function() {
-      console.log("Payment closed");
+      // console.log("Payment closed");
     }
   }
 };
