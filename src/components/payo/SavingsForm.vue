@@ -200,23 +200,6 @@ export default {
   data() {
     return {
       step: 1,
-      emptyOptions: [
-        {
-          value: null,
-          text:
-            "Sorry there are no guarantors available for now, try again later..."
-        }
-      ],
-      options: [
-        { value: 90, text: "3 months" },
-        { value: 180, text: "6 months" },
-        { value: 365, text: "1 year" },
-        { value: 730, text: "2 years" }
-      ],
-      loanNature: [
-        { value: "regular", text: "Regular Credit Loan" },
-        { value: "emergency", text: "Emergency Credit Loan" }
-      ],
       // days: [
       //   "Sunday",
       //   "Monday",
