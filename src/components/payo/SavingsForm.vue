@@ -171,7 +171,7 @@
         <div class="separator mb-5"></div>
         <p class="lead">
           You already have a savings account, Please
-          <router-link to="/" style="color: #2a863f;" class="secondary">click here</router-link> to pay your monthly savings
+          <router-link to="/app/pages/billing/SavingsPayment" style="color: #2a863f;" class="secondary">click here</router-link> to pay your monthly savings
         </p>
       </b-colxx>
     </b-row>
