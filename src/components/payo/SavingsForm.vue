@@ -1,235 +1,164 @@
 <template>
   <div>
-    <b-row>
+    <b-row v-if="step == 1">
       <b-colxx>
         <b-form
           @submit.prevent="formSubmit"
           class="av-tooltip tooltip-label-bottom"
         >
-          <b-form-group
-            label="Full Name"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.fullname"
-              disabled
-              :class="$v.form.fullname.$error ? 'is-invalid' : ''"
-              @blur="$v.form.fullname.$touch()"
-            />
-            <div v-if="$v.form.fullname.$error">
-              <span
-                v-if="!$v.form.fullname.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Staff ID Number"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.staffId"
-              disabled
-              :class="$v.form.staffId.$error ? 'is-invalid' : ''"
-              @blur="$v.form.staffId.$touch()"
-            />
-            <div v-if="$v.form.staffId.$error">
-              <span
-                v-if="!$v.form.staffId.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Current College"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.college"
-              disabled
-              :class="$v.form.college.$error ? 'is-invalid' : ''"
-              @blur="$v.form.college.$touch()"
-            />
-            <div v-if="$v.form.college.$error">
-              <span
-                v-if="!$v.form.college.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Current Department"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.department"
-              disabled
-              :class="$v.form.department.$error ? 'is-invalid' : ''"
-              @blur="$v.form.department.$touch()"
-            />
-            <div v-if="$v.form.department.$error">
-              <span
-                v-if="!$v.form.department.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Phone Number"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.phone"
-              disabled
-              :class="$v.form.phone.$error ? 'is-invalid' : ''"
-              @blur="$v.form.phone.$touch()"
-            />
-            <div v-if="$v.form.phone.$error">
-              <span
-                v-if="!$v.form.phone.required"
-                class="error-text"
-              >Please complete your profile to fill this details</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Nature Of Item(s)"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.nature"
-              :class="$v.form.nature.$error ? 'is-invalid' : ''"
-              @blur="$v.form.nature.$touch()"
-            />
-            <div v-if="$v.form.nature.$error">
-              <span
-                v-if="!$v.form.nature.required"
-                class="error-text"
-              >Please enter the nature of the items you wish to purchase.</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Loan Amount"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.amount"
-              :class="$v.form.amount.$error ? 'is-invalid' : ''"
-              @blur="$v.form.amount.$touch()"
-            />
-            <div v-if="$v.form.amount.$error">
-              <span
-                v-if="!$v.form.amount.required"
-                class="error-text"
-              >Please enter your loan requst amount</span>
-              <span
-                v-if="!$v.form.amount.minLength"
-                class="error-text"
-              >Sorry can't request for a loan less than is 10,000</span>
-              <span
-                v-if="!$v.form.amount.maxLength"
-                class="error-text"
-              >Sorry here is your current maximum loan request amount {{ $v.form.amount.$params.maxLength.max }}, please not that this amount is based on your current savings for the past 3 months.</span>
-              <span
-                v-if="!$v.form.amount.numeric"
-                class="error-text"
-              >Loan Amount must contain numbers alone.</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Interest Rate"
-            class="has-float-label mb-4"
-          >
-            <b-form-input
-              type="text"
-              v-model="form.interest + '%'"
-              disabled
-            />
-          </b-form-group>
-          <b-form-group
-            label="Loan Payment Commencement Date"
-            class="has-float-label mb-4"
-          >
-            <v-date-picker
-              mode="single"
-              v-model="form.startDate"
-              :input-props="{ class:'form-control', placeholder: $t('form-components.date') }"
-            ></v-date-picker>
-            <div v-if="$v.form.startDate.$error">
-              <span
-                v-if="!$v.form.startDate.required"
-                class="error-text"
-              >Choose when you want to begin your loan repayment thanks.</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Loan Payment Duration"
-            class="has-float-label mb-4"
-          >
-            <b-form-select
-              v-model="form.tenure"
-              :options="options"
-            ></b-form-select>
-            <div v-if="$v.form.tenure.$error">
-              <span
-                v-if="!$v.form.tenure.required"
-                class="error-text"
-              >Please lets know how long it will take you to repay your loan thanks.</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Choose Loan Guarantors (two)"
-            class="has-float-label mb-4"
-          >
-            <multiselect
-              v-if="guarantors && guarantors.length"
-              v-model="form.guarantors"
-              :options="guarantors"
-              :multiple="true"
-              :searchable="true"
-              deselectLabel="Press enter to remove"
-              :max="2"
-              label="name"
-              placeholder="Select two guarantors of your choice"
-              @remove="removeGuarantor"
-            ></multiselect>
-            <b-form-select
-              v-model="form.guarantors"
-              :options="emptyOptions"
-              v-else
-            ></b-form-select>
-            <div v-if="$v.form.guarantors.$error">
-              <span
-                v-if="!$v.form.guarantors.required"
-                class="error-text"
-              >Please select two guarantors for your loan applications.</span>
-            </div>
-          </b-form-group>
-          <b-form-group
-            label="Guarantors repayment percentage"
-            class="has-float-label mb-4"
-          >
-            <b-form-select
-              v-model="form.repayment_percentage"
-              :options="percentages"
-            ></b-form-select>
-            <div v-if="$v.form.repayment_percentage.$error">
-              <span
-                v-if="!$v.form.repayment_percentage.required"
-                class="error-text"
-              >Please share the loan among the selected guarantors.</span>
-            </div>
-          </b-form-group>
+          <!-- <h6 class="mb-4 text-center">Car Aquisition</h6> -->
+          <b-row>
+            <b-colxx sm="12">
+              <b-form-group
+                label="Fullname"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.fullname"
+                  :class="$v.form.fullname.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.fullname.$touch()"
+                />
+                <div v-if="$v.form.fullname.$error">
+                  <span
+                    v-if="!$v.form.fullname.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="Staff ID"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.staff_id"
+                  :class="$v.form.staff_id.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.staff_id.$touch()"
+                />
+                <div v-if="$v.form.staff_id.$error">
+                  <span
+                    v-if="!$v.form.staff_id.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="College"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.college"
+                  :class="$v.form.college.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.college.$touch()"
+                />
+                <div v-if="$v.form.college.$error">
+                  <span
+                    v-if="!$v.form.college.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="Department"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.department"
+                  :class="$v.form.department.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.department.$touch()"
+                />
+                <div v-if="$v.form.department.$error">
+                  <span
+                    v-if="!$v.form.department.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="GSM NO"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  disabled
+                  type="text"
+                  v-model="form.phone"
+                  :class="$v.form.phone.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.phone.$touch()"
+                />
+                <div v-if="$v.form.phone.$error">
+                  <span
+                    v-if="!$v.form.phone.required"
+                    class="error-text"
+                  >Please complete your profile to fill this details</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="Account Number"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="form.acct_no"
+                  :class="$v.form.acct_no.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.acct_no.$touch()"
+                />
+                <div v-if="$v.form.acct_no.$error">
+                  <span
+                    v-if="!$v.form.acct_no.required"
+                    class="error-text"
+                  >Please enter your Account Number.</span>
+                  <span
+                    v-if="!$v.form.acct_no.numeric"
+                    class="error-text"
+                  >Account number must contain numbers alone.</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group
+                label="Monthly Deposit"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="form.monthly_deposit"
+                  :class="$v.form.monthly_deposit.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.monthly_deposit.$touch()"
+                />
+                <div v-if="$v.form.monthly_deposit.$error">
+                  <span
+                    v-if="!$v.form.monthly_deposit.required"
+                    class="error-text"
+                  >Please enter the amount you wish to deposit on a monthly basis.</span>
+                  <span
+                    v-if="!$v.form.monthly_deposit.numeric"
+                    class="error-text"
+                  >Savings must contain numbers alone.</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+          </b-row>
           <div class="d-flex justify-content-around align-items-center">
             <b-button
-              type="submit"
               variant="success"
+              type="submit"
               size="lg"
               :disabled="$v.$anyError || processing"
               :class="{'btn-multiple-state btn-shadow btn-block': true,
@@ -253,16 +182,31 @@
           </div>
         </b-form>
       </b-colxx>
-      <form-preview
+
+      <FormPreviewSavings
+        class="has-float-label mb-4"
         :user="user"
         :previewData="form"
         title="Savings Application Preview"
       />
     </b-row>
+    <b-row v-else>
+      <b-colxx xxs="12">
+        <div class="separator mb-5"></div>
+        <p class="lead">
+          You already have a savings account, Please
+          <router-link
+            to="/app/pages/billing/SavingsPayment"
+            style="color: #2a863f;"
+            class="secondary"
+          >click here</router-link>to pay your monthly savings
+        </p>
+      </b-colxx>
+    </b-row>
   </div>
 </template>
-
 <script>
+import FormPreviewSavings from "./FormPreviewSavings";
 import {
   required,
   maxLength,
@@ -270,65 +214,103 @@ import {
   minLength
 } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
-import FormPreview from "./FormPreview";
 import moment from "moment";
-import { inWords } from "../../utils/towords";
+
 export default {
-  name: "SavingsForm",
-  props: { user: Object, requestError: [Boolean, null] },
-  components: { FormPreview },
+  name: "CarAcquisition",
+  props: { user: Object, guarantors: Array, requestError: [Boolean, null] },
+
+  components: { FormPreviewSavings },
+  computed: {
+    ...mapGetters("loan", ["processing"])
+  },
+
   data() {
     return {
+      step: 1,
+      // days: [
+      //   "Sunday",
+      //   "Monday",
+      //   "Tuesday",
+      //   "Wednesday",
+      //   "Thursday",
+      //   "Friday",
+      //   "Saturday"
+      // ],
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
-        phone: this.user.phone_number,
+        staff_id: this.user.employed_valid_id_card,
         college: this.user.college,
         department: this.user.department,
-        staffId: this.user.employed_valid_id_card,
-        nature: "",
-        repaymentAmount: "",
-        repayment_percentage: "",
-        startDate: null,
-        displayDate: null,
-        amount: null,
-        interest: 5,
-        tenure: null,
-        guarantors: []
-      }
+        phone: this.user.phone_number,
+        acct_no: "",
+        monthly_deposit: ""
+        // interest: 8,
+        // tenure: null
+      },
+      // yearlyInterest: 0,
+      loanTotal: 0
     };
   },
   validations: {
     form: {
-      fullname: { required },
-      college: { required },
-      department: { required },
+      fullname: {
+        required
+      },
+      college: {
+        required
+      },
+      department: {
+        required
+      },
       phone: {
         required,
         minLength: minLength(11),
         maxLength: maxLength(11),
         numeric
       },
-      staffId: {
+      staff_id: {
         required,
         minLength: minLength(7),
         maxLength: maxLength(8),
         numeric
       },
-      guarantors: { required },
-      nature: { required },
-      startDate: { required },
-      amount: {
+      acct_no: {
         required,
-        minLength: minLength(5),
-        maxLength: maxLength(60000),
         numeric
       },
-      tenure: { required },
-      repayment_percentage: { required }
+      monthly_deposit: {
+        required,
+        numeric
+      }
     }
-  }
+  },
+  methods: {
+    // ...mapActions("loan", ["CarAcquisitionRequest"]),
+    moment: function() {
+      return moment();
+    },
+
+    formSubmit() {
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        const loggedInUser = this.user;
+        // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
+        const payload = {
+          tenure: this.form.tenure
+        };
+        console.log(this.form);
+        this.step++;
+        // try {
+        //   this.CarAcquisitionRequest(payload);
+        // } catch (err) {
+        //   return err;
+        // }
+      }
+    }
+  },
+  watch: {}
 };
 </script>
-
-<style lang="scss" scoped>
+<style lang="css" scoped>
 </style>

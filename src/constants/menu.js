@@ -70,7 +70,7 @@ const data = [{
         subs: [{
                 id: "billings-payplans",
                 label: "Payment Plans",
-                to: "/app/ui/forms",
+                to: "savings-payment",
                 icon: "simple-icon-check"
             },
             {
