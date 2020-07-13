@@ -111,6 +111,18 @@ const routes = [{
                         ]
                     },
                     {
+                      path: "billing",
+                      component: () => import ("./views/app/pages/billing"),
+                      redirect: "/app/pages/billing/SavingsPayment",
+                      children: [
+                        {
+                          path: "SavingsPayment",
+                          name: "savings-payment",
+                          component: () => import ("./views/app/pages/billing/SavingsPayment")
+                        }
+                      ]
+                    },
+                    {
                         path: "profile",
                         component: () =>
                             import (
