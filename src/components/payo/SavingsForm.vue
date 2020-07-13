@@ -171,7 +171,11 @@
         <div class="separator mb-5"></div>
         <p class="lead">
           You already have a savings account, Please
-          <router-link to="/app/pages/billing/SavingsPayment" style="color: #2a863f;" class="secondary">click here</router-link> to pay your monthly savings
+          <router-link
+            to="/app/pages/billing/SavingsPayment"
+            style="color: #2a863f;"
+            class="secondary"
+          >click here</router-link>to pay your monthly savings
         </p>
       </b-colxx>
     </b-row>
@@ -262,15 +266,7 @@ export default {
     moment: function() {
       return moment();
     },
-    removeGuarantor(removedOption, id) {
-      // console.log(removedOption.value);
-      this.form.guarantors.forEach(guarantor => {
-        if (guarantor.value === removedOption.value) {
-          this.form.guarantors.splice(guarantor);
-        }
-        return guarantor;
-      });
-    },
+
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
