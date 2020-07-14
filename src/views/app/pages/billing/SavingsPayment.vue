@@ -61,7 +61,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("user", ["currentUser"])
+    ...mapGetters("user", ["currentUser"]),
+    reference() {
+      let text = "";
+      let possible =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (let i = 0; i < Math.random() * 100; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    }
   },
   watch: {
     reference() {
