@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row v-if="step == 1">
+    <b-row>
       <b-colxx>
         <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
           <!-- <h6 class="mb-4 text-center">Car Aquisition</h6> -->
@@ -166,7 +166,7 @@
         title="Savings Application Preview"
       />
     </b-row>
-    <b-row v-else>
+    <b-row v-if="getSavings">
       <b-colxx xxs="12">
         <div class="separator mb-5"></div>
         <p class="lead">
@@ -198,12 +198,13 @@ export default {
 
   components: { FormPreviewSavings },
   computed: {
-    ...mapGetters("loan", ["processing"])
+    ...mapGetters("loan", ["processing"]),
+    ...mapGetters("savings", ["getSavings"])
   },
 
   data() {
     return {
-      step: 1,
+      userSavings: null,
       // days: [
       //   "Sunday",
       //   "Monday",
@@ -219,8 +220,8 @@ export default {
         college: this.user.college,
         department: this.user.department,
         phone: this.user.phone_number,
-        acct_no: "",
-        monthly_deposit: ""
+        acct_no: null,
+        monthly_deposit: null
         // interest: 8,
         // tenure: null
       },
@@ -262,7 +263,7 @@ export default {
     }
   },
   methods: {
-    // ...mapActions("loan", ["CarAcquisitionRequest"]),
+    ...mapActions("savings", ["createSavings"]),
     moment: function() {
       return moment();
     },
@@ -271,21 +272,22 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
-        // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
         const payload = {
-          tenure: this.form.tenure
+          monthly_payment: this.form.monthly_deposit,
+          account_number: this.form.acct_no
         };
-        console.log(this.form);
-        this.step++;
-        // try {
-        //   this.CarAcquisitionRequest(payload);
-        // } catch (err) {
-        //   return err;
-        // }
+        // console.log(payload);
+        // this.step++;
+        try {
+          this.createSavings(payload);
+        } catch (err) {
+          return err;
+        }
       }
     }
   },
-  watch: {}
+  watch: {
+  }
 };
 </script>
 <style lang="css" scoped>
