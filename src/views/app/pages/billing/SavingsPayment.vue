@@ -11,7 +11,7 @@
                   <i class="simple-icon-shuffle" />
                 </div>
               </b-card-header>
-              <b-card-body class="align-items-center">
+              <b-card-body v-if="getUser" class="align-items-center">
                 <b-card-text>
                   <h5 class="mb-0 card-title lead">Monthly Deposits</h5>
                   <p
@@ -21,8 +21,8 @@
                 </b-card-text>
                 <div>
                   <paystack
-                    :amount="amount"
-                    :email="email"
+                    :amount="getUser.amount * 100"
+                    :email="currentUser.email"
                     :paystackkey="paystackkey"
                     :callback="callback"
                     :reference="reference"
@@ -35,6 +35,19 @@
                   </paystack>
                 </div>
               </b-card-body>
+              <b-card-body v-else>
+                <b-card-text>
+                  <h5 class="mb-0 card-title lead">Monthly Deposits</h5>
+                  <p class="mt-4">
+                    You don't have a savings account, Please
+                    <router-link
+                      to="/app/pages/services/savings-application"
+                      style="color: #2a863f;"
+                      class="secondary"
+                    >click here &nbsp;</router-link>to create your savings account
+                  </p>
+                </b-card-text>
+              </b-card-body>
             </b-card>
           </b-colxx>
         </draggable>
@@ -45,7 +58,7 @@
 
 <script>
 import paystack from "vue-paystack";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import Draggable from "vuedraggable";
 
 export default {
@@ -53,15 +66,9 @@ export default {
     paystack,
     draggable: Draggable
   },
-  data() {
-    return {
-      paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4", //paystack public key
-      email: "foobar@example.com", // Customer email
-      amount: 1000000 // in kobo
-    };
-  },
   computed: {
     ...mapGetters("user", ["currentUser"]),
+    ...mapGetters("savings", ["getUser"]),
     reference() {
       let text = "";
       let possible =
@@ -73,6 +80,11 @@ export default {
 
       return text;
     }
+  },
+  data() {
+    return {
+      paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4" //paystack public key
+    };
   },
   watch: {
     reference() {
@@ -88,6 +100,8 @@ export default {
     }
   },
   methods: {
+    ...mapActions("savings", ["getSavings"]),
+    ...mapActions("savings", ["createTransaction"]),
     callback: function(response) {
       var transaction = JSON.parse(
         localStorage.getItem("Transactions") || "[]"
@@ -99,10 +113,14 @@ export default {
         })
       );
       localStorage.setItem("Transactions", JSON.stringify(transaction));
+      this.createTransaction(transaction);
     },
     close: function() {
       // console.log("Payment closed");
     }
+  },
+  created() {
+    this.getSavings();
   }
 };
 </script>

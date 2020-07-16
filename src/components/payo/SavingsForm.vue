@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row>
+    <b-row v-if="!getUser">
       <b-colxx>
         <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
           <!-- <h6 class="mb-4 text-center">Car Aquisition</h6> -->
@@ -166,16 +166,16 @@
         title="Savings Application Preview"
       />
     </b-row>
-    <b-row v-if="getSavings">
+    <b-row v-else>
       <b-colxx xxs="12">
         <div class="separator mb-5"></div>
-        <p class="lead">
+        <p style="font-size: 13.6px;" class="lead">
           You already have a savings account, Please
           <router-link
             to="/app/pages/billing/SavingsPayment"
             style="color: #2a863f;"
             class="secondary"
-          >click here</router-link>to pay your monthly savings
+          >click here &nbsp;</router-link>to pay your monthly savings
         </p>
       </b-colxx>
     </b-row>
@@ -198,8 +198,8 @@ export default {
 
   components: { FormPreviewSavings },
   computed: {
-    ...mapGetters("loan", ["processing"]),
-    ...mapGetters("savings", ["getSavings"])
+    ...mapGetters("savings", ["processing"]),
+    ...mapGetters("savings", ["getUser"]),
   },
 
   data() {
@@ -264,6 +264,7 @@ export default {
   },
   methods: {
     ...mapActions("savings", ["createSavings"]),
+    ...mapActions("savings", ["getSavings"]),
     moment: function() {
       return moment();
     },
@@ -286,7 +287,9 @@ export default {
       }
     }
   },
-  watch: {
+  watch: {},
+  created() {
+    this.getSavings();
   }
 };
 </script>
