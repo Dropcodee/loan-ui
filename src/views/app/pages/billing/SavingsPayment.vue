@@ -31,7 +31,7 @@
                     style="background: none; border: 0; padding: 0;"
                   >
                     <i class="fas fa-money-bill-alt"></i>
-                    <b-button variant="success" size="lg" class="btn-lg">Click</b-button>
+                    <b-button variant="success" size="lg" class="btn-lg">Deposit</b-button>
                   </paystack>
                 </div>
               </b-card-body>
@@ -58,17 +58,18 @@
 
 <script>
 import paystack from "vue-paystack";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 import Draggable from "vuedraggable";
 
 export default {
   components: {
     paystack,
-    draggable: Draggable
+    draggable: Draggable,
   },
   computed: {
     ...mapGetters("user", ["currentUser"]),
     ...mapGetters("savings", ["getUser"]),
+    ...mapState("notification", ["notifications"]),
     reference() {
       let text = "";
       let possible =
@@ -79,11 +80,13 @@ export default {
       }
 
       return text;
-    }
+    },
   },
   data() {
     return {
-      paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4" //paystack public key
+      requestError: null,
+      paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
+      reference: null, //paystack public key
     };
   },
   watch: {
@@ -97,30 +100,51 @@ export default {
       }
 
       return text;
-    }
+    },
+    notifications: {
+      handler: function (notifications) {
+        for (let i in notifications) {
+          if (notifications[i].type == "error") {
+            this.$notify("error", "Error Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false,
+            });
+            this.requestError = true;
+            setTimeout(() => this.removeNotification(notifications[i]), 5000);
+          } else if (notifications[i].type == "success") {
+            this.$notify("success", "Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false,
+            });
+            this.requestError = false;
+            setTimeout(() => this.removeNotification(notifications[i]), 3000);
+          }
+        }
+      },
+    },
   },
   methods: {
     ...mapActions("savings", ["getSavings"]),
     ...mapActions("savings", ["createTransaction"]),
-    callback: function(response) {
-      var transaction = JSON.parse(
-        localStorage.getItem("Transactions") || "[]"
-      );
-      transaction.push(
-        Object.assign(response, {
-          user_id: this.currentUser.id,
-          amount: this.amount / 100
-        })
-      );
-      localStorage.setItem("Transactions", JSON.stringify(transaction));
-      this.createTransaction(transaction);
+    ...mapActions("notification", ["remove"]),
+    removeNotification(notification) {
+      this.remove(notification);
     },
-    close: function() {
+    callback: function (response) {
+      let payload = Object.assign(response, {
+        savings_id: this.getUser.id,
+        amount: this.getUser.amount,
+        payment_date: new Date(Date.now()),
+      });
+      console.log(payload);
+      this.createTransaction(payload);
+    },
+    close: function () {
       // console.log("Payment closed");
-    }
+    },
   },
   created() {
     this.getSavings();
-  }
+  },
 };
 </script>

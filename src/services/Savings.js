@@ -6,5 +6,11 @@ export default {
   },
   createSavings(credentials) {
     return api().post("savings/create", credentials);
+  },
+  paySavings(credentials) {
+    return api().post("savings/pay", credentials);
+  },
+  update(credentials) {
+    return api().get("savings/edit", credentials);
   }
 };

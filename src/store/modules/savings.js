@@ -4,7 +4,8 @@ export const namespaced = true;
 
 export const state = {
   userSavings: null,
-  processing: false
+  processing: false,
+  savingsUpdateToken: null
 };
 
 export const getters = {
@@ -12,6 +13,7 @@ export const getters = {
     return state.processing;
   },
   getUser(state) {
+    // console.log(state.userSavings);
     return state.userSavings || null;
   }
 };
@@ -19,17 +21,17 @@ export const getters = {
 export const mutations = {
   SET_USER_SAVINGS(state, savingsData) {
     state.userSavings = savingsData;
-    // var transaction = JSON.parse(localStorage.getItem("Transactions") || "[]");
-    // transaction.push(
-    //   Object.assign(response, {
-    //     user_id: this.currentUser.id,
-    //     amount: this.amount / 100
-    //   })
-    // );
-    // localStorage.setItem("Transactions", JSON.stringify(transaction));
   },
   SET_REQUEST_PROCESS(state, requestProcess) {
     state.processing = requestProcess;
+  },
+  SET_UPDATE_TOKEN(state, savingsData) {
+    state.savingsUpdateToken = savingsData.code;
+  },
+  CREATE_TRANSACTION(state, transaction) {
+    let trans = JSON.parse(localStorage.getItem("Transactions") || "[]");
+    trans.push(transaction);
+    localStorage.setItem("Transactions", JSON.stringify(trans));
   }
 };
 
@@ -112,8 +114,9 @@ export const actions = {
     let response;
     try {
       commit("SET_REQUEST_PROCESS", true);
-      console.log(payload)
-      // response = await Savings.createTransaction(payload);
+      // console.log(payload);
+      response = await Savings.paySavings(payload);
+      commit("CREATE_TRANSACTION", payload);
       commit("SET_REQUEST_PROCESS", false);
       const notification = {
         type: "success",
@@ -155,6 +158,36 @@ export const actions = {
         root: true
       });
       throw ex;
+    }
+  },
+  async GenerateSavingsToken({ commit, dispatch }, payload) {
+    commit("SET_REQUEST_PROCESS", true);
+    try {
+      const response = await Savings.update(payload);
+      // create success notification
+      // console.log(response.data)
+      // update user state with new data
+      commit("SET_REQUEST_PROCESS", false);
+      const notification = {
+        type: "success",
+        message: response.data.message
+      };
+      dispatch("notification/add", notification, {
+        root: true
+      });
+      commit("SET_UPDATE_TOKEN", response.data);
+    } catch (err) {
+      commit("SET_REQUEST_PROCESS", false);
+      if (err.response.status === 500 || err.response.status === 401) {
+        const notification = {
+          type: err.response.data.status,
+          message: err.response.data.message
+        };
+        dispatch("notification/add", notification, {
+          root: true
+        });
+      }
+      throw err;
     }
   }
 };

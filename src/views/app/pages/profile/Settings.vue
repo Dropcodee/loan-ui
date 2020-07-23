@@ -16,17 +16,10 @@
         </b-dropdown>
       </div>
       <piaf-breadcrumb />
-      <b-tabs
-        nav-class="separator-tabs ml-0 mb-5"
-        content-class="tab-content"
-        :no-fade="true"
-      >
+      <b-tabs nav-class="separator-tabs ml-0 mb-5" content-class="tab-content" :no-fade="true">
         <b-tab :title="$t('pages.profile')">
           <b-row>
-            <b-colxx
-              xxs="12"
-              class="mb-5"
-            >
+            <b-colxx xxs="12" class="mb-5">
               <!-- <b-card>
                 <single-lightbox
                   thumb="/assets/img/social-header.jpg"
@@ -35,24 +28,16 @@
                 />
               </b-card>-->
             </b-colxx>
-            <b-colxx
-              xxs="12"
-              lg="7"
-              xl="8"
-              class="col-left"
-            >
-              <div class="generate link">
+            <b-colxx xxs="12" lg="7" xl="8" class="col-left">
+              <div class="generate link mb-5">
                 <b-card>
                   <div v-show="showForm">
                     <p>Request for a token, in order to edit your profile</p>
-                    <b-button
-                      variant="primary"
-                      @click.prevent="generateToken"
-                    >Generate Token</b-button>
+                    <b-button variant="primary" @click.prevent="generateToken">Generate Token</b-button>
                   </div>
                   <div v-show="!showForm">
                     <h3>Please here is your generated token</h3>
-                    <h1> Token: {{token}}</h1>
+                    <h1>Token: {{token}}</h1>
                     <h5>Instructions on how to use your token</h5>
                     <ul>
                       <li>
@@ -65,46 +50,77 @@
                         <p>Step 3: Submit your form to the co-operative staff, and the rest will be handled.</p>
                       </li>
                     </ul>
-
+                  </div>
+                </b-card>
+              </div>
+              <div class="generate link mb-5">
+                <b-card>
+                  <div v-show="showSavings">
+                    <p>Request for a token, in order to edit your savings account</p>
+                    <b-button variant="primary" @click.prevent="generateSavingsToken">Generate Token</b-button>
+                  </div>
+                  <div v-show="!showSavings">
+                    <h3>Please here is your generated token</h3>
+                    <h1>Token: {{savingsToken}}</h1>
+                    <h5>Instructions on how to use your token</h5>
+                    <ul>
+                      <li>
+                        <p>Step 1: Take this code to the office, either take a screenshot or copy the code.</p>
+                      </li>
+                      <li>
+                        <p>Step 2: Fill out your form, including the details you will like to change and also include your token at the top of the form.</p>
+                      </li>
+                      <li>
+                        <p>Step 3: Submit your form to the co-operative staff, and the rest will be handled.</p>
+                      </li>
+                    </ul>
                   </div>
                 </b-card>
               </div>
             </b-colxx>
-            <b-colxx
-              xxs="12"
-              lg="5"
-              xl="4"
-              class="col-right"
-            >
+            <b-colxx xxs="12" lg="5" xl="4" class="col-right">
               <single-lightbox
                 :thumb="userData.avatar"
                 :large="userData.avatar"
                 class-name="img-thumbnail card-img social-profile-img"
               />
-              <b-card
-                class="mb-4"
-                no-body
-              >
+              <b-card class="mb-4" no-body>
                 <b-card-body>
                   <div class="text-center pt-4">
-                    <p class="list-item-heading pt-2">{{ userData.first_name }} {{ userData.last_name }}</p>
+                    <p
+                      class="list-item-heading pt-2"
+                    >{{ userData.first_name }} {{ userData.last_name }}</p>
                   </div>
                   <p class="text-muted text-small mb-2">{{$t('pages.location')}}</p>
                   <p class="mb-3">Omu-Aran Kwara, Nigeria</p>
                   <p class="text-muted text-small mb-2">Your Role</p>
                   <p class="mb-3">
-                    <b-badge
-                      variant="outline-secondary"
-                      class="mb-1 mr-1"
-                      pill
-                    >{{ userData.role }}</b-badge>
+                    <b-badge variant="outline-secondary" class="mb-1 mr-1" pill>{{ userData.role }}</b-badge>
                   </p>
-                  <p class="mb-3"><span class="text-muted">Staff ID:</span> {{ userData.employed_valid_id_card ? userData.employed_valid_id_card : 'N/A' }}</p>
-                  <p class="mb-3"><span class="text-muted">College:</span> {{ userData.college ? userData.college : 'N/A' }}</p>
-                  <p class="mb-3"><span class="text-muted">Department:</span> {{ userData.department ? userData.department : 'N/A' }}</p>
-                  <p><span class="text-muted">Address:</span> {{ userData.address ? userData.address : 'N/A' }}</p>
-                  <p><span class="text-muted">Phone Number:</span> {{ userData.phone_number ? userData.phone_number : 'N/A' }}</p>
-                  <p><span class="text-muted">Email:</span> {{ userData.email ? userData.email : 'N/A' }}</p>
+                  <p class="mb-3">
+                    <span class="text-muted">Staff ID:</span>
+                    {{ userData.employed_valid_id_card ? userData.employed_valid_id_card : 'N/A' }}
+                  </p>
+                  <p class="mb-3">
+                    <span class="text-muted">College:</span>
+                    {{ userData.college ? userData.college : 'N/A' }}
+                  </p>
+                  <p class="mb-3">
+                    <span class="text-muted">Department:</span>
+                    {{ userData.department ? userData.department : 'N/A' }}
+                  </p>
+                  <p>
+                    <span class="text-muted">Address:</span>
+                    {{ userData.address ? userData.address : 'N/A' }}
+                  </p>
+                  <p>
+                    <span class="text-muted">Phone Number:</span>
+                    {{ userData.phone_number ? userData.phone_number : 'N/A' }}
+                  </p>
+                  <p>
+                    <span class="text-muted">Email:</span>
+                    {{ userData.email ? userData.email : 'N/A' }}
+                  </p>
                   <div class="social-icons">
                     <ul class="list-unstyled list-inline">
                       <li class="list-inline-item">
@@ -166,23 +182,27 @@ export default {
     "user-card-basic": UserCardBasic,
     post: Post,
     InputTag,
-    "vue-dropzone": VueDropzone
+    "vue-dropzone": VueDropzone,
   },
   data() {
     return {
       userData: null,
       requestError: null,
       token: null,
-      showForm: true
+      savingsToken: null,
+      showForm: true,
+      showSavings: true,
     };
   },
   computed: {
     ...mapGetters("user", ["currentUser", "processing"]),
     ...mapState("user", ["updateToken"]),
-    ...mapState("notification", ["notifications"])
+    ...mapState("savings", ["savingsUpdateToken"]),
+    ...mapState("notification", ["notifications"]),
   },
   methods: {
     ...mapActions("user", ["GenerateToken"]),
+    ...mapActions("savings", ["GenerateSavingsToken"]),
     ...mapActions("notification", ["remove"]),
     removeNotification(notification) {
       // console.log(notification)
@@ -194,36 +214,48 @@ export default {
     generateToken() {
       // generate token
       const payload = {
-        id: this.userData.id
+        id: this.userData.id,
       };
       this.GenerateToken(payload);
-    }
+    },
+    generateSavingsToken() {
+      const payload = {
+        id: this.userData.id,
+      };
+      this.GenerateSavingsToken(payload);
+    },
   },
   watch: {
     currentUser: {
       immediate: true,
-      handler: function(currentUser) {
+      handler: function (currentUser) {
         let as = this;
         if (currentUser && currentUser != null) {
           as.userData = currentUser;
-          console.log(as.userData);
-          console.log(currentUser);
+          // console.log(as.userData);
+          // console.log(currentUser);
         }
-      }
+      },
     },
     updateToken: {
-      handler: function(token) {
+      handler: function (token) {
         this.token = token;
         this.showForm = false;
-      }
+      },
+    },
+    savingsUpdateToken: {
+      handler: function (token) {
+        this.savingsToken = token;
+        this.showSavings = false;
+      },
     },
     notifications(notifications) {
       // loop through all notifications and
       // display one at a time
-      notifications.forEach(notification => {
+      notifications.forEach((notification) => {
         this.$notify(`${notification.type}`, notification.message, {
           duration: 8000,
-          permanent: false
+          permanent: false,
         });
         if (notification.type == "error") {
           this.requestError = true;
@@ -234,8 +266,8 @@ export default {
         }
         this.removeNotification(notification);
       });
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
