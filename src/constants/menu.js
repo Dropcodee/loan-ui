@@ -73,18 +73,18 @@ const data = [{
                 to: "savings-payment",
                 icon: "simple-icon-check"
             },
-            {
-                id: "billings-invoices",
-                label: "Invoices",
-                to: "/app/ui/components",
-                icon: "simple-icon-check"
-            },
-            {
-                id: "billings-store",
-                label: "Store",
-                to: "/app/ui/components",
-                icon: "simple-icon-check"
-            }
+            // {
+            //     id: "billings-invoices",
+            //     label: "Invoices",
+            //     to: "/app/ui/components",
+            //     icon: "simple-icon-check"
+            // },
+            // {
+            //     id: "billings-store",
+            //     label: "Store",
+            //     to: "/app/ui/components",
+            //     icon: "simple-icon-check"
+            // }
         ]
     }
 ];

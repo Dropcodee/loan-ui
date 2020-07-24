@@ -43,17 +43,6 @@ export const actions = {
       response = await Savings.getSavings();
       commit("SET_REQUEST_PROCESS", false);
       commit("SET_USER_SAVINGS", response.data);
-      // console.log(response);
-      // const notification = {
-      //   type: "success",
-      //   message: "Successfully applied for a savings account."
-      // };
-      // router.push({
-      //   name: "savings-payment"
-      // });
-      // dispatch("notification/add", notification, {
-      //   root: true
-      // });
     } catch (error) {
       commit("SET_REQUEST_PROCESS", false);
       // console.log(error);
@@ -114,7 +103,6 @@ export const actions = {
     let response;
     try {
       commit("SET_REQUEST_PROCESS", true);
-      // console.log(payload);
       response = await Savings.paySavings(payload);
       commit("CREATE_TRANSACTION", payload);
       commit("SET_REQUEST_PROCESS", false);
