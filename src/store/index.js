@@ -1,29 +1,29 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from "vue";
+import Vuex from "vuex";
 
-import app from '../main'
-import menu from './modules/menu'
-import * as user from './modules/user'
-import * as notification from './modules/notification'
-import * as loan from './modules/loan'
-import chat from './modules/chat'
-import todo from './modules/todo'
-import survey from './modules/survey'
+import app from "../main";
+import menu from "./modules/menu";
+import * as user from "./modules/user";
+import * as notification from "./modules/notification";
+import * as loan from "./modules/loan";
+import chat from "./modules/chat";
+import todo from "./modules/todo";
+import survey from "./modules/survey";
+import * as savings from "./modules/savings";
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-  },
+  state: {},
   mutations: {
-    changeLang (state, payload) {
-      app.$i18n.locale = payload
-      localStorage.setItem('currentLanguage', payload)
+    changeLang(state, payload) {
+      app.$i18n.locale = payload;
+      localStorage.setItem("currentLanguage", payload);
     }
   },
   actions: {
-    setLang ({ commit }, payload) {
-      commit('changeLang', payload)
+    setLang({ commit }, payload) {
+      commit("changeLang", payload);
     }
   },
   modules: {
@@ -33,6 +33,7 @@ export default new Vuex.Store({
     loan,
     chat,
     todo,
-    survey
+    survey,
+    savings
   }
-})
+});

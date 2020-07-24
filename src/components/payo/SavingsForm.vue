@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-row v-if="step == 1">
+    <b-row v-if="!getUser">
       <b-colxx>
         <b-form
           @submit.prevent="formSubmit"
@@ -193,13 +193,13 @@
     <b-row v-else>
       <b-colxx xxs="12">
         <div class="separator mb-5"></div>
-        <p class="lead">
+        <p style="font-size: 13.6px;" class="lead">
           You already have a savings account, Please
           <router-link
             to="/app/pages/billing/SavingsPayment"
             style="color: #2a863f;"
             class="secondary"
-          >click here</router-link>to pay your monthly savings
+          >click here &nbsp;</router-link>to pay your monthly savings
         </p>
       </b-colxx>
     </b-row>
@@ -222,12 +222,13 @@ export default {
 
   components: { FormPreviewSavings },
   computed: {
-    ...mapGetters("loan", ["processing"])
+    ...mapGetters("savings", ["processing"]),
+    ...mapGetters("savings", ["getUser"]),
   },
 
   data() {
     return {
-      step: 1,
+      userSavings: null,
       // days: [
       //   "Sunday",
       //   "Monday",
@@ -243,8 +244,8 @@ export default {
         college: this.user.college,
         department: this.user.department,
         phone: this.user.phone_number,
-        acct_no: "",
-        monthly_deposit: ""
+        acct_no: null,
+        monthly_deposit: null
         // interest: 8,
         // tenure: null
       },
@@ -286,7 +287,8 @@ export default {
     }
   },
   methods: {
-    // ...mapActions("loan", ["CarAcquisitionRequest"]),
+    ...mapActions("savings", ["createSavings"]),
+    ...mapActions("savings", ["getSavings"]),
     moment: function() {
       return moment();
     },
@@ -295,21 +297,24 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
-        // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
         const payload = {
-          tenure: this.form.tenure
+          monthly_payment: this.form.monthly_deposit,
+          account_number: this.form.acct_no
         };
-        console.log(this.form);
-        this.step++;
-        // try {
-        //   this.CarAcquisitionRequest(payload);
-        // } catch (err) {
-        //   return err;
-        // }
+        // console.log(payload);
+        // this.step++;
+        try {
+          this.createSavings(payload);
+        } catch (err) {
+          return err;
+        }
       }
     }
   },
-  watch: {}
+  watch: {},
+  created() {
+    this.getSavings();
+  }
 };
 </script>
 <style lang="css" scoped>
