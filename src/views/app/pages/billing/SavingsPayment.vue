@@ -86,7 +86,7 @@ export default {
     return {
       requestError: null,
       paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
-      reference: null, //paystack public key
+      // reference: null, //paystack public key
     };
   },
   watch: {
@@ -138,6 +138,10 @@ export default {
       });
       console.log(payload);
       this.createTransaction(payload);
+      // this.reference();
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     },
     close: function () {
       // console.log("Payment closed");

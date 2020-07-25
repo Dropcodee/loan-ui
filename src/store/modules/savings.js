@@ -1,4 +1,4 @@
-import Savings from "@/services/Savings";
+import Savings from "@/services/SavingService";
 import router from "../../router";
 export const namespaced = true;
 
@@ -44,6 +44,7 @@ export const actions = {
       commit("SET_REQUEST_PROCESS", false);
       commit("SET_USER_SAVINGS", response.data);
     } catch (error) {
+      commit("SET_USER_SAVINGS", null);
       commit("SET_REQUEST_PROCESS", false);
       // console.log(error);
     }
@@ -96,7 +97,7 @@ export const actions = {
       dispatch("notification/add", notification, {
         root: true
       });
-      throw ex;
+      // throw ex;
     }
   },
   async createTransaction({ commit, dispatch }, payload) {
@@ -104,7 +105,7 @@ export const actions = {
     try {
       commit("SET_REQUEST_PROCESS", true);
       response = await Savings.paySavings(payload);
-      commit("CREATE_TRANSACTION", payload);
+      // commit("CREATE_TRANSACTION", payload);
       commit("SET_REQUEST_PROCESS", false);
       const notification = {
         type: "success",
