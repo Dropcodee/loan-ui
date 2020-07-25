@@ -10,21 +10,23 @@
       @vuetable:pagination-data="onPaginationData"
       responsive
     >
-      <div slot="custom-actions" slot-scope>
-        <paystack
-          :amount="100 * 100"
-          :email="currentUser.email"
-          :paystackkey="paystackkey"
-          :callback="callback"
-          :reference="reference"
-          :close="close"
-          :embed="false"
-          style="background: none; border: 0; padding: 0;"
-        >
-          <i class="fas fa-money-bill-alt"></i>
-          <b-button variant="success" size="lg" class="btn-lg">Deposit</b-button>
-        </paystack>
-      </div>
+      <template slot="custom-actions">
+        <div>
+          <paystack
+            :amount="100 * 100"
+            :email="currentUser.email"
+            :paystackkey="paystackkey"
+            :callback="callback"
+            :reference="reference"
+            :close="close"
+            :embed="false"
+            style="background: none; border: 0; padding: 0;"
+          >
+            <i class="fas fa-money-bill-alt"></i>
+            <b-button style="border-radius: 0px" variant="primary" size="md" class="btn-md">Pay</b-button>
+          </paystack>
+        </div>
+      </template>
     </vuetable>
     <vuetable-pagination-bootstrap ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination-bootstrap>
   </div>
@@ -44,6 +46,7 @@ export default {
   name: "app",
 
   components: {
+    paystack,
     vuetable: Vuetable,
     VuetablePagination,
     "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
@@ -82,6 +85,7 @@ export default {
           titleClass: "",
           dataClass: "text-muted",
         },
+        { name: "__slot:custom-actions", title: "Pay" },
       ],
       perPage: 10,
       data: [],
@@ -90,7 +94,6 @@ export default {
 
   computed: {
     ...mapGetters("user", ["currentUser"]),
-    ...mapGetters("savings", ["getUser"]),
     ...mapState("notification", ["notifications"]),
     reference() {
       let text = "";

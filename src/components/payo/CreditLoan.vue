@@ -487,6 +487,7 @@ export default {
         };
         try {
           this.CreditLoanRequest(payload);
+          console.log(payload);
         } catch (err) {
           return err;
         }
