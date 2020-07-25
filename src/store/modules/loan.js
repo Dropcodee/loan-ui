@@ -149,6 +149,9 @@ export const actions = {
       dispatch("notification/add", notification, {
         root: true
       });
+      router.push({
+        name: "loan-monitor"
+      });
     } catch (ex) {
       commit("SET_REQUEST_PROCESS", false);
       if (ex.response.status === 500 || ex.response.status === 401) {

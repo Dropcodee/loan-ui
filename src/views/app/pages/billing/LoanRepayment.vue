@@ -9,13 +9,31 @@
       pagination-path="pagination"
       @vuetable:pagination-data="onPaginationData"
       responsive
-    ></vuetable>
+    >
+      <div slot="custom-actions" slot-scope>
+        <paystack
+          :amount="100 * 100"
+          :email="currentUser.email"
+          :paystackkey="paystackkey"
+          :callback="callback"
+          :reference="reference"
+          :close="close"
+          :embed="false"
+          style="background: none; border: 0; padding: 0;"
+        >
+          <i class="fas fa-money-bill-alt"></i>
+          <b-button variant="success" size="lg" class="btn-lg">Deposit</b-button>
+        </paystack>
+      </div>
+    </vuetable>
     <vuetable-pagination-bootstrap ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination-bootstrap>
   </div>
 </template>
 
 <script>
 import api from "@/services/Api";
+import paystack from "vue-paystack";
+import { mapGetters, mapActions, mapState } from "vuex";
 import Vuetable from "vuetable-2";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetablePaginationBootstrap from "@/components/Common/VuetablePaginationBootstrap";
@@ -28,11 +46,12 @@ export default {
   components: {
     vuetable: Vuetable,
     VuetablePagination,
-    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap
+    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
   },
 
   data() {
     return {
+      paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
       fields: [
         {
           name: "loan_type",
@@ -40,51 +59,77 @@ export default {
           title: "Loan Type",
           titleClass: "",
           dataClass: "list-item-heading",
-          sortDirection: "desc"
+          sortDirection: "desc",
         },
         {
           name: "principal_amount",
           sortField: "principal_amount",
           title: "Amount",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
         },
         {
           name: "interest",
           sortField: "interest",
           title: "Interest",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
         },
         {
           name: "status",
           sortField: "status",
           title: "Status",
           titleClass: "",
-          dataClass: "text-muted"
-        }
-        // interest
-        // status
+          dataClass: "text-muted",
+        },
       ],
       perPage: 10,
-      data: []
+      data: [],
     };
   },
 
+  computed: {
+    ...mapGetters("user", ["currentUser"]),
+    ...mapGetters("savings", ["getUser"]),
+    ...mapState("notification", ["notifications"]),
+    reference() {
+      let text = "";
+      let possible =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (let i = 0; i < Math.random() * 100; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    },
+  },
+
   watch: {
+    reference() {
+      let text = "";
+      let possible =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for (let i = 0; i < Math.random() * 100; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+
+      return text;
+    },
     data(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-    }
+    },
   },
 
   mounted() {
     api()
       .get("/myloans")
-      .then(response => {
+      .then((response) => {
         // console.log(response)
         const { loans } = response.data;
         this.data = loans;
-        this.data.forEach(loan => {
+        this.data.forEach((loan) => {
           loan.principal_amount = "₦" + loan.principal_amount;
           loan.interest += "%";
           if (loan.status == 0) {
@@ -135,10 +180,30 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: _.slice(local, from, to),
       };
-    }
-  }
+    },
+    removeNotification(notification) {
+      this.remove(notification);
+    },
+    callback: function (response) {
+      // let payload = Object.assign(response, {
+      //   savings_id: this.getUser.id,
+      //   amount: this.getUser.amount,
+      //   payment_date: new Date(Date.now()),
+      // });
+      // console.log(payload);
+      // this.createTransaction(payload);
+      // // this.reference();
+      // setTimeout(() => {
+      //   location.reload();
+      // }, 3000);
+      console.log(response);
+    },
+    close: function () {
+      // console.log("Payment closed");
+    },
+  },
 };
 </script>
 

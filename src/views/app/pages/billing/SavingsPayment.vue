@@ -21,7 +21,7 @@
                 </b-card-text>
                 <div>
                   <paystack
-                    :amount="getUser.amount * 100"
+                    :amount="getUser.monthly_payment * 100"
                     :email="currentUser.email"
                     :paystackkey="paystackkey"
                     :callback="callback"
