@@ -110,6 +110,26 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
+              <b-form-group
+                label="Cost of Asset (Car, Motor Cycle etc.)"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="form.asset_cost"
+                  :class="$v.form.asset_cost.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.asset_cost.$touch()"
+                />
+                <div v-if="$v.form.asset_cost.$error">
+                  <span
+                    v-if="!$v.form.asset_cost.required"
+                    class="error-text"
+                  >Please enter the cost of the item you wish to purchase.</span>
+                  <span v-if="!$v.form.asset_cost.numeric" class="error-text">Cost must be in digits</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
               <b-form-group label="Brand of Asset" class="has-float-label mb-4">
                 <b-form-input
                   type="text"
@@ -271,7 +291,7 @@ import {
   required,
   maxLength,
   numeric,
-  minLength
+  minLength,
 } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -282,7 +302,7 @@ export default {
 
   components: { FormPreviewCar },
   computed: {
-    ...mapGetters("loan", ["processing"])
+    ...mapGetters("loan", ["processing"]),
   },
 
   data() {
@@ -291,18 +311,18 @@ export default {
         {
           value: null,
           text:
-            "Sorry there are no guarantors available for now, try again later..."
-        }
+            "Sorry there are no guarantors available for now, try again later...",
+        },
       ],
       options: [
         { value: 90, text: "3 months" },
         { value: 180, text: "6 months" },
         { value: 365, text: "1 year" },
-        { value: 730, text: "2 years" }
+        { value: 730, text: "2 years" },
       ],
       loanNature: [
         { value: "regular", text: "Regular Credit Loan" },
-        { value: "emergency", text: "Emergency Credit Loan" }
+        { value: "emergency", text: "Emergency Credit Loan" },
       ],
       // days: [
       //   "Sunday",
@@ -320,6 +340,7 @@ export default {
         department: this.user.department,
         phone: this.user.phone_number,
         asset_nature: "",
+        asset_cost: "",
         car_brand: "",
         salary: "",
         guarantors: [],
@@ -346,60 +367,64 @@ export default {
         // }
         // amount: 0,
         interest: 8,
-        tenure: null
+        tenure: null,
       },
       // yearlyInterest: 0,
-      loanTotal: 0
+      loanTotal: 0,
     };
   },
   validations: {
     form: {
       fullname: {
-        required
+        required,
       },
       college: {
-        required
+        required,
       },
       department: {
-        required
+        required,
       },
       phone: {
         required,
         minLength: minLength(11),
         maxLength: maxLength(11),
-        numeric
+        numeric,
       },
       staff_id: {
         required,
         minLength: minLength(7),
         maxLength: maxLength(8),
-        numeric
+        numeric,
       },
       guarantors: {
-        required
+        required,
       },
       asset_nature: {
-        required
+        required,
+      },
+      asset_cost: {
+        required,
+        numeric,
       },
       car_brand: {
-        required
+        required,
       },
       salary: {
         required,
         // minLength: minLength(5),
         // maxLength: maxLength(60000),
-        numeric
+        numeric,
       },
       tenure: {
-        required
+        required,
         // minLength: minLength(5),
         // maxLength: maxLength(60000),
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions("loan", ["CarAcquisitionRequest"]),
-    moment: function() {
+    moment: function () {
       return moment();
     },
     hideModal(refname) {
@@ -411,7 +436,7 @@ export default {
     },
     removeGuarantor(removedOption, id) {
       // console.log(removedOption.value);
-      this.form.guarantors.forEach(guarantor => {
+      this.form.guarantors.forEach((guarantor) => {
         if (guarantor.value === removedOption.value) {
           this.form.guarantors.splice(guarantor);
         }
@@ -423,7 +448,7 @@ export default {
       let payload = {
         amount,
         interest,
-        duration: tenure
+        duration: tenure,
       };
       this.form.repaymentAmount = this.interest(payload);
     },
@@ -448,12 +473,13 @@ export default {
         const loggedInUser = this.user;
         // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
         const guarantorsIds = [];
-        this.form.guarantors.forEach(guarantor => {
+        this.form.guarantors.forEach((guarantor) => {
           guarantorsIds.push(guarantor.value);
         });
-        console.log(guarantorsIds);
+        // console.log(guarantorsIds);
         const payload = {
           commodity_nature: this.form.asset_nature,
+          principal_amount: this.form.asset_cost,
           asset_brand: this.form.car_brand,
           loan_type: "Car Acquisition Loan",
           tenure: this.form.tenure,
@@ -461,7 +487,7 @@ export default {
           salary: this.form.salary,
           // repayment_amount: this.form.repaymentAmount.toString(),
           // repayment_date: backendDate,
-          guarantors: guarantorsIds
+          guarantors: guarantorsIds,
         };
         console.log(payload);
         try {
@@ -473,28 +499,28 @@ export default {
       } else {
         this.hideModal("modalbasic");
       }
-    }
+    },
   },
   watch: {
     "form.amount": {
-      handler: function(amount) {
+      handler: function (amount) {
         console.log(amount);
         if (amount.length >= 5) {
           this.calcRepaymentAmount();
         }
-      }
+      },
     },
     "form.tenure": {
-      handler: function(tenure) {
+      handler: function (tenure) {
         this.calcRepaymentAmount();
-      }
+      },
     },
     "form.startDate": {
-      handler: function(startDate) {
+      handler: function (startDate) {
         this.formatDate();
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 <style lang="css" scoped>
