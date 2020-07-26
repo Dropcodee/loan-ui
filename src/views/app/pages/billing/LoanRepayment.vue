@@ -36,6 +36,12 @@
 import api from "@/services/Api";
 import paystack from "vue-paystack";
 import { mapGetters, mapActions, mapState } from "vuex";
+import {
+  required,
+  maxLength,
+  numeric,
+  minLength,
+} from "vuelidate/lib/validators";
 import Vuetable from "vuetable-2";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetablePaginationBootstrap from "@/components/Common/VuetablePaginationBootstrap";
@@ -54,6 +60,7 @@ export default {
 
   data() {
     return {
+      amount: "",
       paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
       fields: [
         {
@@ -68,6 +75,13 @@ export default {
           name: "principal_amount",
           sortField: "principal_amount",
           title: "Amount",
+          titleClass: "",
+          dataClass: "text-muted",
+        },
+        {
+          name: "repayments.repayment_amount",
+          sortField: "repayment_amount",
+          title: "Repayment Amount",
           titleClass: "",
           dataClass: "text-muted",
         },
@@ -90,6 +104,12 @@ export default {
       perPage: 10,
       data: [],
     };
+  },
+  validations: {
+    amount: {
+      required,
+      numeric
+    }
   },
 
   computed: {
@@ -134,6 +154,9 @@ export default {
         this.data = loans;
         this.data.forEach((loan) => {
           loan.principal_amount = "₦" + loan.principal_amount;
+          loan.repayments.repayment_amount =
+            "₦" + loan.repayments.repayment_amount;
+
           loan.interest += "%";
           if (loan.status == 0) {
             loan.status = "Pending";

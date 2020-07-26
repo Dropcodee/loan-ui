@@ -477,54 +477,54 @@ export default {
       const guarantorsIds = [];
       switch (percentage) {
         case "5050":
-          guarantorAB = (this.form.regular_loan_repayment / 100) * 50;
+          guarantorAB = (this.form.repaymentAmount / 100) * 50;
           guarantors.forEach((guarantor) => {
             guarantorsIds.push({
               id: guarantor.value,
               name: guarantor.name,
-              // repayment_amount: Math.round(guarantorAB),
-              repayment_amount: 50,
+              repayment_amount: Math.round(guarantorAB),
+              // repayment_amount: 50,
             });
           });
           break;
         case "6040":
-          guarantorA = (this.form.regular_loan_repayment / 100) * 60;
-          guarantorB = (this.form.regular_loan_repayment / 100) * 40;
+          guarantorA = (this.form.repaymentAmount / 100) * 60;
+          guarantorB = (this.form.repaymentAmount / 100) * 40;
           guarantors.forEach((guarantor, index) => {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
                 name: guarantor.name,
-                // repayment_amount: Math.round(guarantorA),
-                repayment_amount: 60,
+                repayment_amount: Math.round(guarantorA),
+                // repayment_amount: 60,
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
                 name: guarantor.name,
-                // repayment_amount: Math.round(guarantorB),
-                repayment_amount: 40,
+                repayment_amount: Math.round(guarantorB),
+                // repayment_amount: 40,
               });
             }
           });
           break;
         case "7030":
-          guarantorA = (this.form.regular_loan_repayment / 100) * 70;
-          guarantorB = (this.form.regular_loan_repayment / 100) * 30;
+          guarantorA = (this.form.repaymentAmount / 100) * 70;
+          guarantorB = (this.form.repaymentAmount / 100) * 30;
           guarantors.forEach((guarantor, index) => {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
                 name: guarantor.name,
-                // repayment_amount: Math.round(guarantorA),
-                repayment_amount: 70,
+                repayment_amount: Math.round(guarantorA),
+                // repayment_amount: 70,
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
                 name: guarantor.name,
-                // repayment_amount: Math.round(guarantorB),
-                repayment_amount: 30,
+                repayment_amount: Math.round(guarantorB),
+                // repayment_amount: 30,
               });
             }
           });
@@ -534,9 +534,9 @@ export default {
       // console.log(this.form.guarantors);
     },
     calcRepaymentAmount() {
-      let { amount, interest, tenure } = this.form;
+      let { asset_cost, interest, tenure } = this.form;
       let payload = {
-        amount,
+        asset_cost,
         interest,
         duration: tenure,
       };
@@ -544,14 +544,40 @@ export default {
     },
     interest(payload) {
       // console.log(payload);
-      if (payload.amount == "" || payload.amount == null) {
+      if (payload.asset_cost == "" || payload.asset_cost == null) {
         return 0;
       } else {
         // calculate loan timeline divide days/365
         let loanDuration = Number(payload.duration) / 365;
         const interestRate = Number(payload.interest) / 100;
-        return Math.round(payload.amount * (1 + interestRate * loanDuration));
+        return Math.round(payload.asset_cost * (1 + interestRate * loanDuration));
       }
+    },
+    interestCalculator(method) {
+      // loan calculation formulars
+      const principal = parseFloat(this.form.loan_amount);
+      const calculatedInterest = parseFloat(this.form.loanInterest) / 100 / 12;
+      const calculatedPayments = parseFloat(1) * 12;
+
+      // compute monthly payments
+      const x = Math.pow(1 + calculatedInterest, calculatedPayments);
+      const monthly = (principal * x * calculatedInterest) / (x - 1);
+      if (isFinite(monthly)) {
+        const loanMonthlyPayment = Number(monthly);
+        const loanTotalPayment = (monthly * calculatedPayments).toFixed(2);
+        const loanTotalInterest = (
+          monthly * calculatedPayments -
+          principal
+        ).toFixed(2);
+        if (method == "monthly") {
+          this.form.regular_loan_repayment = Math.round(loanMonthlyPayment);
+          // console.log("monthly: ", this.form.regular_loan_repayment);
+        } else {
+          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
+          // console.log("yearly: ", this.form.regular_loan_repayment);
+        }
+      }
+      return this.form.regular_loan_repayment;
     },
     formatDate() {
       this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
@@ -600,8 +626,14 @@ export default {
         }
       },
     },
+    // "form.asset_cost": {
+    //   handler: function(amount) {
+    //     this.interestCalculator(this.form.tenure);
+    //   }
+    // },
     "form.tenure": {
-      handler: function (tenure) {
+      handler: function (method) {
+        // this.interestCalculator(method);
         this.calcRepaymentAmount();
       },
     },
