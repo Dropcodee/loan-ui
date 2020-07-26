@@ -20,7 +20,7 @@
             size="md"
             class="btn-md"
             @click="setId(props.rowData)"
-          >Pay</b-button>
+          >Click to pay</b-button>
         </div>
       </template>
     </vuetable>
@@ -59,7 +59,7 @@
           variant="primary"
           size="md"
           class="btn-md"
-        >Pay</b-button>
+        >Deposit</b-button>
       </paystack>
 
       <template slot="modal-footer">
@@ -140,7 +140,7 @@ export default {
           titleClass: "",
           dataClass: "text-muted",
         },
-        { name: "__slot:custom-actions", title: "Pay" },
+        { name: "__slot:custom-actions", title: "" },
       ],
       perPage: 10,
       data: [],
@@ -227,7 +227,7 @@ export default {
           } else if (loan.status == 2) {
             loan.status = "Running";
           } else if (loan.status == 3) {
-            loan.status = "Completed";
+            loan.status = "Failed";
           } else {
             loan.status = "Failed";
           }

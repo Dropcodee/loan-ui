@@ -186,7 +186,7 @@ export default {
           } else if (loan.status == 2) {
             loan.status = "Running";
           } else if (loan.status == 3) {
-            loan.status = "Completed";
+            loan.status = "Failed";
           } else {
             loan.status = "Failed";
           }
