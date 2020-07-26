@@ -42,10 +42,10 @@ export const actions = {
     let response;
     try {
       response = await Savings.getSavings();
-      commit("SET_REQUEST_PROCESS", false);
+      commit("SET_REQUEST_PROCESS", true);
       commit("SET_USER_SAVINGS", response.data);
     } catch (error) {
-      commit("SET_USER_SAVINGS", null);
+      // commit("SET_USER_SAVINGS", null);
       commit("SET_REQUEST_PROCESS", false);
       // console.log(error);
     }

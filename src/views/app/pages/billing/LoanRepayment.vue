@@ -10,25 +10,63 @@
       @vuetable:pagination-data="onPaginationData"
       responsive
     >
-      <template slot="custom-actions">
+      <template slot="custom-actions" slot-scope="props">
         <div>
-          <paystack
-            :amount="100 * 100"
-            :email="currentUser.email"
-            :paystackkey="paystackkey"
-            :callback="callback"
-            :reference="reference"
-            :close="close"
-            :embed="false"
-            style="background: none; border: 0; padding: 0;"
-          >
-            <i class="fas fa-money-bill-alt"></i>
-            <b-button style="border-radius: 0px" variant="primary" size="md" class="btn-md">Pay</b-button>
-          </paystack>
+          <i class="fas fa-money-bill-alt"></i>
+          <b-button
+            v-b-modal.modalbasic
+            style="border-radius: 0px"
+            variant="primary"
+            size="md"
+            class="btn-md"
+            @click="setId(props.rowData)"
+          >Pay</b-button>
         </div>
       </template>
     </vuetable>
     <vuetable-pagination-bootstrap ref="pagination" @vuetable-pagination:change-page="onChangePage"></vuetable-pagination-bootstrap>
+    <b-modal id="modalbasic" ref="modalbasic" size="lg" title="Payment Form">
+      <h6>Input the amount you wish to pay</h6>
+      <b-row>
+        <b-colxx sm="12">
+          <b-form-group label="Amount" class="has-float-label mb-4">
+            <b-form-input
+              type="text"
+              v-model="amount"
+              :class="$v.amount.$error ? 'is-invalid' : ''"
+              @blur="$v.amount.$touch()"
+            />
+            <div v-if="$v.amount.$error">
+              <span v-if="!$v.amount.required" class="error-text">Please input the amount</span>
+              <span v-if="!$v.amount.numeric" class="error-text">Amount must contain numbers only</span>
+            </div>
+          </b-form-group>
+        </b-colxx>
+      </b-row>
+      <paystack
+        :amount="amount * 100"
+        :email="currentUser.email"
+        :paystackkey="paystackkey"
+        :callback="callback"
+        :reference="reference"
+        :close="close"
+        :embed="false"
+        style="background: none; border: 0; padding: 0;"
+      >
+        <b-button
+          v-b-modal.modalbasic
+          style="border-radius: 0px"
+          variant="primary"
+          size="md"
+          class="btn-md"
+        >Pay</b-button>
+      </paystack>
+
+      <template slot="modal-footer">
+        <!-- <b-button variant="primary" type="submit">I Agree</b-button> -->
+        <b-button variant="secondary" @click="hideModal('modalbasic')">Cancel</b-button>
+      </template>
+    </b-modal>
   </div>
 </template>
 
@@ -45,6 +83,8 @@ import {
 import Vuetable from "vuetable-2";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetablePaginationBootstrap from "@/components/Common/VuetablePaginationBootstrap";
+import moment from "moment";
+
 // import axios from "axios";
 import _ from "lodash";
 
@@ -60,6 +100,7 @@ export default {
 
   data() {
     return {
+      loan_selected: "",
       amount: "",
       paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
       fields: [
@@ -108,8 +149,8 @@ export default {
   validations: {
     amount: {
       required,
-      numeric
-    }
+      numeric,
+    },
   },
 
   computed: {
@@ -129,6 +170,27 @@ export default {
   },
 
   watch: {
+    notifications: {
+      handler: function (notifications) {
+        for (let i in notifications) {
+          if (notifications[i].type == "error") {
+            this.$notify("error", "Error Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false,
+            });
+            this.requestError = true;
+            setTimeout(() => this.removeNotification(notifications[i]), 5000);
+          } else if (notifications[i].type == "success") {
+            this.$notify("success", "Message", notifications[i].message, {
+              duration: 3000,
+              permanent: false,
+            });
+            this.requestError = false;
+            setTimeout(() => this.removeNotification(notifications[i]), 3000);
+          }
+        }
+      },
+    },
     reference() {
       let text = "";
       let possible =
@@ -175,6 +237,21 @@ export default {
   },
 
   methods: {
+    ...mapActions("loan", ["loanRepayment"]),
+    setId(payload) {
+      this.loan_selected = payload.id;
+      console.log(this.loan_selected);
+    },
+    moment: function () {
+      return moment();
+    },
+    hideModal(refname) {
+      this.$refs[refname].hide();
+
+      if (refname === "modalnestedinline") {
+        this.$refs["modalnested"].show();
+      }
+    },
     onPaginationData(paginationData) {
       this.$refs.pagination.setPaginationData(paginationData);
     },
@@ -213,18 +290,17 @@ export default {
       this.remove(notification);
     },
     callback: function (response) {
-      // let payload = Object.assign(response, {
-      //   savings_id: this.getUser.id,
-      //   amount: this.getUser.amount,
-      //   payment_date: new Date(Date.now()),
-      // });
-      // console.log(payload);
-      // this.createTransaction(payload);
-      // // this.reference();
-      // setTimeout(() => {
-      //   location.reload();
-      // }, 3000);
-      console.log(response);
+      let payload = Object.assign(response, {
+        loan_id: this.loan_selected,
+        amount: this.amount,
+        payment_date: moment(new Date(Date.now())).format("YYYY-MM-DD"),
+      });
+      console.log(payload);
+      this.loanRepayment(payload);
+      // this.reference();
+      setTimeout(() => {
+        // location.reload();
+      }, 3000);
     },
     close: function () {
       // console.log("Payment closed");

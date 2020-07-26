@@ -60,6 +60,7 @@
 import paystack from "vue-paystack";
 import { mapGetters, mapActions, mapState } from "vuex";
 import Draggable from "vuedraggable";
+import moment from "moment";
 
 export default {
   components: {
@@ -130,13 +131,18 @@ export default {
     removeNotification(notification) {
       this.remove(notification);
     },
+    moment: function () {
+      return moment();
+    },
     callback: function (response) {
       let payload = Object.assign(response, {
         savings_id: this.getUser.id,
-        amount: this.getUser.amount,
-        payment_date: new Date(Date.now()),
+        amount: this.getUser.monthly_payment,
+        payment_date: moment(new Date()).format("YYYY-MM-DD"),
+        // payment_date: new Date(),
       });
-      console.log(payload);
+
+
       this.createTransaction(payload);
       // this.reference();
       setTimeout(() => {
