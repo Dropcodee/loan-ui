@@ -133,7 +133,7 @@ export const actions = {
     dispatch("notification/add", notification, {
       root: true
     });
-    throw ex;
+    // throw ex;
   },
   async CarAcquisitionRequest({ commit, dispatch }, payload) {
     let response;
