@@ -110,6 +110,26 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
+              <b-form-group
+                label="Cost of Asset (Car, Motor Cycle etc.)"
+                class="has-float-label mb-4"
+              >
+                <b-form-input
+                  type="text"
+                  v-model="form.asset_cost"
+                  :class="$v.form.asset_cost.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.asset_cost.$touch()"
+                />
+                <div v-if="$v.form.asset_cost.$error">
+                  <span
+                    v-if="!$v.form.asset_cost.required"
+                    class="error-text"
+                  >Please enter the cost of the item you wish to purchase.</span>
+                  <span v-if="!$v.form.asset_cost.numeric" class="error-text">Cost must be in digits</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
               <b-form-group label="Brand of Asset" class="has-float-label mb-4">
                 <b-form-input
                   type="text"
@@ -164,6 +184,21 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
+              <b-form-group label="Loan Payment Commencement Date" class="has-float-label mb-4">
+                <v-date-picker
+                  mode="single"
+                  v-model="form.startDate"
+                  :input-props="{ class:'form-control', placeholder: $t('form-components.date') }"
+                ></v-date-picker>
+                <div v-if="$v.form.startDate.$error">
+                  <span
+                    v-if="!$v.form.startDate.required"
+                    class="error-text"
+                  >Choose when you want to begin your loan repayment thanks.</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
               <b-form-group label="Guarantors" class="has-float-label mb-4">
                 <multiselect
                   v-if="guarantors && guarantors.length"
@@ -183,6 +218,17 @@
                     v-if="!$v.form.guarantors.required"
                     class="error-text"
                   >Please select two guarantors for your loan applications.</span>
+                </div>
+              </b-form-group>
+            </b-colxx>
+            <b-colxx sm="12">
+              <b-form-group label="Guarantors repayment percentage" class="has-float-label mb-4">
+                <b-form-select v-model="form.repayment_percentage" :options="percentages"></b-form-select>
+                <div v-if="$v.form.repayment_percentage.$error">
+                  <span
+                    v-if="!$v.form.repayment_percentage.required"
+                    class="error-text"
+                  >Please share the loan among the selected guarantors.</span>
                 </div>
               </b-form-group>
             </b-colxx>
@@ -271,7 +317,7 @@ import {
   required,
   maxLength,
   numeric,
-  minLength
+  minLength,
 } from "vuelidate/lib/validators";
 import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
@@ -282,7 +328,7 @@ export default {
 
   components: { FormPreviewCar },
   computed: {
-    ...mapGetters("loan", ["processing"])
+    ...mapGetters("loan", ["processing"]),
   },
 
   data() {
@@ -291,28 +337,25 @@ export default {
         {
           value: null,
           text:
-            "Sorry there are no guarantors available for now, try again later..."
-        }
+            "Sorry there are no guarantors available for now, try again later...",
+        },
       ],
       options: [
         { value: 90, text: "3 months" },
         { value: 180, text: "6 months" },
         { value: 365, text: "1 year" },
-        { value: 730, text: "2 years" }
+        { value: 730, text: "2 years" },
       ],
       loanNature: [
         { value: "regular", text: "Regular Credit Loan" },
-        { value: "emergency", text: "Emergency Credit Loan" }
+        { value: "emergency", text: "Emergency Credit Loan" },
       ],
-      // days: [
-      //   "Sunday",
-      //   "Monday",
-      //   "Tuesday",
-      //   "Wednesday",
-      //   "Thursday",
-      //   "Friday",
-      //   "Saturday"
-      // ],
+      percentages: [
+        { value: "5050", text: "50% - 50%" },
+        { value: "6040", text: "60% - 40%" },
+        { value: "7030", text: "70% - 30%" },
+      ],
+
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
         staff_id: this.user.employed_valid_id_card,
@@ -320,9 +363,13 @@ export default {
         department: this.user.department,
         phone: this.user.phone_number,
         asset_nature: "",
+        asset_cost: "",
         car_brand: "",
         salary: "",
         guarantors: [],
+        repayment_percentage: "",
+        repayment_amount: "",
+        startDate: null,
         // repayment_duration: "",
         // guarantor_a: {
         //   fullname: "",
@@ -346,60 +393,66 @@ export default {
         // }
         // amount: 0,
         interest: 8,
-        tenure: null
+        tenure: null,
       },
       // yearlyInterest: 0,
-      loanTotal: 0
+      loanTotal: 0,
     };
   },
   validations: {
     form: {
       fullname: {
-        required
+        required,
       },
       college: {
-        required
+        required,
       },
       department: {
-        required
+        required,
       },
       phone: {
         required,
         minLength: minLength(11),
         maxLength: maxLength(11),
-        numeric
+        numeric,
       },
       staff_id: {
         required,
         minLength: minLength(7),
         maxLength: maxLength(8),
-        numeric
+        numeric,
       },
       guarantors: {
-        required
+        required,
       },
       asset_nature: {
-        required
+        required,
+      },
+      asset_cost: {
+        required,
+        numeric,
       },
       car_brand: {
-        required
+        required,
       },
       salary: {
         required,
         // minLength: minLength(5),
         // maxLength: maxLength(60000),
-        numeric
+        numeric,
       },
       tenure: {
-        required
+        required,
         // minLength: minLength(5),
         // maxLength: maxLength(60000),
-      }
-    }
+      },
+      startDate: { required },
+      repayment_percentage: { required },
+    },
   },
   methods: {
     ...mapActions("loan", ["CarAcquisitionRequest"]),
-    moment: function() {
+    moment: function () {
       return moment();
     },
     hideModal(refname) {
@@ -411,32 +464,120 @@ export default {
     },
     removeGuarantor(removedOption, id) {
       // console.log(removedOption.value);
-      this.form.guarantors.forEach(guarantor => {
+      this.form.guarantors.forEach((guarantor) => {
         if (guarantor.value === removedOption.value) {
           this.form.guarantors.splice(guarantor);
         }
         return guarantor;
       });
     },
+    setGuarantorDetails(guarantors, percentage) {
+      // calculate guarantors repayment amount
+      let guarantorAB, guarantorA, guarantorB;
+      const guarantorsIds = [];
+      switch (percentage) {
+        case "5050":
+          guarantorAB = (this.form.repaymentAmount / 100) * 50;
+          guarantors.forEach((guarantor) => {
+            guarantorsIds.push({
+              id: guarantor.value,
+              name: guarantor.name,
+              repayment_amount: Math.round(guarantorAB),
+              // repayment_amount: 50,
+            });
+          });
+          break;
+        case "6040":
+          guarantorA = (this.form.repaymentAmount / 100) * 60;
+          guarantorB = (this.form.repaymentAmount / 100) * 40;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorA),
+                // repayment_amount: 60,
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorB),
+                // repayment_amount: 40,
+              });
+            }
+          });
+          break;
+        case "7030":
+          guarantorA = (this.form.repaymentAmount / 100) * 70;
+          guarantorB = (this.form.repaymentAmount / 100) * 30;
+          guarantors.forEach((guarantor, index) => {
+            if (index === 0) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorA),
+                // repayment_amount: 70,
+              });
+            } else if (index === 1) {
+              guarantorsIds.push({
+                id: guarantor.value,
+                name: guarantor.name,
+                repayment_amount: Math.round(guarantorB),
+                // repayment_amount: 30,
+              });
+            }
+          });
+          break;
+      }
+      this.form.guarantors = guarantorsIds;
+      // console.log(this.form.guarantors);
+    },
     calcRepaymentAmount() {
-      let { amount, interest, tenure } = this.form;
+      let { asset_cost, interest, tenure } = this.form;
       let payload = {
-        amount,
+        asset_cost,
         interest,
-        duration: tenure
+        duration: tenure,
       };
       this.form.repaymentAmount = this.interest(payload);
     },
     interest(payload) {
       // console.log(payload);
-      if (payload.amount == "" || payload.amount == null) {
+      if (payload.asset_cost == "" || payload.asset_cost == null) {
         return 0;
       } else {
         // calculate loan timeline divide days/365
         let loanDuration = Number(payload.duration) / 365;
         const interestRate = Number(payload.interest) / 100;
-        return Math.round(payload.amount * (1 + interestRate * loanDuration));
+        return Math.round(payload.asset_cost * (1 + interestRate * loanDuration));
       }
+    },
+    interestCalculator(method) {
+      // loan calculation formulars
+      const principal = parseFloat(this.form.loan_amount);
+      const calculatedInterest = parseFloat(this.form.loanInterest) / 100 / 12;
+      const calculatedPayments = parseFloat(1) * 12;
+
+      // compute monthly payments
+      const x = Math.pow(1 + calculatedInterest, calculatedPayments);
+      const monthly = (principal * x * calculatedInterest) / (x - 1);
+      if (isFinite(monthly)) {
+        const loanMonthlyPayment = Number(monthly);
+        const loanTotalPayment = (monthly * calculatedPayments).toFixed(2);
+        const loanTotalInterest = (
+          monthly * calculatedPayments -
+          principal
+        ).toFixed(2);
+        if (method == "monthly") {
+          this.form.regular_loan_repayment = Math.round(loanMonthlyPayment);
+          // console.log("monthly: ", this.form.regular_loan_repayment);
+        } else {
+          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
+          // console.log("yearly: ", this.form.regular_loan_repayment);
+        }
+      }
+      return this.form.regular_loan_repayment;
     },
     formatDate() {
       this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
@@ -446,22 +587,23 @@ export default {
       this.$v.$touch();
       if (!this.$v.$invalid) {
         const loggedInUser = this.user;
-        // const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        const guarantorsIds = [];
-        this.form.guarantors.forEach(guarantor => {
-          guarantorsIds.push(guarantor.value);
-        });
-        console.log(guarantorsIds);
+        const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
+        // const guarantorsIds = [];
+        // this.form.guarantors.forEach((guarantor) => {
+        //   guarantorsIds.push(guarantor.value);
+        // });
+        // console.log(guarantorsIds);
         const payload = {
           commodity_nature: this.form.asset_nature,
+          principal_amount: this.form.asset_cost,
           asset_brand: this.form.car_brand,
           loan_type: "Car Acquisition Loan",
           tenure: this.form.tenure,
           interest: this.form.interest,
           salary: this.form.salary,
-          // repayment_amount: this.form.repaymentAmount.toString(),
-          // repayment_date: backendDate,
-          guarantors: guarantorsIds
+          repayment_amount: this.form.repaymentAmount.toString(),
+          repayment_date: backendDate,
+          guarantors: this.form.guarantors,
         };
         console.log(payload);
         try {
@@ -473,28 +615,39 @@ export default {
       } else {
         this.hideModal("modalbasic");
       }
-    }
+    },
   },
   watch: {
     "form.amount": {
-      handler: function(amount) {
+      handler: function (amount) {
         console.log(amount);
         if (amount.length >= 5) {
           this.calcRepaymentAmount();
         }
-      }
+      },
     },
+    // "form.asset_cost": {
+    //   handler: function(amount) {
+    //     this.interestCalculator(this.form.tenure);
+    //   }
+    // },
     "form.tenure": {
-      handler: function(tenure) {
+      handler: function (method) {
+        // this.interestCalculator(method);
         this.calcRepaymentAmount();
-      }
+      },
     },
     "form.startDate": {
-      handler: function(startDate) {
+      handler: function (startDate) {
         this.formatDate();
-      }
-    }
-  }
+      },
+    },
+    "form.repayment_percentage": {
+      handler: function (percentage) {
+        this.setGuarantorDetails(this.form.guarantors, percentage);
+      },
+    },
+  },
 };
 </script>
 <style lang="css" scoped>

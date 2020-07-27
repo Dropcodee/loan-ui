@@ -487,6 +487,7 @@ export default {
         };
         try {
           this.CreditLoanRequest(payload);
+          console.log(payload);
         } catch (err) {
           return err;
         }
@@ -511,7 +512,7 @@ export default {
           principal
         ).toFixed(2);
         if (method == "monthly") {
-          this.form.regular_loan_repayment = Math.round(loanMonthlyPayment);
+          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
           // console.log("monthly: ", this.form.regular_loan_repayment);
         } else {
           this.form.regular_loan_repayment = Math.round(loanTotalPayment);

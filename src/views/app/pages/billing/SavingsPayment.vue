@@ -21,7 +21,7 @@
                 </b-card-text>
                 <div>
                   <paystack
-                    :amount="getUser.amount * 100"
+                    :amount="getUser.monthly_payment * 100"
                     :email="currentUser.email"
                     :paystackkey="paystackkey"
                     :callback="callback"
@@ -60,6 +60,7 @@
 import paystack from "vue-paystack";
 import { mapGetters, mapActions, mapState } from "vuex";
 import Draggable from "vuedraggable";
+import moment from "moment";
 
 export default {
   components: {
@@ -86,7 +87,7 @@ export default {
     return {
       requestError: null,
       paystackkey: "pk_test_706a3aea6696fcb3d8cfd4107621aef869a134f4",
-      reference: null, //paystack public key
+      // reference: null, //paystack public key
     };
   },
   watch: {
@@ -130,14 +131,23 @@ export default {
     removeNotification(notification) {
       this.remove(notification);
     },
+    moment: function () {
+      return moment();
+    },
     callback: function (response) {
       let payload = Object.assign(response, {
         savings_id: this.getUser.id,
-        amount: this.getUser.amount,
-        payment_date: new Date(Date.now()),
+        amount: this.getUser.monthly_payment,
+        payment_date: moment(new Date()).format("YYYY-MM-DD"),
+        // payment_date: new Date(),
       });
-      console.log(payload);
+
+
       this.createTransaction(payload);
+      // this.reference();
+      setTimeout(() => {
+        location.reload();
+      }, 3000);
     },
     close: function () {
       // console.log("Payment closed");

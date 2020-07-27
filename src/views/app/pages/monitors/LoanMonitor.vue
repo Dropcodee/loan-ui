@@ -28,7 +28,7 @@ export default {
   components: {
     vuetable: Vuetable,
     VuetablePagination,
-    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap
+    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
   },
 
   data() {
@@ -40,7 +40,7 @@ export default {
           title: "Loan Type",
           titleClass: "",
           dataClass: "list-item-heading",
-          sortDirection: "desc"
+          sortDirection: "desc",
         },
         // {
         //   name: "loan_purpose",
@@ -131,45 +131,53 @@ export default {
           sortField: "principal_amount",
           title: "Amount",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
+        },
+        {
+          name: "repayments.repayment_amount",
+          sortField: "repayment_amount",
+          title: "Repayment Amount",
+          titleClass: "",
+          dataClass: "text-muted",
         },
         {
           name: "interest",
           sortField: "interest",
           title: "Interest",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
         },
         {
           name: "status",
           sortField: "status",
           title: "Status",
           titleClass: "",
-          dataClass: "text-muted"
-        }
+          dataClass: "text-muted",
+        },
         // interest
         // status
       ],
       perPage: 10,
-      data: []
+      data: [],
     };
   },
 
   watch: {
     data(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-    }
+    },
   },
 
   mounted() {
     api()
       .get("/myloans")
-      .then(response => {
+      .then((response) => {
         // console.log(response)
         const { loans } = response.data;
         this.data = loans;
-        this.data.forEach(loan => {
+        this.data.forEach((loan) => {
           loan.principal_amount = "₦" + loan.principal_amount;
+          loan.repayments.repayment_amount = "₦" + loan.repayments.repayment_amount;
           loan.interest += "%";
           if (loan.status == 0) {
             loan.status = "Pending";
@@ -178,7 +186,7 @@ export default {
           } else if (loan.status == 2) {
             loan.status = "Running";
           } else if (loan.status == 3) {
-            loan.status = "Completed";
+            loan.status = "Failed";
           } else {
             loan.status = "Failed";
           }
@@ -219,10 +227,10 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: _.slice(local, from, to),
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

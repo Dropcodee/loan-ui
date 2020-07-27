@@ -12,5 +12,8 @@ export default {
   },
   carloan(credentials) {
     return api().post("loans/car_acquisition", credentials);
+  },
+  loanPay(credentials) {
+    return api().post("repayment/pay", credentials);
   }
 };

@@ -27,62 +27,63 @@ export default {
   components: {
     vuetable: Vuetable,
     VuetablePagination,
-    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap
+    "vuetable-pagination-bootstrap": VuetablePaginationBootstrap,
   },
 
   data() {
     return {
       fields: [
         {
-          name: "loan_type",
-          sortField: "loan_type",
-          title: "Saving Type",
+          name: "message",
+          sortField: "message",
+          title: "Message",
           titleClass: "",
           dataClass: "list-item-heading",
-          sortDirection: "desc"
+          sortDirection: "desc",
         },
         {
-          name: "principal_amount",
-          sortField: "principal_amount",
+          name: "amount",
+          sortField: "amount",
           title: "Amount",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
         },
         {
-          name: "interest",
-          sortField: "interest",
+          name: "created_at",
+          sortField: "created_at",
           title: "Date",
           titleClass: "",
-          dataClass: "text-muted"
+          dataClass: "text-muted",
         },
         {
           name: "status",
           sortField: "status",
           title: "Status",
           titleClass: "",
-          dataClass: "text-muted"
-        }
+          dataClass: "text-muted",
+        },
         // interest
         // status
       ],
       perPage: 10,
-      data: []
+      data: [],
     };
   },
   watch: {
     data(newVal, oldVal) {
       this.$refs.vuetable.refresh();
-    }
+    },
   },
 
   mounted() {
     api()
-      .get("")
-      .then(response => {
-        // console.log(response)
-        const { loans } = response.data;
-        this.data = loans;
-        console.log(this.data);
+      .get("savings")
+      .then((response) => {
+        const { savings_payment } = response.data.data;
+        this.data = savings_payment;
+        this.data.forEach((data) => {
+          data.amount = "₦" + data.amount;
+        });
       });
   },
 
@@ -118,10 +119,10 @@ export default {
 
       return {
         pagination: pagination,
-        data: _.slice(local, from, to)
+        data: _.slice(local, from, to),
       };
-    }
-  }
+    },
+  },
 };
 </script>
 

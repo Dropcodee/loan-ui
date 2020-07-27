@@ -119,6 +119,11 @@ const routes = [{
                           path: "SavingsPayment",
                           name: "savings-payment",
                           component: () => import ("./views/app/pages/billing/SavingsPayment")
+                        },
+                        {
+                          path: "LoanRepayment",
+                          name: "loan-payment",
+                          component: () => import ("./views/app/pages/billing/LoanRepayment")
                         }
                       ]
                     },

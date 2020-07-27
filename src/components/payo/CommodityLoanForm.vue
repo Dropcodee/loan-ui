@@ -409,6 +409,7 @@ export default {
         };
         try {
           this.CommodityLoanRequest(payload);
+          console.log(payload)
         } catch (err) {
           return err;
         }

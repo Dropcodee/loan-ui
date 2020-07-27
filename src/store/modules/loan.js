@@ -32,11 +32,11 @@ export const actions = {
         message:
           "Successfully applied for a new loan, we will contact you shortly."
       };
-      router.push({
-        name: "loan-monitor"
-      });
       dispatch("notification/add", notification, {
         root: true
+      });
+      router.push({
+        name: "loan-monitor"
       });
     } catch (error) {
       commit("SET_REQUEST_PROCESS", false);
@@ -133,7 +133,7 @@ export const actions = {
     dispatch("notification/add", notification, {
       root: true
     });
-    throw ex;
+    // throw ex;
   },
   async CarAcquisitionRequest({ commit, dispatch }, payload) {
     let response;
@@ -145,6 +145,49 @@ export const actions = {
         type: "success",
         message:
           "Successfully applied for a new loan, we will contact you shortly."
+      };
+      dispatch("notification/add", notification, {
+        root: true
+      });
+      router.push({
+        name: "loan-monitor"
+      });
+    } catch (ex) {
+      commit("SET_REQUEST_PROCESS", false);
+      if (ex.response.status === 500 || ex.response.status === 401) {
+        if (ex.response.data.errors) {
+          let errors = ex.response.data.errors;
+          errors.forEach(function(error) {
+            // statements
+            const notification = {
+              type: "error",
+              message: error
+            };
+            dispatch("notification/add", notification, {
+              root: true
+            });
+          });
+        } else if (ex.response.data.error) {
+          const notification = {
+            type: "error",
+            message: ex.response.data.error
+          };
+          dispatch("notification/add", notification, {
+            root: true
+          });
+        }
+      }
+    }
+  },
+  async loanRepayment({ commit, dispatch }, payload) {
+    let response;
+    try {
+      commit("SET_REQUEST_PROCESS", true);
+      response = await LoanServices.loanPay(payload);
+      commit("SET_REQUEST_PROCESS", false);
+      const notification = {
+        type: "success",
+        message: "Successfully made repayment transaction."
       };
       dispatch("notification/add", notification, {
         root: true

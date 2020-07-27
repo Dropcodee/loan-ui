@@ -2,17 +2,11 @@
   <div>
     <b-row v-if="!getUser">
       <b-colxx>
-        <b-form
-          @submit.prevent="formSubmit"
-          class="av-tooltip tooltip-label-bottom"
-        >
+        <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
           <!-- <h6 class="mb-4 text-center">Car Aquisition</h6> -->
           <b-row>
             <b-colxx sm="12">
-              <b-form-group
-                label="Fullname"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="Fullname" class="has-float-label mb-4">
                 <b-form-input
                   disabled
                   type="text"
@@ -29,10 +23,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="Staff ID"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="Staff ID" class="has-float-label mb-4">
                 <b-form-input
                   disabled
                   type="text"
@@ -49,10 +40,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="College"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="College" class="has-float-label mb-4">
                 <b-form-input
                   disabled
                   type="text"
@@ -69,10 +57,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="Department"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="Department" class="has-float-label mb-4">
                 <b-form-input
                   disabled
                   type="text"
@@ -89,10 +74,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="GSM NO"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="GSM NO" class="has-float-label mb-4">
                 <b-form-input
                   disabled
                   type="text"
@@ -109,10 +91,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="Account Number"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="Account Number" class="has-float-label mb-4">
                 <b-form-input
                   type="text"
                   v-model="form.acct_no"
@@ -132,10 +111,7 @@
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
-              <b-form-group
-                label="Monthly Deposit"
-                class="has-float-label mb-4"
-              >
+              <b-form-group label="Monthly Deposit" class="has-float-label mb-4">
                 <b-form-input
                   type="text"
                   v-model="form.monthly_deposit"
