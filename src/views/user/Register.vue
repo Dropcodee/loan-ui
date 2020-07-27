@@ -129,6 +129,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['RegisterUser']),
+    ...mapActions("notification", ["remove"]),
     formSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
@@ -141,6 +142,7 @@ export default {
             email,
             password
           }
+          console.log(payload)
           this.RegisterUser(payload)
         } catch (err) {
           this.requestError = true
