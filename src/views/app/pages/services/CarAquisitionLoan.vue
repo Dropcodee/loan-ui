@@ -27,7 +27,7 @@ import moment from "moment";
 export default {
   name: "car-aquisition",
   components: {
-    CarAcquisition
+    CarAcquisition,
   },
 
   data() {
@@ -35,7 +35,7 @@ export default {
       header: "Car Aquistion Form",
       timeout: null,
       guarantorsList: [],
-      requestError: null
+      requestError: null,
     };
   },
   validations: {
@@ -43,17 +43,17 @@ export default {
       amount: {
         required,
         maxLength: maxLength(30000),
-        numeric
+        numeric,
       },
       tenure: {
-        required
-      }
-    }
+        required,
+      },
+    },
   },
   computed: {
     ...mapGetters("user", ["currentUser"]),
     ...mapGetters("loan", ["potentialGuarantors", "processing"]),
-    ...mapState("notification", ["notifications"])
+    ...mapState("notification", ["notifications"]),
   },
   methods: {
     ...mapActions("notification", ["remove"]),
@@ -69,46 +69,46 @@ export default {
         name:
           ash.startCase(guarantor.first_name) +
           " " +
-          ash.startCase(guarantor.last_name)
+          ash.startCase(guarantor.last_name),
       });
-    }
+    },
   },
   watch: {
     notifications: {
-      handler: function(notifications) {
+      handler: function (notifications) {
         for (let i in notifications) {
           if (notifications[i].type == "error") {
             this.$notify("error", "Error Message", notifications[i].message, {
               duration: 3000,
-              permanent: false
+              permanent: false,
             });
             this.requestError = true;
             setTimeout(() => this.removeNotification(notifications[i]), 5000);
           } else if (notifications[i].type == "success") {
             this.$notify("success", "Message", notifications[i].message, {
               duration: 3000,
-              permanent: false
+              permanent: false,
             });
             this.requestError = false;
             setTimeout(() => this.removeNotification(notifications[i]), 3000);
           }
         }
-      }
+      },
     },
     potentialGuarantors: {
-      handler: function(potentialGuarantors) {
+      handler: function (potentialGuarantors) {
         // let as be root this to enable us get the root methods.
         let as = this;
-        potentialGuarantors.forEach(function(guarantor) {
+        potentialGuarantors.forEach(function (guarantor) {
           // statements
           as.pushToGurantorsList(guarantor);
         });
-      }
-    }
+      },
+    },
   },
   created() {
     this.FetchGuarantors();
-  }
+  },
 };
 </script>
 <style lang="css" scoped>

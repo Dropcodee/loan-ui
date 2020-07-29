@@ -414,6 +414,7 @@ export default {
           guarantors.forEach(guarantor => {
             guarantorsIds.push({
               id: guarantor.value,
+              name: guarantor.name,
               repayment_amount: Math.round(guarantorAB)
             });
           });
@@ -425,11 +426,13 @@ export default {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorA)
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorB)
               });
             }
@@ -442,11 +445,13 @@ export default {
             if (index === 0) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorA)
               });
             } else if (index === 1) {
               guarantorsIds.push({
                 id: guarantor.value,
+                name: guarantor.name,
                 repayment_amount: Math.round(guarantorB)
               });
             }
@@ -482,6 +487,7 @@ export default {
         };
         try {
           this.CreditLoanRequest(payload);
+          console.log(payload);
         } catch (err) {
           return err;
         }
@@ -506,7 +512,7 @@ export default {
           principal
         ).toFixed(2);
         if (method == "monthly") {
-          this.form.regular_loan_repayment = Math.round(loanMonthlyPayment);
+          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
           // console.log("monthly: ", this.form.regular_loan_repayment);
         } else {
           this.form.regular_loan_repayment = Math.round(loanTotalPayment);

@@ -7,12 +7,12 @@
       <a href="#" class="menu-button-mobile d-xs-block d-sm-block d-md-none" @click.prevent.stop="changeSideMenuForMobile(menuType)">
         <mobile-menu-icon />
       </a>
-      <div :class="{'search':true, 'mobile-view':isMobileSearch}" ref="searchContainer" @mouseenter="isSearchOver=true" @mouseleave="isSearchOver=false">
+      <!-- <div :class="{'search':true, 'mobile-view':isMobileSearch}" ref="searchContainer" @mouseenter="isSearchOver=true" @mouseleave="isSearchOver=false">
         <b-input :placeholder="$t('menu.search')" @keypress.native.enter="search" v-model="searchKeyword" />
         <span class="search-icon" @click="searchClick">
           <i class="simple-icon-magnifier"></i>
         </span>
-      </div>
+      </div> -->
       <div class="d-inline-block">
         <b-dropdown id="langddm" class="ml-2" variant="light" size="sm" toggle-class="language-button">
           <template slot="button-content">
@@ -26,13 +26,13 @@
         <b-tooltip target="tool-mode-switch" placement="left" title="Dark Mode"></b-tooltip>
       </div>
     </div>
-    <router-link class="navbar-logo" tag="a" to="/app">
+    <router-link class="navbar-logo" tag="a" to="/app/dashboards">
       <span class="logo d-none d-xs-block"></span>
       <span class="logo-mobile d-block d-xs-none"></span>
     </router-link>
     <div class="navbar-right">
       <div class="header-icons d-inline-block align-middle">
-        <div class="position-relative d-none d-sm-inline-block">
+        <!-- <div class="position-relative d-none d-sm-inline-block">
           <b-dropdown variant="empty" size="sm" right toggle-class="header-icon" menu-class="position-absolute mt-3 iconMenuDropdown" no-caret>
             <template slot="button-content">
               <i class="simple-icon-grid" />
@@ -64,8 +64,8 @@
               </router-link>
             </div>
           </b-dropdown>
-        </div>
-        <div class="position-relative d-inline-block">
+        </div> -->
+        <!-- <div class="position-relative d-inline-block">
           <b-dropdown variant="empty" size="sm" right toggle-class="header-icon notificationButton" menu-class="position-absolute mt-3 notificationDropdown" no-caret>
             <template slot="button-content">
               <i class="simple-icon-bell" />
@@ -85,7 +85,7 @@
               </div>
             </vue-perfect-scrollbar>
           </b-dropdown>
-        </div>
+        </div> -->
       </div>
       <div class="user d-inline-block">
         <b-dropdown class="dropdown-menu-right" right variant="empty" toggle-class="p-0" menu-class="mt-3" no-caret>
