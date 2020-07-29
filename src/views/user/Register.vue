@@ -129,11 +129,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['RegisterUser']),
-<<<<<<< HEAD
     ...mapActions('notification', ["remove"]),
-=======
-    ...mapActions("notification", ["remove"]),
->>>>>>> 99f66a52bfc64a817d559553410cb81b6b850505
     formSubmit() {
       this.$v.$touch()
       if (!this.$v.$invalid) {
