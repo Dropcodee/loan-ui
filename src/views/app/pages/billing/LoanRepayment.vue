@@ -237,6 +237,7 @@ export default {
   },
 
   methods: {
+    ...mapActions("notification", ["remove"]),
     ...mapActions("loan", ["loanRepayment"]),
     setId(payload) {
       this.loan_selected = payload.id;
