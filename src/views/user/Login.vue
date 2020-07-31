@@ -139,7 +139,7 @@ export default {
       }
     },
     mounted() {
-      console.log(process.env.VUE_APP_APIURL)
+      console.log(process.env.VUE_APP_ONLINE_API)
     }
 };
 

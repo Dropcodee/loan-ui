@@ -495,15 +495,13 @@ export default {
         const interestRate = Number(this.form.loanInterest) / 100;
          let loanTotalPayment = Math.round(this.form.loan_amount * (1 + interestRate * loanDuration));
         if (method == 30) {
-          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
+          return this.form.regular_loan_repayment = Math.round(loanTotalPayment);
           // console.log("monthly: ", this.form.regular_loan_repayment);
         } else {
-          this.form.regular_loan_repayment = Math.round(loanTotalPayment);
+          return this.form.regular_loan_repayment = Math.round(loanTotalPayment);
           // console.log("yearly: ", this.form.regular_loan_repayment);
         }
       }
-      return this.form.regular_loan_repayment;
-    }
   },
   watch: {
     "form.repayment_method": {

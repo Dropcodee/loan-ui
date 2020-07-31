@@ -84,7 +84,7 @@ export const actions = {
             commit("SET_REQUEST_PROCESS", true);
             const response = await AuthenticationService.login(payload);
             // store user return data
-            console.log(response.data);
+            // console.log(response.data);
             commit("SET_USER_STATE", response.data);
             // create success notification
             const notification = {
