@@ -65,7 +65,7 @@ export default {
     ...mapActions("notification", ["remove"]),
     ...mapActions("loan", ["FetchGuarantors"]),
     removeNotification(notification) {
-      console.log(notification);
+      // console.log(notification);
       this.remove(notification);
     },
     pushToGurantorsList(guarantor) {
@@ -192,7 +192,7 @@ export default {
     ...mapActions("notification", ["remove"]),
     ...mapActions("loan", ["FetchGuarantors"]),
     removeNotification(notification) {
-      console.log(notification);
+      // console.log(notification);
       this.remove(notification);
     },
     pushToGurantorsList(guarantor) {

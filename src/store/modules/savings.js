@@ -21,7 +21,7 @@ export const getters = {
 export const mutations = {
   SET_USER_SAVINGS(state, savingsData) {
     state.userSavings = savingsData.data;
-    console.log(state.userSavings)
+    // console.log(state.userSavings)
   },
   SET_REQUEST_PROCESS(state, requestProcess) {
     state.processing = requestProcess;
