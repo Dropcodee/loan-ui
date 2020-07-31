@@ -300,8 +300,8 @@ export default {
   data() {
     return {
       options: [
-        { value: "monthly", text: "Monthly" },
-        { value: "yearly", text: "Yearly" }
+        { value: 30, text: "Monthly" },
+        { value: 365, text: "Yearly" }
       ],
       loanNature: [
         { value: "regular", text: "Regular Credit Loan" },
@@ -467,12 +467,6 @@ export default {
       let backendTenure;
       if (!this.$v.$invalid) {
         const backendDate = moment(this.form.startDate).format("YYYY-MM-D");
-        if (this.form.repayment_method == "monthly") {
-          // tenure of the loan will be every 30days for 1yr
-          backendTenure = 30;
-        } else {
-          backendTenure = 365;
-        }
         const payload = {
           loan_type: "Credit Loan",
           loan_amount: this.form.loan_amount,
@@ -483,7 +477,7 @@ export default {
           interest: this.form.loanInterest,
           method_of_repayment: this.form.repayment_method,
           credit_loan_type: this.form.credit_nature,
-          tenure: backendTenure
+          tenure: this.form.repayment_method
         };
         try {
           this.CreditLoanRequest(payload);
@@ -497,21 +491,10 @@ export default {
     },
     interestCalculator(method) {
       // loan calculation formulars
-      const principal = parseFloat(this.form.loan_amount);
-      const calculatedInterest = parseFloat(this.form.loanInterest) / 100 / 12;
-      const calculatedPayments = parseFloat(1) * 12;
-
-      // compute monthly payments
-      const x = Math.pow(1 + calculatedInterest, calculatedPayments);
-      const monthly = (principal * x * calculatedInterest) / (x - 1);
-      if (isFinite(monthly)) {
-        const loanMonthlyPayment = Number(monthly);
-        const loanTotalPayment = (monthly * calculatedPayments).toFixed(2);
-        const loanTotalInterest = (
-          monthly * calculatedPayments -
-          principal
-        ).toFixed(2);
-        if (method == "monthly") {
+      let loanDuration = Number(this.form.repayment_method ) / 365;
+        const interestRate = Number(this.form.loanInterest) / 100;
+         let loanTotalPayment = Math.round(this.form.loan_amount * (1 + interestRate * loanDuration));
+        if (method == 30) {
           this.form.regular_loan_repayment = Math.round(loanTotalPayment);
           // console.log("monthly: ", this.form.regular_loan_repayment);
         } else {
