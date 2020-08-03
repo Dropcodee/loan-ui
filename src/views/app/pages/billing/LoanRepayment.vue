@@ -11,7 +11,7 @@
       responsive
     >
       <template slot="custom-actions" slot-scope="props">
-        <div>
+        <div v-if="props.rowData.status == 'Running'">
           <i class="fas fa-money-bill-alt"></i>
           <b-button
             v-b-modal.modalbasic

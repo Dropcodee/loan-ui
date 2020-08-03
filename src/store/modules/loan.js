@@ -77,6 +77,7 @@ export const actions = {
     let response;
     try {
       commit("SET_REQUEST_PROCESS", true);
+      console.log(payload);
       response = await LoanServices.creditloan(payload);
       commit("SET_REQUEST_PROCESS", false);
       console.log(response);

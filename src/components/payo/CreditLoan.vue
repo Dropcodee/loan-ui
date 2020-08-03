@@ -475,7 +475,7 @@ export default {
           guarantors: this.form.guarantors,
           repayment_amount: this.form.regular_loan_repayment.toString(),
           interest: this.form.loanInterest,
-          method_of_repayment: this.form.repayment_method,
+          method_of_repayment: this.form.repayment_method.toString(),
           credit_loan_type: this.form.credit_nature,
           tenure: this.form.repayment_method
         };
