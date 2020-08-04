@@ -62,6 +62,13 @@ export default {
           titleClass: "",
           dataClass: "text-muted",
         },
+        {
+          name: "Approved",
+          sortField: "Approved",
+          title: "Admin approval",
+          titleClass: "",
+          dataClass: "text-muted",
+        },
         // interest
         // status
       ],
@@ -83,6 +90,7 @@ export default {
         this.data = savings_payment;
         this.data.forEach((data) => {
           data.amount = "₦" + data.amount;
+          data.Approved = data.Approved == false ? "Pending" : "Approved";
         });
       });
   },
