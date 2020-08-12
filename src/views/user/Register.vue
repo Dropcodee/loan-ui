@@ -323,12 +323,14 @@
               <b-row>
                 <b-colxx sm="6">
                   <b-form-group label="Savings of Interest" class="has-float-label mb-4">
-                    <b-form-input
+                    <b-form-select v-model="form.savings" :options="savings"></b-form-select>
+
+                    <!-- <b-form-input
                       type="text"
                       v-model="form.savings"
                       :class="$v.form.savings.$error ? 'is-invalid' : ''"
                       @blur="$v.form.savings.$touch()"
-                    />
+                    />-->
                     <div v-if="$v.form.savings.$error">
                       <span
                         v-if="!$v.form.savings.required"
@@ -491,8 +493,7 @@
                 class="btn-shadow"
                 :class="{'btn-multiple-state btn-shadow': true,
                     'show-spinner': processing,
-                    'show-success': !processing && requestError === false,
-                    'show-fail': !processing && requestError }"
+                     }"
               >
                 <span class="spinner d-inline-block">
                   <span class="bounce1"></span>
@@ -502,9 +503,9 @@
                 <span class="icon success">
                   <i class="simple-icon-check"></i>
                 </span>
-                <span class="icon fail">
+                <!-- <span class="icon fail">
                   <i class="simple-icon-exclamation"></i>
-                </span>
+                </span>-->
                 <span class="label">Back</span>
               </b-button>&nbsp;
               &nbsp;
@@ -541,9 +542,7 @@
                 size="lg"
                 class="btn-shadow"
                 :class="{'btn-multiple-state btn-shadow': true,
-                    'show-spinner': processing,
-                    'show-success': !processing && requestError === false,
-                    'show-fail': !processing && requestError }"
+                    'show-spinner': processing, }"
               >
                 <span class="spinner d-inline-block">
                   <span class="bounce1"></span>
@@ -583,6 +582,8 @@ import {
   numeric,
 } from "vuelidate/lib/validators";
 import { mapActions, mapGetters, mapState } from "vuex";
+import moment from "moment";
+
 export default {
   data() {
     return {
@@ -598,6 +599,11 @@ export default {
       cooperative: [
         { value: true, text: "Yes" },
         { value: false, text: "No" },
+      ],
+
+      savings: [
+        { value: "thrift", text: "Thrift" },
+        { value: "Target", text: "Target" },
       ],
 
       step: 1,
@@ -725,25 +731,72 @@ export default {
   methods: {
     ...mapActions("user", ["RegisterUser"]),
     ...mapActions("notification", ["remove"]),
+    formatDate() {
+      this.form.displayDate = moment(this.form.startDate).format("MMM Do YYYY");
+      console.log(this.form.displayDate);
+    },
     formSubmit() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        const { firstname, lastname, email, phone, password } = this.form;
+        const {
+          firstname,
+          lastname,
+          email,
+          phone,
+          password,
+          income,
+          college,
+          department,
+          staff_id,
+          address,
+          nature_of_employment,
+          marital_status,
+          position,
+          date_of_membership,
+          name_of_membership,
+          cooperative,
+          date_of_employment,
+          kin_name,
+          kin_address,
+          kin_email,
+          kin_phone,
+          savings,
+        } = this.form;
         console.log(this.form);
-        // try {
-        //   const payload = {
-        //     first_name: firstname,
-        //     last_name: lastname,
-        //     phone_number: phone,
-        //     email,
-        //     password,
-        //   };
-        //   console.log(payload);
-        //   this.RegisterUser(payload);
-        // } catch (err) {
-        //   this.requestError = true;
-        //   console.log("component print" + err);
-        // }
+        try {
+          const payload = {
+            first_name: firstname,
+            last_name: lastname,
+            email: email,
+            password: password,
+            phone_number: phone,
+            address: address,
+            college: college,
+            date_of_membership:
+              date_of_membership != null
+                ? moment(date_of_membership).format("YYYY-MM-D")
+                : null,
+            date_started: moment(date_of_employment).format("YYYY-MM-D"),
+            department: department,
+            employed_work_id_card: staff_id,
+            employment: position,
+            in_cooperative: cooperative,
+            kin_name: kin_name,
+            kin_address: kin_address,
+            kin_email: kin_email,
+            kin_phone: kin_phone,
+            marital_status: marital_status,
+            monthly_income: income,
+            name_of_membership: name_of_membership,
+            nature_of_employment: nature_of_employment,
+            savings_interest: savings,
+          };
+          console.log(payload);
+          this.RegisterUser(payload);
+        } catch (err) {
+          this.requestError = true;
+          console.log("component print" + err);
+        }
       }
     },
     removeNotification(notification) {
@@ -753,22 +806,19 @@ export default {
   },
   watch: {
     notifications(notifications) {
-      for (let i in notifications) {
-        if (notifications[i].type == "error") {
-          this.$notify("error", "Error Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false,
-          });
+      // loop through all notifications and
+      // display one at a time
+      notifications.forEach((notification) => {
+        this.$notify(`${notification.type}`, "Error", notification.message);
+        if (notification.type == "error") {
           this.requestError = true;
-          let as = this;
-          setTimeout(() => as.removeNotification(notifications[i]), 3000);
-        } else if (notifications[i].type == "success") {
-          this.$notify("success", "Message", notifications[i].message, {
-            duration: 3000,
-            permanent: false,
-          });
         }
-      }
+        // let as = this;
+        if (notification.type == "success") {
+          this.requestError = false;
+        }
+        this.removeNotification(notification);
+      });
     },
   },
 };
