@@ -562,7 +562,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <span>
                 Have an account?
-                <router-link tag="a" to="/user/register">Login here</router-link>
+                <router-link tag="a" to="/user/login">Login here</router-link>
               </span>
             </div>
           </b-form>
