@@ -49,6 +49,9 @@ export const actions = {
             dispatch("notification/add", notification, {
                 root: true
             });
+            router.push({
+              name: "Login"
+            });
         } catch (err) {
             commit("SET_REQUEST_PROCESS", false);
             // console.log(err.response.data.message)
