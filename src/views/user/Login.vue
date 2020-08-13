@@ -17,27 +17,64 @@
           <h6 class="mb-4">{{ $t('user.login-title')}}</h6>
           <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
             <b-form-group label="Phone Number" class="has-float-label mb-4">
-              <b-form-input type="text" v-model="form.phone" :class="$v.form.phone.$error ? 'is-invalid' : ''" @blur="$v.form.phone.$touch()" />
+              <b-form-input
+                type="text"
+                v-model="form.phone"
+                :class="$v.form.phone.$error ? 'is-invalid' : ''"
+                @blur="$v.form.phone.$touch()"
+              />
               <div v-if="$v.form.phone.$error">
-                <span v-if="!$v.form.phone.required" class="error-text">Please enter your registered phone number</span>
-                <span v-if="!$v.form.phone.minLength" class="error-text">Phone number must have up to {{ $v.form.phone.$params.minLength.min }} digits e.g 08022334455</span>
-                <span v-if="!$v.form.phone.maxLength" class="error-text">Phone number must have maximum of {{ $v.form.phone.$params.maxLength.max }} digits e.g 08022334455</span>
-                <span v-if="!$v.form.phone.numeric" class="error-text">Phone number must contain numbers alone.</span>
+                <span
+                  v-if="!$v.form.phone.required"
+                  class="error-text"
+                >Please enter your registered phone number</span>
+                <span
+                  v-if="!$v.form.phone.minLength"
+                  class="error-text"
+                >Phone number must have up to {{ $v.form.phone.$params.minLength.min }} digits e.g 08022334455</span>
+                <span
+                  v-if="!$v.form.phone.maxLength"
+                  class="error-text"
+                >Phone number must have maximum of {{ $v.form.phone.$params.maxLength.max }} digits e.g 08022334455</span>
+                <span
+                  v-if="!$v.form.phone.numeric"
+                  class="error-text"
+                >Phone number must contain numbers alone.</span>
               </div>
             </b-form-group>
             <b-form-group label="Password" class="has-float-label mb-4">
-              <b-form-input type="password" v-model="form.password" :class="$v.form.password.$error ? 'is-invalid' : ''" @blur="$v.form.password.$touch()" />
+              <b-form-input
+                type="password"
+                v-model="form.password"
+                :class="$v.form.password.$error ? 'is-invalid' : ''"
+                @blur="$v.form.password.$touch()"
+              />
               <div v-if="$v.form.password.$error">
-                <span v-if="!$v.form.password.required" class="error-text">Please enter your password</span>
-                <span v-if="!$v.form.password.minLength" class="error-text">Password must have at least {{ $v.form.password.$params.minLength.min }} characters. </span>
+                <span
+                  v-if="!$v.form.password.required"
+                  class="error-text"
+                >Please enter your password</span>
+                <span
+                  v-if="!$v.form.password.minLength"
+                  class="error-text"
+                >Password must have at least {{ $v.form.password.$params.minLength.min }} characters.</span>
               </div>
             </b-form-group>
             <div class="d-flex justify-content-between align-items-center">
-              <router-link tag="a" to="/user/forgot-password">{{ $t('user.forgot-password-question')}}</router-link>
-              <b-button type="submit" variant="success" size="lg" :disabled="$v.$anyError || processing" :class="{'btn-multiple-state btn-shadow': true,
+              <router-link
+                tag="a"
+                to="/user/forgot-password"
+              >{{ $t('user.forgot-password-question')}}</router-link>
+              <b-button
+                type="submit"
+                variant="success"
+                size="lg"
+                :disabled="$v.$anyError || processing"
+                :class="{'btn-multiple-state btn-shadow': true,
                     'show-spinner': processing,
                     'show-success': !processing && requestError === false,
-                    'show-fail': !processing && requestError }">
+                    'show-fail': !processing && requestError }"
+              >
                 <span class="spinner d-inline-block">
                   <span class="bounce1"></span>
                   <span class="bounce2"></span>
@@ -52,6 +89,13 @@
                 <span class="label">Login</span>
               </b-button>
             </div>
+            <div class="d-flex justify-content-between align-items-center"></div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span>
+                Don't have an account?
+                <router-link tag="a" to="/user/register">Register</router-link>
+              </span>
+            </div>
           </b-form>
         </div>
       </b-card>
@@ -59,22 +103,25 @@
   </b-row>
 </template>
 <script>
+import { mapGetters, mapActions, mapState } from "vuex";
 import {
-  mapGetters,
-  mapActions,
-  mapState
-} from "vuex";
-import { required, minLength, email, maxLength, sameAs, numeric } from 'vuelidate/lib/validators'
+  required,
+  minLength,
+  email,
+  maxLength,
+  sameAs,
+  numeric,
+} from "vuelidate/lib/validators";
 
 export default {
   data() {
     return {
       form: {
         phone: "09013747651",
-        password: "xxxxxx"
+        password: "xxxxxx",
       },
       timeout: null,
-      requestError: null
+      requestError: null,
     };
   },
   validations: {
@@ -83,64 +130,63 @@ export default {
         required,
         minLength: minLength(11),
         maxLength: maxLength(11),
-        numeric
+        numeric,
       },
       password: {
         required,
-        minLength: minLength(7)
+        minLength: minLength(7),
       },
-    }
+    },
   },
   computed: {
-    ...mapGetters('user', ["currentUser", "processing"]),
-    ...mapState('notification', ["notifications"]),
+    ...mapGetters("user", ["currentUser", "processing"]),
+    ...mapState("notification", ["notifications"]),
   },
   methods: {
-    ...mapActions('user', ["LoginUser"]),
-    ...mapActions('notification', ["remove"]),
+    ...mapActions("user", ["LoginUser"]),
+    ...mapActions("notification", ["remove"]),
     removeNotification(notification) {
       // console.log(notification)
-      this.remove(notification)
+      this.remove(notification);
     },
     formSubmit() {
-      this.$v.$touch()
+      this.$v.$touch();
       if (!this.$v.$invalid) {
         const payload = {
           phone_number: this.form.phone,
-          password: this.form.password
-        }
+          password: this.form.password,
+        };
         try {
           this.LoginUser(payload);
         } catch (err) {
           // console.log(err)
-          this.requestError = true
+          this.requestError = true;
         }
       }
-    }
+    },
   },
   watch: {
     notifications(notifications) {
       // loop through all notifications and
       // display one at a time
-      notifications.forEach(notification => {
+      notifications.forEach((notification) => {
         this.$notify(`${notification.type}`, notification.message, {
           duration: 8000,
-          permanent: false
+          permanent: false,
         });
-        if(notification.type == 'error') {
-          this.requestError = true
+        if (notification.type == "error") {
+          this.requestError = true;
         }
         // let as = this;
-        if(notification.type == 'success') {
-          this.requestError = false
+        if (notification.type == "success") {
+          this.requestError = false;
         }
-        this.removeNotification(notification)
-      })
-      }
+        this.removeNotification(notification);
+      });
     },
-    mounted() {
-      console.log(process.env.VUE_APP_ONLINE_API)
-    }
+  },
+  mounted() {
+    console.log(process.env.VUE_APP_ONLINE_API);
+  },
 };
-
 </script>
