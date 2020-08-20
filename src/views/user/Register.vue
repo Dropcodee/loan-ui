@@ -19,7 +19,7 @@
             <span class="logo-single" />
           </router-link>
           <h6 class="mb-4">New Membership</h6>
-          <b-form @submit.prevent="formSubmit">
+          <b-form>
             <transition
               name="custom-classes-transition"
               enter-active-class="animate__animated animate__fadeIn"
@@ -523,7 +523,7 @@
               &nbsp;
               <b-button
                 v-if="step == 3"
-                type="submit"
+                @click.prevent="formSubmit"
                 variant="primary"
                 size="lg"
                 :disabled="$v.$anyError || processing"
