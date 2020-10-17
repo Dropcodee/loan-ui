@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-/dist
 /services/Api.js
 # local env files
 .env.local

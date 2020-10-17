@@ -153,6 +153,7 @@ const routes = [{
                             },
                             {
                                 path: "settings",
+                                name: "Settings",
                                 component: () =>
                                     import (
                                         /* webpackChunkName: "profile" */

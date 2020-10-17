@@ -6,6 +6,7 @@ import BootstrapVue from 'bootstrap-vue'
 // Router & Store add
 import router from './router'
 import store from './store'
+import Nprogress from 'nprogress'
 // Multi Language Add
 import en from './locales/en.json'
 import es from './locales/es.json'
@@ -39,7 +40,7 @@ Vue.use(Vuelidate)
 
 Vue.use(BootstrapVue);
 Vue.use(VueI18n);
-
+Vue.use(Nprogress)
 const messages = {
     en: en,
     es: es
