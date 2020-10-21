@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <template>
   <div>
     <b-row>
@@ -28,14 +27,14 @@ import ash from "lodash";
 import moment from "moment";
 
 export default {
-  name: "car-aquisition",
+  name: "Savings-application",
   components: {
     SavingsForm
   },
 
   data() {
     return {
-      header: "Car Aquistion Form",
+      header: "Savings Application Form",
       timeout: null,
       guarantorsList: [],
       requestError: null
