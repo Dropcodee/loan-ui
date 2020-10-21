@@ -13,11 +13,11 @@
         </p>
       </b-colxx>
     </b-row>
-    <h2 class="text-center mt-4">Here are some of our services</h2>
+    <h2 class="text-left mt-4">Here are some of our services</h2>
     <b-row>
       <b-colxx
-        lg="8"
-        xl="8"
+        lg="12"
+        xl="12"
       >
         <draggable class="col mt-4">
           <b-colxx
@@ -30,7 +30,7 @@
           </b-colxx>
         </draggable>
       </b-colxx>
-      <b-colxx
+      <!-- <b-colxx
         xl="4"
         lg="4"
         class="mb-4 mt-4"
@@ -67,7 +67,7 @@
             <b-progress :value="(s.status / s.total) * 100"></b-progress>
           </div>
         </b-card>
-      </b-colxx>
+      </b-colxx> -->
     </b-row>
   </div>
 </template>
