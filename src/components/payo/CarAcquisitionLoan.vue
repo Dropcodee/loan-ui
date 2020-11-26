@@ -2,7 +2,10 @@
   <div>
     <b-row>
       <b-colxx>
-        <b-form @submit.prevent="formSubmit" class="av-tooltip tooltip-label-bottom">
+        <b-form
+          @submit.prevent="formSubmit"
+          class="av-tooltip tooltip-label-bottom"
+        >
           <!-- <h6 class="mb-4 text-center">Car Aquisition</h6> -->
           <b-row>
             <b-colxx sm="12">
@@ -15,10 +18,9 @@
                   @blur="$v.form.fullname.$touch()"
                 />
                 <div v-if="$v.form.fullname.$error">
-                  <span
-                    v-if="!$v.form.fullname.required"
-                    class="error-text"
-                  >Please complete your profile to fill this details</span>
+                  <span v-if="!$v.form.fullname.required" class="error-text"
+                    >Please complete your profile to fill this details</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -32,10 +34,9 @@
                   @blur="$v.form.staff_id.$touch()"
                 />
                 <div v-if="$v.form.staff_id.$error">
-                  <span
-                    v-if="!$v.form.staff_id.required"
-                    class="error-text"
-                  >Please complete your profile to fill this details</span>
+                  <span v-if="!$v.form.staff_id.required" class="error-text"
+                    >Please complete your profile to fill this details</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -49,10 +50,9 @@
                   @blur="$v.form.college.$touch()"
                 />
                 <div v-if="$v.form.college.$error">
-                  <span
-                    v-if="!$v.form.college.required"
-                    class="error-text"
-                  >Please complete your profile to fill this details</span>
+                  <span v-if="!$v.form.college.required" class="error-text"
+                    >Please complete your profile to fill this details</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -66,10 +66,9 @@
                   @blur="$v.form.department.$touch()"
                 />
                 <div v-if="$v.form.department.$error">
-                  <span
-                    v-if="!$v.form.department.required"
-                    class="error-text"
-                  >Please complete your profile to fill this details</span>
+                  <span v-if="!$v.form.department.required" class="error-text"
+                    >Please complete your profile to fill this details</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -83,10 +82,9 @@
                   @blur="$v.form.phone.$touch()"
                 />
                 <div v-if="$v.form.phone.$error">
-                  <span
-                    v-if="!$v.form.phone.required"
-                    class="error-text"
-                  >Please complete your profile to fill this details</span>
+                  <span v-if="!$v.form.phone.required" class="error-text"
+                    >Please complete your profile to fill this details</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -102,10 +100,10 @@
                   @blur="$v.form.asset_nature.$touch()"
                 />
                 <div v-if="$v.form.asset_nature.$error">
-                  <span
-                    v-if="!$v.form.asset_nature.required"
-                    class="error-text"
-                  >Please enter the nature of the items you wish to purchase.</span>
+                  <span v-if="!$v.form.asset_nature.required" class="error-text"
+                    >Please enter the nature of the items you wish to
+                    purchase.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -121,11 +119,13 @@
                   @blur="$v.form.asset_cost.$touch()"
                 />
                 <div v-if="$v.form.asset_cost.$error">
-                  <span
-                    v-if="!$v.form.asset_cost.required"
-                    class="error-text"
-                  >Please enter the cost of the item you wish to purchase.</span>
-                  <span v-if="!$v.form.asset_cost.numeric" class="error-text">Cost must be in digits</span>
+                  <span v-if="!$v.form.asset_cost.required" class="error-text"
+                    >Please enter the cost of the item you wish to
+                    purchase.</span
+                  >
+                  <span v-if="!$v.form.asset_cost.numeric" class="error-text"
+                    >Cost must be in digits</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -138,10 +138,10 @@
                   @blur="$v.form.car_brand.$touch()"
                 />
                 <div v-if="$v.form.car_brand.$error">
-                  <span
-                    v-if="!$v.form.car_brand.required"
-                    class="error-text"
-                  >Please enter the car brand of the items you wish to purchase.</span>
+                  <span v-if="!$v.form.car_brand.required" class="error-text"
+                    >Please enter the car brand of the items you wish to
+                    purchase.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
@@ -154,21 +154,29 @@
                   @blur="$v.form.salary.$touch()"
                 />
                 <div v-if="$v.form.salary.$error">
-                  <span v-if="!$v.form.salary.required" class="error-text">Please enter your salary</span>
-                  <span
-                    v-if="!$v.form.salary.numeric"
-                    class="error-text"
-                  >Salary must contain numbers alone.</span>
+                  <span v-if="!$v.form.salary.required" class="error-text"
+                    >Please enter your salary</span
+                  >
+                  <span v-if="!$v.form.salary.numeric" class="error-text"
+                    >Salary must contain numbers alone.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
             <b-colxx sm="12">
               <b-form-group label="Interest Rate" class="has-float-label mb-4">
-                <b-form-input type="text" v-bind:value="form.interest + '%'" disabled />
+                <b-form-input
+                  type="text"
+                  v-bind:value="form.interest + '%'"
+                  disabled
+                />
               </b-form-group>
             </b-colxx>
-            <b-colxx sm="12">
-              <b-form-group label="Loan Payment Duration" class="has-float-label mb-4">
+            <b-colxx sm="6">
+              <b-form-group
+                label="Loan Payment Duration"
+                class="has-float-label mb-4"
+              >
                 <b-form-select
                   v-model="form.tenure"
                   :options="options"
@@ -176,29 +184,35 @@
                   @blur="$v.form.tenure.$touch()"
                 ></b-form-select>
                 <div v-if="$v.form.tenure.$error">
-                  <span
-                    v-if="!$v.form.tenure.required"
-                    class="error-text"
-                  >Please lets know how long it will take you to repay your loan thanks.</span>
+                  <span v-if="!$v.form.tenure.required" class="error-text"
+                    >Please lets know how long it will take you to repay your
+                    loan thanks.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
-            <b-colxx sm="12">
-              <b-form-group label="Loan Payment Commencement Date" class="has-float-label mb-4">
+            <b-colxx sm="6">
+              <b-form-group
+                label="Loan Payment Commencement Date"
+                class="has-float-label mb-4"
+              >
                 <v-date-picker
                   mode="single"
                   v-model="form.startDate"
-                  :input-props="{ class:'form-control', placeholder: $t('form-components.date') }"
+                  :input-props="{
+                    class: 'form-control',
+                    placeholder: $t('form-components.date'),
+                  }"
                 ></v-date-picker>
                 <div v-if="$v.form.startDate.$error">
-                  <span
-                    v-if="!$v.form.startDate.required"
-                    class="error-text"
-                  >Choose when you want to begin your loan repayment thanks.</span>
+                  <span v-if="!$v.form.startDate.required" class="error-text"
+                    >Choose when you want to begin your loan repayment
+                    thanks.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
-            <b-colxx sm="12">
+            <b-colxx sm="6">
               <b-form-group label="Guarantors" class="has-float-label mb-4">
                 <multiselect
                   v-if="guarantors && guarantors.length"
@@ -212,37 +226,74 @@
                   placeholder="Select two guarantors of your choice"
                   @remove="removeGuarantor"
                 ></multiselect>
-                <b-form-select v-model="form.guarantors" :options="emptyOptions" v-else></b-form-select>
+                <b-form-select
+                  v-model="form.guarantors"
+                  :options="emptyOptions"
+                  v-else
+                ></b-form-select>
                 <div v-if="$v.form.guarantors.$error">
-                  <span
-                    v-if="!$v.form.guarantors.required"
-                    class="error-text"
-                  >Please select two guarantors for your loan applications.</span>
+                  <span v-if="!$v.form.guarantors.required" class="error-text"
+                    >Please select two guarantors for your loan
+                    applications.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
-            <b-colxx sm="12">
-              <b-form-group label="Guarantors repayment percentage" class="has-float-label mb-4">
-                <b-form-select v-model="form.repayment_percentage" :options="percentages"></b-form-select>
+            <b-colxx sm="6">
+              <b-form-group
+                label="Guarantors repayment percentage"
+                class="has-float-label mb-4"
+              >
+                <b-form-select
+                  v-model="form.repayment_percentage"
+                  :options="percentages"
+                ></b-form-select>
                 <div v-if="$v.form.repayment_percentage.$error">
                   <span
                     v-if="!$v.form.repayment_percentage.required"
                     class="error-text"
-                  >Please share the loan among the selected guarantors.</span>
+                    >Please share the loan among the selected guarantors.</span
+                  >
                 </div>
               </b-form-group>
             </b-colxx>
           </b-row>
+          <b-form-group label="Deposit type" class="has-float-label mb-4">
+            <!-- <b-form-input
+                  type="text"
+                  v-model="form.monthly_deposit"
+                  :class="$v.form.monthly_deposit.$error ? 'is-invalid' : ''"
+                  @blur="$v.form.monthly_deposit.$touch()"
+                /> -->
+            <b-form-select
+              :class="$v.form.charge.$error ? 'is-invalid' : ''"
+              @blur="$v.form.charge.$touch()"
+              v-model="form.charge"
+              :options="schedule"
+            ></b-form-select>
+
+            <div v-if="$v.form.charge.$error">
+              <span v-if="!$v.form.charge.required" class="error-text"
+                >Please pick an option.</span
+              >
+              <!-- <span
+                    v-if="!$v.form.charge.numeric"
+                    class="error-text"
+                  >Savings must contain numbers alone.</span> -->
+            </div>
+          </b-form-group>
           <div class="d-flex justify-content-around align-items-center">
             <b-button
               variant="success"
               v-b-modal.modalbasic
               size="lg"
               :disabled="$v.$anyError || processing"
-              :class="{'btn-multiple-state btn-shadow btn-block': true,
-                    'show-spinner': processing,
-                    'show-success': !processing && requestError === false,
-                    'show-fail': !processing && requestError }"
+              :class="{
+                'btn-multiple-state btn-shadow btn-block': true,
+                'show-spinner': processing,
+                'show-success': !processing && requestError === false,
+                'show-fail': !processing && requestError,
+              }"
             >
               <span class="spinner d-inline-block">
                 <span class="bounce1"></span>
@@ -270,20 +321,39 @@
     </b-row>
     <b-row>
       <div class="form-side">
-        <h6
-          class="mt-4"
-        >Please Note: The Cooperative Society has the right to impond the Vehicle purchased in the event of non-compliance with above stated condition of repayment on the scheme</h6>
-        <b-modal id="modalbasic" ref="modalbasic" size="lg" title="Terms and Condition">
+        <h6 class="mt-4">
+          Please Note: The Cooperative Society has the right to impond the
+          Vehicle purchased in the event of non-compliance with above stated
+          condition of repayment on the scheme
+        </h6>
+        <b-modal
+          id="modalbasic"
+          ref="modalbasic"
+          size="lg"
+          title="Terms and Condition"
+        >
           <h6>Terms</h6>
           <ul>
-            <li>Maximum credit facility is three (3) time the savings per qualified member</li>
-            <li>It is meant for co-operators with personal savings who required financial assistance for car purchase only with evidence of purchase</li>
+            <li>
+              Maximum credit facility is three (3) time the savings per
+              qualified member
+            </li>
+            <li>
+              It is meant for co-operators with personal savings who required
+              financial assistance for car purchase only with evidence of
+              purchase
+            </li>
             <li>Simple interest of 8% on credit facility per annum</li>
             <li>Maximum refund duration allowed is twenty-four (24) months</li>
-            <li>It is for only registered Cooperators on thrift savings scheme with consent loan repayments record</li>
             <li>
-              The CAS form is to be collected from the Cooperative Seceteraiat from
-              <i>non-refundable</i> fee of One Thousand Naira only payable to Landmark University Cooperative through Zenith Bank Account
+              It is for only registered Cooperators on thrift savings scheme
+              with consent loan repayments record
+            </li>
+            <li>
+              The CAS form is to be collected from the Cooperative Seceteraiat
+              from
+              <i>non-refundable</i> fee of One Thousand Naira only payable to
+              Landmark University Cooperative through Zenith Bank Account
               <i>1012910075</i>
             </li>
             <li>
@@ -291,20 +361,49 @@
               <b>First-Come-First-Serve</b> basis
               <i>subject to availability of fund</i>
             </li>
-            <li>No Co-operator shall leave employment of LU without 100% liquidation of the car credit facility</li>
-            <li>Payment will be made by check in the benefeciary's name or electronic transfer to the benefeciary's account</li>
+            <li>
+              No Co-operator shall leave employment of LU without 100%
+              liquidation of the car credit facility
+            </li>
+            <li>
+              Payment will be made by check in the benefeciary's name or
+              electronic transfer to the benefeciary's account
+            </li>
           </ul>
           <h6>Eligibilty</h6>
           <ul>
-            <li>Your membership of the cooperative must not be less than one year old</li>
-            <li>Monthly savings must not be lses than ₦10,000 monthly at any time after benefitting</li>
-            <li>Co-operator must be without any debt liability from either regulation or emergency credit months duration</li>
-            <li>The above stated conditions/eligibility criteria also applies to guarantors</li>
+            <li>
+              Your membership of the cooperative must not be less than one year
+              old
+            </li>
+            <li>
+              Monthly savings must not be lses than ₦10,000 monthly at any time
+              after benefitting
+            </li>
+            <li>
+              Co-operator must be without any debt liability from either
+              regulation or emergency credit months duration
+            </li>
+            <li>
+              The above stated conditions/eligibility criteria also applies to
+              guarantors
+            </li>
           </ul>
-          <p>I {{form.fullname}} approved and agree to the above stated terms/condition for the Car Aquisition Credit Facility Scheme of LUSCMSI</p>
+          <p>
+            I {{ form.fullname }} approved and agree to the above stated
+            terms/condition for the Car Aquisition Credit Facility Scheme of
+            LUSCMSI
+          </p>
           <template slot="modal-footer">
-            <b-button variant="primary" type="submit" @click.prevent="formSubmit">I Agree</b-button>
-            <b-button variant="secondary" @click="hideModal('modalbasic')">Cancel</b-button>
+            <b-button
+              variant="primary"
+              type="submit"
+              @click.prevent="formSubmit"
+              >I Agree</b-button
+            >
+            <b-button variant="secondary" @click="hideModal('modalbasic')"
+              >Cancel</b-button
+            >
           </template>
         </b-modal>
       </div>
@@ -355,6 +454,10 @@ export default {
         { value: "6040", text: "60% - 40%" },
         { value: "7030", text: "70% - 30%" },
       ],
+      schedule: [
+        { value: "automatic", text: "Automatic" },
+        { value: "manual", text: "Manual" },
+      ],
 
       form: {
         fullname: this.user.first_name + " " + this.user.last_name,
@@ -369,6 +472,7 @@ export default {
         guarantors: [],
         repayment_percentage: "",
         repayment_amount: "",
+        charge: null,
         startDate: null,
         // repayment_duration: "",
         // guarantor_a: {
@@ -409,6 +513,9 @@ export default {
       },
       department: {
         required,
+      },
+      charge: {
+        required
       },
       phone: {
         required,
@@ -550,7 +657,9 @@ export default {
         // calculate loan timeline divide days/365
         let loanDuration = Number(payload.duration) / 365;
         const interestRate = Number(payload.interest) / 100;
-        return Math.round(payload.asset_cost * (1 + interestRate * loanDuration));
+        return Math.round(
+          payload.asset_cost * (1 + interestRate * loanDuration)
+        );
       }
     },
     interestCalculator(method) {
@@ -604,6 +713,7 @@ export default {
           repayment_amount: this.form.repaymentAmount.toString(),
           repayment_date: backendDate,
           guarantors: this.form.guarantors,
+          schedule: this.form.charge
         };
         console.log(payload);
         try {
