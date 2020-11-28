@@ -13,6 +13,21 @@
         </p>
       </b-colxx>
     </b-row>
+     <b-row>
+        <b-colxx xl="12" lg="12" md="12">
+            <b-row>
+                <b-colxx xxs="6" md="3" lg="3" class="mb-4">
+                    <icon-card title="Total Savings" value="10,000" />
+                </b-colxx>
+                <b-colxx xxs="6" md="3" lg="3" class="mb-4">
+                    <icon-card title="Total Loans" value="50,000" />
+                </b-colxx>
+                <b-colxx xxs="6" md="3" lg="3" class="mb-4">
+                    <icon-card title="Total Loan Repaid" value="10,000" />
+                </b-colxx>
+            </b-row>
+        </b-colxx>
+    </b-row>
     <h2 class="text-left mt-4">Here are some of our services</h2>
     <b-row>
       <b-colxx

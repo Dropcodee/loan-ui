@@ -2,7 +2,7 @@ import axios from "axios";
 import NProgress from 'nprogress'
 export default () => {
   const api = axios.create({
-    baseURL: process.env.VUE_APP_APIURL
+    baseURL: process.env.VUE_APP_TEST_API
     // baseURL: "http://127.0.0.1:8000/api/v1"
   });
   api.interceptors.request.use(config => {
